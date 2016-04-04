@@ -1,19 +1,83 @@
+<style type="text/css">
+
+    .node {
+        cursor: pointer;
+    }
+
+    .overlay{
+        background-color:#ffffff;
+    }
+
+    .node circle {
+        fill: #fff;
+        stroke: steelblue;
+        stroke-width: 1.5px;
+    }
+
+    .node text {
+        fill: black;
+
+        font-size:8px;
+        font-family:sans-serif;
+    }
+
+    .link {
+        fill: none;
+        stroke: orange;
+        stroke-width: 1.5px;
+    }
+
+    .templink {
+        fill: none;
+        stroke: red;
+        stroke-width: 3px;
+    }
+
+    .ghostCircle.show{
+        display:block;
+    }
+
+    .ghostCircle, .activeDrag .ghostCircle{
+        display: none;
+    }
+    div.tooltip {
+        position: absolute;
+        text-align: center;
+        width: 60px;
+        height: 28px;
+        padding: 2px;
+        font: 10px sans-serif;
+        background: orange;
+        stroke:white;
+        border: 0px;
+        border-radius: 8px;
+        /* pointer-events: none;*/
+    }
 
 
-<div>
-<?php echo $this->partial('rnav'); ?>
-<?php echo $this->partial('headnav'); ?>
+</style>
 
-<div id="page-wrapper" class="gray-bg">
-    <!--top navigation-->
+<script src="<?php echo $this->basePath('d3/scripts/d3.min.js')?>" ></script>
+<script src="<?php echo $this->basePath('d3/scripts/dndTree.js')?>" ></script>
+  <script>
+     var url="<?php echo $this->serverUrl('/tree/json'); ?>";
+       d3.json(url,tree);
+  </script>
+  <div class="row">
+        <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Generation Tree  </h5>
+       </div>
+        <div class="ibox-content">
+        <div  id="tree-container" class="table-responsive ">
+        </div>
 
-    <?php echo $this->partial('headtitle'); ?>
-    <div class="row">
-    <?php echo $this->partial('tree'); ?>
-    <?php echo $this->partial('footer'); ?>
-    </div>
+        </div>
+        </div>
+        </div>
+
+        </div>
 
 
-</div>
 
-</div>

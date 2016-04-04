@@ -1,6 +1,6 @@
 // Get JSON data
-treeJSON = d3.json("flare.json", function(error, treeData) {
 
+function tree(error, treeData) {
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 0;
@@ -536,4 +536,4 @@ treeJSON = d3.json("flare.json", function(error, treeData) {
     // Layout the tree initially and center on the root node.
     update(root);
     topNode(root);
-});
+}

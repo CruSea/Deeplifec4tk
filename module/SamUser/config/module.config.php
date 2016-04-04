@@ -51,6 +51,16 @@ return array(
                                 ),
                             ),
                         ),
+                         'contactus' => array(
+                            'type' => 'Literal',
+                            'options' => array(
+                                'route' => '/contactus',
+                                'defaults' => array(
+                                    'controller' => 'dashboard',
+                                    'action'     => 'contactus',
+                                ),
+                            ),
+                        ),
                     'listdisciple' => array(
                         'type' => 'Literal',
                         'options' => array(
@@ -71,7 +81,7 @@ return array(
                             ),
                         ),
                     ),
-
+                      
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
@@ -247,6 +257,9 @@ return array(
                 ),
             ),
         ),
+      
+    
+      
         ),
 
     'controllers' => array(

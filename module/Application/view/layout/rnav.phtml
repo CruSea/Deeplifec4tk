@@ -1,71 +1,59 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
-
-    <div class=" animated bounce">
-    <div class="sidebar-collapse">
-        <ul class="nav" id="side-menu">
-            <li class="nav-header">
-                <div class="dropdown profile-element"> <span>
-                            <img alt="image" class="img-circle" style="ima" src="
-                        <?php if(!$this->zfcUserIdentity()): ?>
-                            <?php echo $this->zfcUserLoginWidget(array('redirect'=>'dashboard')); ?>
-                        <?php else: ?>
-                            <?php echo $this->zfcUserIdentity()->getPicture(); ?>
-                        <?php endif?>"
-                             </span>
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="clear"> <span class="block m-t-xs">
-                                          <strong>  <?php echo $this->zfcUserIdentity()->getDisplayname(); ?>
-                                    </strong>
+        <div class="sidebar-collapse">
+            <ul class="nav" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+           
+                  <img alt="image" class="img-circle" src="<?php echo $this->basePath("img/profile_small.jpg")?>" />
+                                   </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">
+                                <?php echo $this->zfcUserIdentity()->getDisplayname(); ?>
+                            </strong>
                              </span> <span class="text-muted text-xs block">Missionarry <b class="caret"></b></span> </span> </a>
-                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="<?php echo $this->url('dashboard/updateinfo') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Profile</a></li>
-                        <li><a href="<?php echo $this->url('dashboard/updateinfo') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Notifications</a></li>
-                        <li><a href="<?php echo $this->url('dashboard/updateinfo') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Messages</a></li>
-                        <li class="divider"></li>
-                        <li><a href="<?php echo $this->url('zfcuser/logout') ?>">Logout</a></li>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="<?php echo $this->url('dashboard/updateinfo') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Profile</a></li>
+                             <li class="divider"></li>
+                            <li><a href="<?php echo $this->url('zfcuser/logout') ?>">Logout</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        D+
+                    </div>
+                </li>
+                <li class="active">
+                    <a href="<?php echo $this->url('dashboard') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>"><i class="fa fa-th-large"></i> <span class="nav-label">User Dashboard</span> </a>
+                    </li>
+                          
+            
+                   <li class="">
+                <a href="">
+                <i class="fa fa-database"></i> <span class="nav-label">Resource</span></a>
+</li>
+
+   <li class="">
+                <a href="">
+                <i class="fa fa-database"></i> <span class="nav-label">News</span></a>
+</li>
+          
+              <li>
+                    <a href="#"><i class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span class="label label-warning pull-right">16/24</span></a>
+                    <ul class="nav nav-second-level">
+                        <li><a href="#">Inbox</a></li>
+                        <li><a href="#">Email view</a></li>
+                        <li><a href="#">Compose email</a></li>
+                        <li><a href="#">Email templates</a></li>
                     </ul>
-                </div>
-                <div class="logo-element">
-                    Deeplife
-                </div>
-            </li>
-            <li class="active">
-                <a><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse in">
-                    <li class="active"><a href="<?php echo $this->url('dashboard') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>"">User Dashboard</a></li>
-                    <li><a href="<?php echo $this->url('dashboard/updateinfo') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Settings</a></li>
+                </li>
+              <li class="special_link">
+                <a href="<?php echo $this->url('tree') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">
+                <i class="fa fa-database"></i> <span class="nav-label">Generation Tree</span></a>
+</li>
+            
+                
+            </ul>
 
-                </ul>
-            </li>
+        </div>
+    </nav>
 
-            <li>
-                <a href=" "><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Disciples</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse in">
-                    <li><a href="<?php echo $this->url('dashboard/adddisciple') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Add</a></li>
-                    <li><a href="<?php echo $this->url('dashboard/listdisciple') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">List</a></li>
 
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="http://deeplife.cccsea.org/#/layouts%20target="><i class="fa fa-magic"></i> <span class="nav-label">Win </span><span class="label label-info pull-right">62</span></a>
-            </li>
-            <li>
-                <a target="_blank" href="http://deeplife.cccsea.org/#/widgets"><i class="fa fa-magic"></i> <span class="nav-label">Build</span><span class="label label-info pull-right">62</span></a>
-            </li>
-            <li>
-                <a target="_blank" href="http://deeplife.cccsea.org/#/grid_options"><i class="fa fa-magic"></i> <span class="nav-label">Send</span><span class="label label-info pull-right">62</span></a>
-            </li>
-            <li class="">
-                <a href="<?php echo $this->url('resource') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Resource </a>
-            </li>
-            <li class="">
-                <a href="<?php echo $this->url('news') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">NEWS </a>
-            </li>
-            <li class="special_link">
-                <a href="<?php echo $this->url('tree') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>"><i class="fa fa-database"></i> <span class="nav-label">Generation Tree</span></a>
-
-        </ul>
-</div>
-    </div>
-</nav>

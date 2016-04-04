@@ -14,9 +14,19 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+    
+    // add disciple
+    Public function contactusAction()
+    {
+              die('sdgfsdgsdgsdgsdgsdgsdgsdgsd');
+    }
+    
+    
     // add disciple
     Public function indexAction()
     {
+        
+      
         $view = new ViewModel(array(
             'imageurl' => '',
             'Url' => '/',

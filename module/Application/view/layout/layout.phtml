@@ -1,57 +1,9 @@
-<?php echo $this->doctype(); ?>
-
+<?php echo $this->doctype();  ?>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <?php echo $this->headTitle('Deeplife '. $this->translate('1.0'))->setSeparator(' - ')->setAutoEscape(false) ?>
-
-    <?php echo $this->headMeta()
-        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-    ?>
-
-    <!-- Le styles -->
-    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-        ->prependStylesheet($this->basePath('dash/css/style.css'))
-        ->prependStylesheet($this->basePath('dash/css/animate.css'))
-        ->prependStylesheet($this->basePath('dash/font-awesome/css/font-awesome.css'))
-        ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
-
-    <!-- Scripts -->
-    <?php echo $this->headScript()
-
-        ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-        ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
-
-    ; ?>
-
-</head>
-<body>
-<div id="wrapper">
-
-    <?php echo $this->content; ?>
-
-
-</div> <!-- /container -->
-<script src="../dash/js/plugins/morris/raphael-2.1.0.min.js"></script>
-<script src="../dash/js/plugins/morris/morris.js"></script>
-<!-- Morris demo data-->
-<script src="../dash/js/demo/morris-demo.js"></script>
-<script src="../js/jquery-2.1.1.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../dash/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="../dash/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-<!-- Custom and plugin javascript -->
-<script src="../js/inspinia.js"></script>
-<script src="../js/plugins/pace/pace.min.js"></script>
-
-<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-
-<?php echo $this->inlineScript()
-
-?>
-
+<?php echo $this->render('element/headtitle'); ?>
+<body class="." id="page-top" >
+<?php echo $this->render('element/headnav'); ?>
+<?php echo $this->content; ?>
+<?php echo $this->render('element/footer'); ?>
 </body>
 </html>

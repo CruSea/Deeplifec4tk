@@ -71,10 +71,9 @@ class User implements UserInterface, ProviderInterface
      */
     protected $firstName = null;
 
-    protected $sureName = null;
     /**
      * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="integer")
      *
      * @ZFA\Filter({"name":"StringTrim"})
      * @ZFA\Required(true)
@@ -82,7 +81,7 @@ class User implements UserInterface, ProviderInterface
      * @ZFA\Attributes({"type":"text", "placeholder":"Ethiopia"})
      * @ZFA\Options({"label":"country"})
      */
-    protected $country =null;
+    protected $country_id =null;
 
     /**
      * @var string
@@ -94,11 +93,11 @@ class User implements UserInterface, ProviderInterface
      * @ZFA\Attributes({"type":"text", "placeholder":"0916587396"})
      * @ZFA\Options({"label":"phone number"})
      */
-    protected $phone_no = null;
+    protected $phone = null;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\Column(type="integer")
      *
      * @ZFA\Filter({"name":"StringTrim"})
      * @ZFA\Required(true)
@@ -107,6 +106,8 @@ class User implements UserInterface, ProviderInterface
      * @ZFA\Options({"label":"mentor_id"})
      */
     protected $mentor_id = null;
+    
+    
     /**
      * @var int
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -164,24 +165,24 @@ class User implements UserInterface, ProviderInterface
             'displayName' => $this->getDisplayName(),
             'firstName' => $this->getFirstName(),
             'middleName' => $this->getMiddleName(),
-            'sureName' => $this ->getSureName(),
-            'country' => $this ->getCountry(),
-            'phone_no' => $this ->getPhoneNo(),
+            'sureName' => $this->getSureName(),
+            'country_id' => $this->getCountryId(),
+            'phone' => $this ->getPhone(),
             'picture' => $this -> getPicture(),
-            'state' => $this->getState(),
-            'roles' => array_map(
-                function($r) { return array('id' => $r->getId()); },
-                $this->getRoles()->getValues()
-            )
+            //'state' => $this->getState(),
+          //  'roles' => array_map(
+            ///  function($r) { return array('id' => $r->getId()); },
+              // $this->getRoles()->getValues()
+            //)
         );
     }
 
     /**
      * @return string
      */
-    public function getPhoneNo()
+    public function getPhone()
     {
-        return $this->phone_no;
+        return $this->phone;
     }
 
     /**
@@ -211,17 +212,17 @@ class User implements UserInterface, ProviderInterface
     /**
      * @return string
      */
-    public function getCountry()
+    public function getCountryId()
     {
-        return $this->country;
+        return $this->country_id;
     }
 
     /**
      * @param string $country
      */
-    public function setCountry($country)
+    public function setCountry($country_id)
     {
-        $this->country = $country;
+        $this->country_id = $country_id;
     }
 
     public function __toString() {
