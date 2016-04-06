@@ -60,54 +60,99 @@
             
             <!-- Modal Body -->
             <div class="modal-body">
-                <div class="alert alert-success" style="display: none;" >
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="alert alert-success" style="display: none;" >
               <strong>Thank you!</strong> Your message has been successfully sent. We will contact you very soon!.
             </div>
              <div class="alert alert-danger" style="display: none;" >
          <strong>Oops!</strong> Something went wrong. Please try again later.
            </div>
-                <form role="form" method="post"  >
-                  
-                  <div class="form-group">
-                    <label for="InputName">Your Name (required)</label>
-                      <input type="name" class="form-control"  name="txtname"  id="InputName" placeholder="Enter Name"/>
-                  </div>
-                 
-                  <div class="form-group">
-                    <label for="InputEmail1">Your Email (required)</label>
-                      <input type="email" class="form-control" name="txtemail"  id="InputEmail1" placeholder="Enter email"/>
-                  </div>
-                 
-                  <div class="form-group">
-                    <label for="InputMessage">Your Message</label>
-                      <textarea id="InputMessage" name="yourmessage" cols="40" rows="10" class="form-control" ></textarea>
-                  
-                  </div>
-                 
-                  
-                <button type="button" class="btn btn-primary" id="send" >
-                    SEND
+                
+                    <div class="ibox float-e-margins">
+                      
+                        <div class="ibox-content">
+                            <form method="get" class="form-horizontal">
+                                <div class="form-group name"><label class="col-sm-2 control-label"> Your Name (required)</label>
+
+                                    <div class="col-sm-10"><input class="form-control" type="text" name="txtname" id="txtname" ></div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group email"><label class="col-sm-2 control-label">Your Email (required)</label>
+                                    <div class="col-sm-10"><input class="form-control" name="txtemail" id="txtemail" type="text"> 
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group message"><label class="col-sm-2 control-label">Your Message</label>
+                                <div class="col-sm-10">
+                                <textarea id="InputMessage" name="yourmessage" cols="40" rows="10" class="form-control" ></textarea>
+                                   </div>
+                                </div>
+                                                    
+                                <div class="hr-line-dashed"></div>
+                                <button type="button" class="btn btn-primary" id="send" >
+                    SEND 
                 </button>
-                                  
-                  
-                </form>
+                               
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+         
                 <script>
                    $( "#send" ).click(function() { 
-                    $.ajax({
-         url: "<?php echo $this->serverUrl('/dashboard/contactus'); ?>",
-         data: {txtname: 'test'},
-         type: 'post',
-         success: function(output) {
-                   
-                   if(output){
-                       $('.alert-success').show();
-                   }else{
-                       $('.alert-danger').show();
-                   }
-                      
+                $( "#send" ).html('SEND <i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i>').attr('disabled','disabled');
+                $('.form-group').removeClass('has-error'); 
+                 var flag=1;  
+                 var name =$.trim($('#txtname').val());
+                 var email =$.trim($('#txtemail').val());
+                 var message =$.trim($('#InputMessage').val());
+                  if(name==''){
+                    
+                  
+                     flag=0;
+                       $('.name').addClass('has-error'); 
+                  } 
+                  if(email==''){
+                     flag=0;
+                       $('.email').addClass('has-error'); 
+                  }else {
+                      var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+                        if (!filter.test(email)) {
+                        flag=0;
+                       $('.email').addClass('has-error'); 
+                            }
                   }
-                }); 
-                
+                  
+                  if(message==''){
+                     flag=0;
+                       $('.message').addClass('has-error'); 
+                  }
+                  
+               if(flag){
+                   
+            
+                        $.ajax({
+             url: "<?php echo $this->serverUrl('/contactus'); ?>",
+             data: {name: name,email: email,message: message},
+             type: 'post',
+             success: function(output) {
+                      
+                       if(output){
+                           $('.alert-success').show();
+                       }else{
+                           $('.alert-danger').show();
+                       }
+                      $( "#send" ).html('SEND').removeAttr('disabled');     
+                      }
+                    }); 
+                }else{
+                      $( "#send" ).html('SEND').removeAttr('disabled'); 
+                }
+                 
                 });
                 </script>
                 

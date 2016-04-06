@@ -40,12 +40,9 @@ class Users implements InputFilterAwareInterface
     /**
      * @ORM\Column(type="string")
      */
-    protected $displayName;
+    protected $full_name;
  
-    /**
-     * @ORM\Column(type="string")
-     */
-    protected $firstName;
+   
    
    /**
         * @ORM\Column(type="integer");
@@ -116,15 +113,64 @@ class Users implements InputFilterAwareInterface
         $this->id = $data['id'];
         $this->email = $data['email'];
         $this->displayName = $data['displayName'];
-        $this->firstName = $data['firstName'];
+        $this->full_name = $data['full_name'];
         $this->country_id = $data['country_id'];
         $this->phone = $data['phone'];
-        $this->mentor_id = $data['mentor_id'];
-        $this->picture = $data['picture'];
+        $this->mentor_id = 1;
+        $this->role_id = 1;
+        $this->picture ='/img/'.$data['picture']['name'];
         $this->gender = $data['gender'];
      
 
     }
+    
+    
+     /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id.
+     *
+     * @param int $id
+     *
+     * @return void
+     */
+    public function setId($id)
+    {
+        $this->id = (int) $id;
+        return $this;
+    }
+   /**
+     * Get password.
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set password.
+     *
+     * @param string $password
+     *
+     * @return void
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    
  
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
@@ -142,7 +188,27 @@ class Users implements InputFilterAwareInterface
                     array('name' => 'Int'),
                 ),
             ));
-
+ 
+ 
+  $inputFilter->add(array(
+                'name'     => 'full_name',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 100,
+                        ),
+                    ),
+                ),
+            ));
+ 
             $inputFilter->add(array(
                 'name'     => 'email',
                 'required' => true,
@@ -152,59 +218,23 @@ class Users implements InputFilterAwareInterface
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'StringLength',
+                        'name'    => 'EmailAddress',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
+                           
                         ),
                     ),
                 ),
             ));
+           
 
-            $inputFilter->add(array(
-                'name'     => 'displayname',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
-                ),
-            ));
-
-   $inputFilter->add(array(
-                'name'     => 'firstname',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
-                ),
-            ));
+  
 
    $inputFilter->add(array(
                 'name'     => 'country_id',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'Int'),
+                 array('name' => 'Int'),
                 ),
             ));
 
@@ -226,7 +256,8 @@ class Users implements InputFilterAwareInterface
                     ),
                 ),
             ));
-
+ 
+  /*
    $inputFilter->add(array(
                 'name'     => 'mentor_id',
                 'required' => true,
@@ -234,11 +265,11 @@ class Users implements InputFilterAwareInterface
                     array('name' => 'Int'),
                 ),
             ));
+*/
 
 
 
-
-            
+         
             $inputFilter->add(array(
                 'name'     => 'picture',
                 'required' => true,
@@ -247,14 +278,24 @@ class Users implements InputFilterAwareInterface
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
-                        ),
-                    ),
+               
+                 array (
+                                    'name' => 'filemimetype',
+                                    'options' => array (
+                                            'mimeType' => 'image/png,image/x-png,image/jpg,image/jpeg,image/gif',
+                                    )
+                            ),
+                            array (
+                                    'name' => 'fileimagesize',
+                                    'options' => array (
+                                            'target'=>'public/img/',
+                                            'randomize'=>true,
+                                            'maxWidth' => 700,
+                                            'maxHeight' => 700
+                                    )
+                            ),
+               
+               
                 ),
             ));
             
@@ -271,10 +312,22 @@ $inputFilter->add(array(
 
 
 
-
             $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
     }
+
+//public function getEmailValidator()
+  //  {
+    //    return $this->emailValidator;
+    //}
+
+   // public function setEmailValidator($emailValidator)
+    //{
+      //  $this->emailValidator = $emailValidator;
+       // return $this;
+   // }
+
+
 }

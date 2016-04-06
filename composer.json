@@ -10,11 +10,11 @@
     "require": {
         "php": ">=5.5",
         "zendframework/zendframework": "~2.5",
-
-      "zendframework/zend-developer-tools": "dev-master",
-      "doctrine/doctrine-orm-module": "0.7.*",
-      "zf-commons/zfc-user": "0.1.*",
-      "zf-commons/zfc-user-doctrine-orm": "0.1.*",
-      "bjyoungblood/bjy-authorize": "1.2.*"
+        "zendframework/zend-developer-tools": "dev-master",
+        "doctrine/doctrine-orm-module": "0.7.*",
+        "zf-commons/zfc-user": "0.1.*",
+       "zf-commons/zfc-user-doctrine-orm": "0.1.*",
+      "bjyoungblood/bjy-authorize": "1.2.*",
+       "mobiledetect/mobiledetectlib": "^2.8"
     }
 }

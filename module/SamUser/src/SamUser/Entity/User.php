@@ -332,7 +332,7 @@ class User implements UserInterface, ProviderInterface
      */
     public function getDisplayName()
     {
-        return $this->displayName ? $this->displayName : "{$this->firstName}}";
+        return $this->displayName ? $this->displayName : "{$this->firstName}";
     }
 
     /**

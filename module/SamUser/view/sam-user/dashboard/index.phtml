@@ -34,8 +34,8 @@
                 <td >
                 <?php
               $avatar='/avatar/noavatar.jpg';
-                 if( file_exists($user->getPicture())) { 
-               $avatar=$user->getPicture();
+                 if( is_file('public'.$user->picture)) { 
+               $avatar=$user->picture;
                 }
                 
                 ?>
@@ -62,20 +62,22 @@ tr td {
     vertical-align: middle;
 }
 </style>
+
+
 </td>
-                <td valign="middle"><?php echo $this->escapeHtml(ucwords($user->getDisplayname()));?></td>
-                <td><?php echo $this->escapeHtml($user->getEmail());?></td>
-                <td><?php echo $this->escapeHtml($user->getPhone());?></td>
-                <td><?php echo $this->escapeHtml(ucwords($countries[$user->getCountryId()]));
+                <td valign="middle"><?php echo $this->escapeHtml(ucwords($user->full_name));?></td>
+                <td><?php echo $this->escapeHtml($user->email);?></td>
+                <td><?php echo $this->escapeHtml($user->phone);?></td>
+                <td><?php echo $this->escapeHtml(ucwords($countries[$user->country_id]));
                 
                /// countries
                 
                 ?></td>
                 <td>
-                <a href="dashboard/edit/<?php echo $user->getId(); ?>" class="fbox tips btn btn-xs btn-primary"  >  <i class="fa fa-edit fa-fw"></i>Edit </a>
-                <a href="" class="fbox tips btn btn-xs btn-danger"  >  <i class="fa fa-trash-o fa-fw"></i>Delete </a>
+                 <a href="" class="fbox tips btn btn-xs btn-danger"  >Added </a>
+                       
                   
-                 </td>
+                </td>
             </tr>
         <?php endforeach; ?>
                    

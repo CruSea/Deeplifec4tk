@@ -15,6 +15,7 @@ return array(
         'ZfcBase',
         'ZfcUser',
         'ZfcUserDoctrineORM',
+     
        // 'BjyAuthorize',
         'SamUser',
         'News',

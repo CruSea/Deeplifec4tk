@@ -25,8 +25,7 @@ class DashboardController  extends AbstractActionController
     protected $em;
     public $userid;
 
-    public function getMUserId()
-    {
+    public function getMUserId() {
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             //get the user_id of the user
             $this->userid = $this->zfcUserAuthentication()->getIdentity()->getId();
@@ -34,16 +33,14 @@ class DashboardController  extends AbstractActionController
         return $this->userid;
     }
 
-    public function getEntityManager()
-    {
+    public function getEntityManager(){
         if (null === $this->em) {
             $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         }
         return $this->em;
     }
     // add disciple
-    Public function indexAction()
-    {
+    Public function indexAction()  {
         $this->layout()->setTemplate('layout/master');  
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $countriesData=array();
@@ -51,7 +48,7 @@ class DashboardController  extends AbstractActionController
         $countriesData[$country->id]=$country->name;    
         } 
         return new ViewModel(array(
-            'users' => $this->getEntityManager()->getRepository('SamUser\Entity\User')->findBy(array('mentor_id' => $this ->userid )),
+            'users' => $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $this ->userid )),
             'countries'=>$countriesData,
             'Url' => '/',
             'title' => 'Your Dashboard',
@@ -60,36 +57,44 @@ class DashboardController  extends AbstractActionController
 
     }
 //    Add Disiple
-    Public function adddiscipleAction()
-    {
+    Public function adddiscipleAction()  {
+        
+     
+       
         $this->layout()->setTemplate('layout/master');   
         $form = new UsersForm();
-      
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
         foreach($countries as $country ){
         $ValueOptions[$country->id]=$country->name;    
         }
         
-              
+             
         $form->get('country_id')->setValueOptions($ValueOptions);
         $form->get('submit')->setValue('Add');
         $request = $this->getRequest();
         if ($request->isPost()) {
               $Users = new Users();
-             $form->setInputFilter($Users->getInputFilter());
-             
-           
-             $post = array_merge_recursive(
-            $request->getPost()->toArray(),
-            $request->getFiles()->toArray()
-        );
+              $form->setInputFilter($Users->getInputFilter());
+            $files =  $request->getFiles()->toArray();
 
-              $form->setData($request->getPost());
+               $data = array_merge_recursive(
+                $this->getRequest()->getPost()->toArray(),
+                // Notice: make certain to merge the Files also to the post data
+               $files
+            );
+              
+                $form->setData($data);
+              
+           
+             $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
+             $uploadObj->setDestination(realpath(dirname('')).'\public\img');
              
-                         
+                          
+                     
                if ($form->isValid()) {
-                $Users->exchangeArray($form->getData());
+                 $uploadObj->receive($fileName);   
+                $Users->exchangeArray($data);
                 $this->getEntityManager()->persist($Users);
                 $this->getEntityManager()->flush();
                 // Redirect to list of dashboard
@@ -107,39 +112,9 @@ class DashboardController  extends AbstractActionController
 
     }
     
-    //    Add Disiple
-    Public function contactusAction()
-    {
       
-     $request = $this->getRequest();
-     if ($request->isPost()) {
-     $dataArray= $request->getPost();
-       // print('<pre>');
-     // print_r($dataArray);
-    ///echo $dataArray['txtname'];
-    $body="sadfafsafadfafdfad";
-    $mail = new Mail\Message();
-    $mail->addFrom('alvin.abhinav@ithands.net');
-    $mail->addTo('abhinav.dobhal@gmail.com');
-    $mail->setSubject('test email ');
-    $mail->setBody($body);
-    $mail->setEncoding('UTF-8');
-  //  $mail->send(); 
-    echo 1;
-    die;
-    
-     }
-    
-    echo 0;  
-      die;
-     
-  
-
-    }
-   
     //edit user info
-    Public function editAction()
-    {
+    Public function editAction()  {
      
      $id = (int) $this->params()->fromRoute('id', 0);
       if (!$id) {

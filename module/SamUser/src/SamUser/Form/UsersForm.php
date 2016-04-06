@@ -16,14 +16,18 @@ class UsersForm extends Form
             'type' => 'Hidden',
         ));
        
+      /*  $this->add(array(
+            'name' => 'mentor_id',
+            'type' => 'Hidden',
+        ));*/
          $this->add(array(
-            'name' => 'firstName',
+            'name' => 'full_name',
             'type' => 'Text',
             'options' => array(
                 'label' => 'Name',
                 
             ), 'attributes' => array(
-                           'id'       => 'firstName',
+                           'id'       => 'full_name',
                             'class'    => 'form-control',
                              'required' => 'required',
                             ),
@@ -54,8 +58,8 @@ class UsersForm extends Form
                      ),  
             ), 'attributes' => array(
                            'id'       => 'country_id',
-                               'class'    => 'form-control',
-                             'required' => 'required',
+                           'class'    => 'form-control',
+                           'required' => 'required',
                         
                            
                             ),
@@ -69,7 +73,7 @@ class UsersForm extends Form
                 
             ), 'attributes' => array(
                            'id'       => 'phone',
-                               'class'    => 'form-control',
+                           'class'    => 'form-control',
                              'required' => 'required',
                             ),
         ));
@@ -84,8 +88,7 @@ class UsersForm extends Form
                       'class'    => 'form-control',
                              'required' => 'required',
           'value_options' => array(
-                             '' => 'please select',
-                             '1' => 'Male',
+                           '1' => 'Male',
                              '2' => 'Female',
                              
                      ),       
@@ -95,12 +98,12 @@ class UsersForm extends Form
          
             'attributes' => array(
                            'id'       => 'gender',
-                               'class'    => 'form-control',
-                             'required' => 'required',
+                           'class'    => 'form-control',
+                           'required' => 'required',
                             ),
         ));
         
-           $this->add(array(
+          $this->add(array(
             'name' => 'picture',
             'type' => 'File',
             'options' => array(
@@ -109,9 +112,9 @@ class UsersForm extends Form
             ), 'attributes' => array(
                            'id'       => 'picture',
                                'class'    => 'form-control',
-                           //  'required' => 'required',
+                            'required' => 'required',
                             ),
-        ));
+        )); 
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
