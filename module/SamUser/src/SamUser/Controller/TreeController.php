@@ -12,7 +12,7 @@ namespace SamUser\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
-use SamUser\Entity\User;
+use SamUser\Entity\Users;
 use Doctrine\ORM\EntityManager;
 
 class TreeController extends AbstractActionController
@@ -56,14 +56,14 @@ class TreeController extends AbstractActionController
             //get the user_id of the user
             $userid = $this->zfcUserAuthentication()->getIdentity()->getId();
             $avatar='/avatar/noavatar.jpg';
-              if( file_exists($this->zfcUserAuthentication()->getIdentity()->getPicture())) { 
-               $avatar=$this->zfcUserAuthentication()->getIdentity()->getPicture();
+              if( is_file('public'.$this->zfcUserAuthentication()->getIdentity()->picture)) { 
+               $avatar=$this->zfcUserAuthentication()->getIdentity()->picture;
                 }   
-                $name= ucwords($this->zfcUserAuthentication()->getIdentity()->getDisplayname());
+                $name= ucwords($this->zfcUserAuthentication()->getIdentity()->full_name);
 
         }
     
-      $users =$this->getEntityManager()->getRepository('SamUser\Entity\User')->findBy(array('mentor_id' => $userid ));
+      $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $userid ));
     
    // $url=explode('/',$this->getRequest()->getUri());
  // print_r($url);  
@@ -86,10 +86,10 @@ class TreeController extends AbstractActionController
      foreach ($users as $user){
          
               $avatar='/avatar/noavatar.jpg';
-              if( file_exists($user->getPicture())) { 
-               $avatar=$user->getPicture();
+              if( is_file('public'.$user->picture)) { 
+               $avatar=$user->picture;
                 }    
-            $tree['children'][$i]['name'] = ucwords($user->getDisplayname());
+            $tree['children'][$i]['name'] = ucwords($user->full_name);
             $tree['children'][$i]['icon'] = $url.''.$avatar;
             $tree['children'][$i]['immediate'] = '12';
             $tree['children'][$i]['total'] = '500';
