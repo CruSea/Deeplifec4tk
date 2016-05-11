@@ -54,46 +54,70 @@ class Module
                 {
                     /* @var $form \ZfcUser\Form\Register */
                     $form = $e->getTarget();
-                    $form->add(
-                        array(
-                            'name' => 'firstName',
-                            'options' => array(
-                                'label' => 'Name',
+      
+              $form->add(array(
+            'name' => 'country',
+            'type' => 'Select',
+            'options' => array(
+                'label' => 'Country',
+                   'value_options' => array(
+                             '1' => 'India',
+                         
+                     ),  
+            ), 'attributes' => array(
+                           'id'       => 'country',
+                           'class'    => 'form-control',
+                           'required' => 'required',
+                        
+                           
                             ),
-                            'attributes' => array(
-                                'type'  => 'text',
+        ));
+     
+        $form->add(array(
+            'name' => 'phone_no',
+            'type' => 'Text',
+            'options' => array(
+                'label' => 'Phone',
+                
+            ), 'attributes' => array(
+                           'id'       => 'phone_no',
+                           'class'    => 'form-control',
+                             'required' => 'required',
                             ),
-                        )
-                    );
-
-
-                    $form->add(
-                        array(
-                            'name' => 'phoneno',
-                            'options' => array(
-                                'label' => 'Phone no',
+        ));
+    
+        
+           
+                
+           $form->add(array(
+            'name' => 'gender',
+            'type' => 'Select',
+            'options' => array(
+                'label' => 'Gender',
+                 'id'       => 'gender',
+                      'class'    => 'form-control',
+                             'required' => 'required',
+          'value_options' => array(
+                           'Male' => 'Male',
+                             'Female' => 'Female',
+                             
+                     ),       
+         
+            ), 
+            
+         
+            'attributes' => array(
+                           'id'       => 'gender',
+                           'class'    => 'form-control',
+                           'required' => 'required',
                             ),
-                            'attributes' => array(
-                                'type'  => 'number',
-                            ),
-                        )
-                    );
-                    $form->add(
-                        array(
-                            'name' => 'country',
-                            'options' => array(
-                                'label' => 'Country',
-                            ),
-                            'attributes' => array(
-                                'type'  => 'text',
-                            ),
-                        )
-                    );
+        ));
+                   
 
                 }
 );
 
-            // here's the storage bit
+            // here's the st orage bit
 
             $zfcServiceEvents = $e->getApplication()->getServiceManager()->get('zfcuser_user_service')->getEventManager();
 
@@ -101,9 +125,9 @@ class Module
                 $form = $e->getParam('form');
                 $user = $e->getParam('user');
                 /* @var $user \SamUser\Entity\User */
-                $user->setPhoneno(  $form->get('firstName')->getValue() );
-                $user->setPhoneno(  $form->get('phoneno')->getValue() );
-                $user->setCountry( $form->get('country')->getValue() );
+             //   $user->setPhoneno(  $form->get('firstName')->getValue() );
+               // $user->setPhoneno(  $form->get('phoneno')->getValue() );
+                //$user->setCountry( $form->get('country')->getValue() );
             });
 
             // you can even do stuff after it stores           

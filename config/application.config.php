@@ -15,13 +15,10 @@ return array(
         'ZfcBase',
         'ZfcUser',
         'ZfcUserDoctrineORM',
-     
-       // 'BjyAuthorize',
+        'Movement',
         'SamUser',
-        'News',
-
-
-
+         'Learningtools',
+        'Schedules',
     ),
 
     // These are various options for the listeners attached to the ModuleManager

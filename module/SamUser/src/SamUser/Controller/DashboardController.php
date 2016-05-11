@@ -7,14 +7,15 @@
  */
 
 namespace SamUser\Controller;
-
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SamUser\Entity\Users;
+use Zend\Form\Form;
 use SamUser\Form\UsersForm;
 use Doctrine\ORM\EntityManager;
 use Zend\Mail;
-
+use DoctrineModule\Validator\NoObjectExists as NoObjectExistsValidator;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 class DashboardController  extends AbstractActionController
 {
    
@@ -35,21 +36,42 @@ class DashboardController  extends AbstractActionController
 
     public function getEntityManager(){
         if (null === $this->em) {
-            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default'        );
         }
         return $this->em;
     }
+    
+   
+    
     // add disciple
     Public function indexAction()  {
+        
+        
         $this->layout()->setTemplate('layout/master');  
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+        $mentorId=$this->getMUserId();
         $countriesData=array();
         foreach($countries as $country ){
         $countriesData[$country->id]=$country->name;    
         } 
+        
+         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select("SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")   
+         ->from('SamUser\Entity\Users', 'u')
+             ->andWhere('u.mentor_id = (:mentor_id)')
+           ->groupBy('u.mentor_id')
+            ->setParameter('mentor_id', $mentorId);
+  
+        $stageData = $queryBuilder->getQuery()->getScalarResult();
+     
+       
+     
+     
         return new ViewModel(array(
-            'users' => $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $this ->userid )),
+            'users' => $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $mentorId )),
             'countries'=>$countriesData,
+            'disciples'=>$this->getEntityManager()->getRepository('SamUser\Entity\Disciplescount')->findBy(array('user_id' => $mentorId )),
+             'stage'=>$stageData,
             'Url' => '/',
             'title' => 'Your Dashboard',
         ));
@@ -57,9 +79,7 @@ class DashboardController  extends AbstractActionController
 
     }
 //    Add Disiple
-    Public function adddiscipleAction()  {
-        
-     
+    Public function addAction()  {
        
         $this->layout()->setTemplate('layout/master');   
         $form = new UsersForm();
@@ -68,37 +88,61 @@ class DashboardController  extends AbstractActionController
         foreach($countries as $country ){
         $ValueOptions[$country->id]=$country->name;    
         }
-        
+        $emailValidator = new \DoctrineModule\Validator\ObjectExists(array(
+        'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
+    'fields' => array('email')));
+        $phoneValidator = new \DoctrineModule\Validator\ObjectExists(array(
+        'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
+    'fields' => array('phone_no')));
+          
              
-        $form->get('country_id')->setValueOptions($ValueOptions);
-        $form->get('submit')->setValue('Add');
+        $form->get('country')->setValueOptions($ValueOptions);
+        $form->get('mentor_id')->setValue($this->getMUserId());
+        $form->get('stage')->setValue('Added');
+        $form->get('password')->setValue('');
+        $form->get('role_id')->setValue(1);
+        
+        $form->get('submit')->setValue('Save');
         $request = $this->getRequest();
         if ($request->isPost()) {
-              $Users = new Users();
-              $form->setInputFilter($Users->getInputFilter());
-            $files =  $request->getFiles()->toArray();
-
-               $data = array_merge_recursive(
-                $this->getRequest()->getPost()->toArray(),
-                // Notice: make certain to merge the Files also to the post data
-               $files
-            );
-              
-                $form->setData($data);
-              
-           
-             $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
-             $uploadObj->setDestination(realpath(dirname('')).'\public\img');
              
-                          
-                     
+               $Users = new Users();
+               $form->setInputFilter($Users->getInputFilter());
+               $files =  $request->getFiles()->toArray();
+               $data =$this->getRequest()->getPost()->toArray() ;
+              $form->setData($this->getRequest()->getPost());
+              $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
+              $uploadObj->setDestination(PUBLIC_PATH.'/img');
+               unset($date['submit']);       
                if ($form->isValid()) {
-                 $uploadObj->receive($fileName);   
+                 $emailStatus=$emailValidator->isValid($data['email']);
+                 $phoneStatus=$phoneValidator->isValid($data['phone_no']);
+                 $flag=1;     
+              
+                 if($emailStatus){
+       $form->get('email')->setMessages(array('An account with this email already exists'));                   $flag=0;
+                 }
+                 if($phoneStatus){
+         $form->get('phone_no')->setMessages(array('This phone number already exists'));     
+                 $flag=0;
+                 }
+                 
+               if($flag){
+              	  $uploadObj->receive();
+                $temp=$uploadObj->getFileInfo();
+                if(strlen($temp['picture']['name'])){
+				 $data['picture']='/img/'.$temp['picture']['name'];		
+				}else{
+				$data['picture']='';	
+				}
+              
+              
                 $Users->exchangeArray($data);
                 $this->getEntityManager()->persist($Users);
                 $this->getEntityManager()->flush();
                 // Redirect to list of dashboard
                 return $this->redirect()->toRoute('dashboard');
+               }
               }                
                
           }
@@ -112,13 +156,12 @@ class DashboardController  extends AbstractActionController
 
     }
     
-      
-    //edit user info
+    
     Public function editAction()  {
-     
+       
      $id = (int) $this->params()->fromRoute('id', 0);
       if (!$id) {
-            return $this->redirect()->toRoute('dashboard/adddisciple');
+            return $this->redirect()->toRoute('dashboard/add');
         } 
      
         $user = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
@@ -126,46 +169,118 @@ class DashboardController  extends AbstractActionController
       if (!$user) {
             return $this->redirect()->toRoute('dashboard');
         }
-
-
-
-       $form = new UsersForm();
+        
+    
+    
+        $this->layout()->setTemplate('layout/master');   
+        $form = new UsersForm();
         $form->bind($user);
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
         foreach($countries as $country ){
         $ValueOptions[$country->id]=$country->name;    
         }
-         $form->get('country_id')->setValueOptions($ValueOptions)->setValue($user->country_id) ;
-         $form->get('gender')->setValue($user->gender) ;
-         $form->get('submit')->setAttribute('value', 'Edit');
+        $emailValidator = new \DoctrineModule\Validator\ObjectExists(array(
+        'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
+    'fields' => array('email')));
+        $phoneValidator = new \DoctrineModule\Validator\ObjectExists(array(
+        'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
+    'fields' => array('phone_no')));
+          
+        $form->get('country')->setValueOptions($ValueOptions)->setValue($user->country) ;
+        $form->get('gender')->setValue($user->gender) ;
+        $form->get('picture')->setValue('') ;  
+        $form->get('mentor_id')->setValue($this->getMUserId());
+        $form->get('stage')->setValue($user->stage);
+        $form->get('password')->setValue($user->password);
+        $form->get('role_id')->setValue($user->role_id);
         
-         $request = $this->getRequest();
+        
+        $form->get('submit')->setValue('Save');
+        $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($album->getInputFilter());
-            $form->setData($request->getPost());
-
-            if ($form->isValid()) {
+             
+       //        $Users = new Users();
+               $form->setInputFilter($user->getInputFilter());
+               $files =  $request->getFiles()->toArray();
+               $data =$this->getRequest()->getPost()->toArray();
+              unset($date['submit']);
+                    
+              
+              $form->setData($this->getRequest()->getPost());
+              $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
+              $uploadObj->setDestination(PUBLIC_PATH.'/img');
+                     
+               if ($form->isValid()) {
+                
+                
+                 $flag=1;     
+              if($user->email!=$data['email']){
+			  	
+			        $emailStatus=$emailValidator->isValid($data['email']);
+                 if($emailStatus){
+       $form->get('email')->setMessages(array('An account with this email already exists'));                   $flag=0;
+                 }
+              }
+                
+              if($user->phone_no!=$data['phone_no']){
+			  
+                 $phoneStatus=$phoneValidator->isValid($data['phone_no']);
+                 if($phoneStatus){
+         $form->get('phone_no')->setMessages(array('This phone number already exists'));     
+                 $flag=0;
+                 }
+                 
+              }
+               if($flag){
+                $uploadObj->receive();
+                $temp=$uploadObj->getFileInfo();
+                if(strlen($temp['picture']['name'])){
+				 $data['picture']='/img/'.$temp['picture']['name'];		
+				}else{
+				$data['picture']='';	
+				}
+                
+              foreach($data as $key=>$val){
+			  	$user->$key=$val;
+			  } 
+              	$user->password=$user->password;
+                $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
-
                 // Redirect to list of dashboard
+              //  $this->flashMessenger()->addSuccessMessage('You are now logged in.');
                 return $this->redirect()->toRoute('dashboard');
-            }
-        }
+               }
+              }                
+               
+          }
         
-        
-        
-        
-         $this->layout()->setTemplate('layout/master');   
         $view = new ViewModel(array(
             'Url' => '/',
-            'title' => 'Update Your Information',
-             'id' => $id,
             'form' => $form,
+            'title' => 'Edit Disciples',
+        'id' => $id,
         ));
         return $view;
+
     }
     
+      
+    //edit user info
   
+  
+  public function deleteAction(){
+     $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+                    return $this->redirect()->toRoute('dashboard');
+        }
+        $user = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
+        $user->mentor_id='';
+                $this->getEntityManager()->persist($user);
+                $this->getEntityManager()->flush();
+            
+                return $this->redirect()->toRoute('dashboard');
+      
+}
     
 }

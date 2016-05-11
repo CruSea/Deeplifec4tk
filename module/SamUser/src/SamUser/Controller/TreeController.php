@@ -8,16 +8,17 @@
 
 namespace SamUser\Controller;
 
-
+use Zend\Validator\Digits as Digits;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use SamUser\Entity\Users;
 use Doctrine\ORM\EntityManager;
+use DoctrineExtensions\Query\Mysql;
 
 class TreeController extends AbstractActionController
 {
-    protected $user;
+    
     protected $users;
     protected $em;
     public $userid;
@@ -34,39 +35,56 @@ class TreeController extends AbstractActionController
 
     Public function indexAction()
     {
+      
+      $id = (int) $this->params()->fromRoute('id', 0);
+      
         
-          $this->layout()->setTemplate('layout/master'); 
-          
-          
-        
-          
+       $this->layout()->setTemplate('layout/master'); 
         return new ViewModel(array(
-
             'Url' => '/',
             'title' => 'Generation Tree',
+            'id'=>$id ,       
         ));
 
     }
     public function jsonAction()
     {
        
-           
+           $id = (int) $this->params()->fromRoute('id', 0);
        
-      if ($this->zfcUserAuthentication()->hasIdentity()) {
+        
+        if (!$id) {
+          
+    
             //get the user_id of the user
             $userid = $this->zfcUserAuthentication()->getIdentity()->getId();
             $avatar='/avatar/noavatar.jpg';
-              if( is_file('public'.$this->zfcUserAuthentication()->getIdentity()->picture)) { 
+           if( is_file('public'.$this->zfcUserAuthentication()->getIdentity()->picture)){ 
                $avatar=$this->zfcUserAuthentication()->getIdentity()->picture;
                 }   
-                $name= ucwords($this->zfcUserAuthentication()->getIdentity()->full_name);
+           $name= ucwords($this->zfcUserAuthentication()->getIdentity()->displayName);
 
-        }
+            
+     
+            } else{
+                $rootUser = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
+                              
+                $userid =$rootUser->id;
+               $avatar='/avatar/noavatar.jpg';
+              if( is_file('public'.$rootUser->picture)) { 
+               $avatar=$rootUser->picture;
+                }   
+                $name= ucwords($rootUser->displayName);
+
+               
+            
+            
+            }
     
-      $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $userid ));
     
-   // $url=explode('/',$this->getRequest()->getUri());
- // print_r($url);  
+    
+     $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $userid ));
+   
   
   if(isset($_SERVER['HTTPS'])){
         $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
@@ -75,59 +93,310 @@ class TreeController extends AbstractActionController
         $protocol = 'http';
     }
      $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
-  
-    
+ // $url=$url.'/deeplife/public';
+    $rootUSerCount= count($users);
+
           $tree['name'] =  $name;
           $tree['icon'] = $url.''.$avatar;
-          $tree['immediate'] = count($users);
-          $tree['total'] = count($users);
-          $tree['url'] = '2';
-          $i=0;
-     foreach ($users as $user){
-         
-              $avatar='/avatar/noavatar.jpg';
+          $tree['user_id'] = $userid;
+          $tree['immediate'] = $rootUSerCount;
+          $tree['total'] = count($this->countParentChildTree($userid));
+          $tree['url'] = $url.'/tree/'.$userid;
+          $tree['parent_url'] = $url.'/tree/'.$userid;
+          $tree['draggable'] = true;
+          $tree['children'] = $this->parentChildTree($userid);
+ 
+        $jsonArray= array();
+        $jsonArray['config']['isDraggable']=true;
+        $jsonArray['config']['treeType']='user' ;
+        $jsonArray['config']['currentUserType']='countryAdmin';
+        $jsonArray['tree']=$tree;
+   
+        return new JsonModel($jsonArray);
+        //return new JsonModel($tree);
+    }
+
+
+ public function updatejsonAction()
+    {
+        $result['status']='error';
+        $result['code']='401';
+        $request = $this->getRequest();
+      if ($request->isPost()) {
+        
+            $data=$this->getRequest()->getPost()->toArray();
+           $parent=$data['parent'];
+           $user=$data['user'];
+           $valid = new Digits();
+           if(!$valid->isValid($parent) && !$valid->isValid($parent) ){
+                 $result['status']='error';
+                 $result['code']='402';
+           }else{
+            $em =$this->getEntityManager();
+            $user = $em->find('SamUser\Entity\Users', $user);
+            $user->mentor_id=$parent;
+            try {
+            $result['status']='success';
+            $result['code']='0';
+            $em->flush();
+            }catch ( Exception $e ) {
+            $result['status']='error';
+            $result['code']='403';
+            } 
+        
+           
+           }
+           
+           
+        }
+        
+       
+  
+        return new JsonModel($result);
+    }
+    
+public function parentChildTree($parent = 0) {
+   
+   $children_tree_array = array();
+   $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $parent ));
+if(isset($_SERVER['HTTPS'])){
+      $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    }
+    else{
+       $protocol = 'http';
+    }
+    $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
+  // $url=$url.'/deeplife/public';
+    $i=0;
+    foreach ($users as $user){
+      $avatar='/avatar/noavatar.jpg';
               if( is_file('public'.$user->picture)) { 
                $avatar=$user->picture;
                 }    
-            $tree['children'][$i]['name'] = ucwords($user->full_name);
-            $tree['children'][$i]['icon'] = $url.''.$avatar;
-            $tree['children'][$i]['immediate'] = '12';
-            $tree['children'][$i]['total'] = '500';
-            $tree['children'][$i]['url'] = '';
+            $tree[$i]['name'] = ucwords($user->displayName);
+            $tree[$i]['icon'] = $url.''.$avatar;
+            $tree[$i]['immediate'] = 0;
+            $tree[$i]['user_id'] = $user->id;
+           if($user->mentor_id==null){
+            $tree[$i]['parent_url'] = $url.'/tree/'.$user->id;
+           }else{
+            $tree[$i]['parent_url'] = $url.'/tree/'.$user->mentor_id;
+            }
+            $tree[$i]['draggable'] = true;
+            $tree[$i]['total'] = count($this->countParentChildTree($user->id));
+            $tree[$i]['url'] = $url.'/tree/'.$user->id;
+                 
+             
+             $children=$this->parentChildTree($user->id );
+           if(is_array($children)){
+                $childCount=count($children);
+                $tree[$i]['children'] =$children;
+                $tree[$i]['immediate'] =$childCount;
+               
+           }
+        
            $i++;
+    
+    
+    }
+
+
+	return $tree;
+}
+    
+    
+   public  function countParentChildTree($parent = 0, $spacing = '', $category_tree_array = '') {
+	if (!is_array($category_tree_array))
+		$category_tree_array = array();
+ 
+	$users = $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $parent ));
+	
+
+foreach ($users as $user){
+    $category_tree_array[] = array("id" => $user->id, "name" =>$user->displayName);
+    $category_tree_array[] = $this->countParentChildTree($user->id, '&nbsp;&nbsp;&nbsp;&nbsp;'.$spacing . '-&nbsp;', $category_tree_array);
+       }
+    
+    
+	
+	return $category_tree_array;
+}
+
+ public function ajaxchartAction() {
      
+        $request = $this->getRequest();
+      if ($request->isPost()) {
+          
+      
+      $countriesid=$this->getRequest()->getPost('ids');
+     $countryChartData=$this->countryChartData($countriesid);
+ 
+    
+     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+     $queryBuilder->select('u.id,u.name')   
+     ->from('SamUser\Entity\Country', 'u')
+     ->andWhere('u.id IN (:countryid)')
+     ->orderBy('u.name')
+     ->setParameter('countryid', $countriesid);
+      $countries = $queryBuilder->getQuery()->getScalarResult();
+      foreach($countries as $country ){
+        $countriesData[$country['id']]=$country['name'];    
+        } 
+     $this->renderer = $this->getServiceLocator()->get('ViewRenderer');
+     echo $content =$this->renderer->render('chart',array('chart'=>$countryChartData, 'countries'=>$countriesData));
+   
+       die;
+       
+       }
+       
+ }
+
+  public function countryAction() {
+    $this->layout()->setTemplate('layout/master');  
+    $countryData=array();
+    $countriesid=array();   
+    $countriesData=array();
+    $countryChartData=array();
+    $stageData=array();
+    $userid = $this->zfcUserAuthentication()->getIdentity()->getId();
+    $user =$this->getEntityManager()->getRepository('SamUser\Entity\Rolearea')->findOneBy(array('user_id' => $userid ));
+    $roleCountry=trim($user->area_groupsid);
+   if($roleCountry){
+
+  $areaGroups =$this->getEntityManager()->getRepository('SamUser\Entity\Areagroups')->findOneBy(array('id' => $roleCountry ));
+  if(count($areaGroups)){
+   
+     $countriesid=json_decode($areaGroups->countries_ids) ; 
+  } 
+  
+   }else {
+   $roleCountry=trim($user->countryid);
+   $countriesid=array($roleCountry);   
+   }
+   
+ 
+  if(count($countriesid)){
+      
+ 
+     $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select("count(u.id)as totaluser ,SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")   
+         ->from('SamUser\Entity\Users', 'u')
+             ->andWhere('u.country IN (:country)')
+            ->setParameter('country', $countriesid);
+    $stageData = $queryBuilder->getQuery()->getScalarResult();
+   // $countriesid = array_slice($countriesid, 0, 3); 
+   
+      $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+     $queryBuilder->select('u.id,u.name')   
+     ->from('SamUser\Entity\Country', 'u')
+     ->andWhere('u.id IN (:countryid)')
+     ->orderBy('u.name')
+     ->setParameter('countryid', $countriesid);
+      $countries = $queryBuilder->getQuery()->getScalarResult();
+      foreach($countries as $country ){
+        $countriesData[$country['id']]=$country['name'];    
+        } 
+      $countryData=$this->countryData($countriesid);
+     
+    }
+    
+     return new ViewModel(
+            array(
+            'countries'=>$countriesData,
+            'buildmovements'=>$countryData,
+               'stage'=>$stageData,
+            
+            )
+        );
+    
+   }
+
+public function countryData($countryIds) {
+   $countryData=array();    
+   $countryInfo=array();
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select("u.country,SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")   
+         ->from('SamUser\Entity\Users', 'u')
+          ->andWhere('u.country IN (:country)')
+           ->groupBy('u.country')
+        ->setParameter('country', $countryIds);
+  
+        $countryData = $queryBuilder->getQuery()->getScalarResult();
+        foreach ($countryData  as $country ){
+            $countryInfo[$country['country']]['win']=$country['win'];
+            $countryInfo[$country['country']]['build']=$country['build'];
+             $countryInfo[$country['country']]['send']=$country['send'];
+        }
+ 
+    return $countryInfo;
+    }
+public function countryChartData($countryIds) {
+        $countryData=array();    
+       $countryIds = array_slice($countryIds, 0, 3); 
+    
+       
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select("u.country,YEAR(u.created) as ycreated,SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")->from('SamUser\Entity\Users', 'u')
+        ->andWhere('u.country IN (:country)')
+       ->groupBy('ycreated,u.country')
+        ->setParameter('country', $countryIds);
+  
+     $countryData = $queryBuilder->getQuery()->getScalarResult();
+ 
+ 
+   $chartData=array();
+   foreach($countryData as $val ){
+   $chartData[$val['ycreated']]['win'][$val['country']]=$val['win'];
+   $chartData[$val['ycreated']]['build'][$val['country']]=$val['build'];
+   $chartData[$val['ycreated']]['send'][$val['country']]=$val['send'];
+    }
+ 
+  
+ 
+ foreach($chartData as $key=>$chart){
+     foreach($chart as $key1=>$stage){
+   $stage['year']=(string)$key;
+ 
+  if($key1=='win'){
+  $win[]= $stage ;       
+  }
+  if($key1=='build'){
+  $build[]= $stage ;       
+  }
+ 
+  if($key1=='send'){
+  $send[]= $stage ;       
+  }
+    
+  
      }
      
-         
-           
-   /*        
-           $tree['children'][0]['name'] = 'analytics';
-           $tree['children'][0]['icon'] = 'avatar2.png';
-           $tree['children'][0]['immediate'] = '12';
-           $tree['children'][0]['total'] = '500';
-           $tree['children'][0]['url'] = 'http://google.com';
-          
-           $tree['children'][0]['children'][0]['name'] = 'cluster';
-           $tree['children'][0]['children'][0]['icon'] = 'avatar3.png';
-           $tree['children'][0]['children'][0]['immediate'] = '12';
-           $tree['children'][0]['children'][0]['total'] = '500';
-           $tree['children'][0]['children'][0]['url'] = '3';
-          
-           $tree['children'][0]['children'][1]['name'] = 'graph';
-           $tree['children'][0]['children'][1]['icon'] = 'avatar4.png';
-           $tree['children'][0]['children'][1]['immediate'] = '12';
-           $tree['children'][0]['children'][1]['total'] = '500';
-               
-           $tree['children'][0]['children'][2]['name'] = 'optimization';
-           $tree['children'][0]['children'][2]['icon'] =  'avatar5.png';
-           $tree['children'][0]['children'][2]['immediate'] =  '12';
-           $tree['children'][0]['children'][2]['total'] =  '500';
-           $tree['children'][0]['children'][2]['url'] =  'http://google.com';
-               
-          */
+ } 
+ $countryData=array();
+  if(count($win))
+  $countryData['win']=$win;
+  if(count($build)) 
+  $countryData['build']=$build;
+   if(count($send))
+  $countryData['send']=$send;
   
-        return new JsonModel($tree);
+    return $countryData;
     }
+
+
+public function learnAction() {
+    $this->layout()->setTemplate('layout/master');  
+    
+    
+     return new ViewModel(
+            array(
+          
+            'stage'=>'',
+            
+            )
+        );
+    
+   }
 
 
 

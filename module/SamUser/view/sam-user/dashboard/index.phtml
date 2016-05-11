@@ -1,31 +1,107 @@
+ <div class="row">
+            <div class="col-lg-3">
+                <div class="widget style1 grey-bg">
+                        <div class="row">
+                            <div class="col-xs-4 text-center">
+                                         <i class="fa-disciples"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span><strong>DISCIPLES TREE </strong></span>
+                                <h2 class="font-bold"> 
+                                     <?php 
+                                 echo sprintf("%02d",$disciples[0]->disciplescount);                                          ?>
+                                
+                                
+                                </h2>
+                           <span>Total Disciples</span>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 yellow-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                          
+                       <i class="fa-win"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> <strong>WIN </strong></span>
+                            <h2 class="font-bold">
+                            <?php  if(isset($stage[0]['win'])){echo sprintf("%02d",$stage[0]['win']);  }else { echo 00; }   ?>
+                           </h2>
+                         <span> Aggressively evangelize </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1  blue-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                          <i class="fa-build"></i> 
+                      
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> <strong>BUILD </strong></span>
+                            <h2 class="font-bold">
+                             <?php  if(isset($stage[0]['build'])){echo sprintf("%02d",$stage[0]['build']);  }else { echo 00; }   ?>                            
+                            </h2>
+                         <span> Deeply build </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 green-bg">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa-send"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span><strong> SEND </strong></span>
+                            <h2 class="font-bold">
+                                      <?php  if(isset($stage[0]['send'])){echo sprintf("%02d",$stage[0]['send']);  }else { echo 00; }   ?> 
+                                
+                            </h2>
+                        <span> Urgently multiply </span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+         
+
   <div class="row">
         <div class="col-lg-12">
         <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>Your Disciples  </h5>
+            <h5>Admin Details</h5>
        </div>
         <div class="ibox-content">
             <div class="row">
-                <div class="col-sm-9 m-b-xs">
-          <a href="<?php echo $this->url('dashboard/adddisciple');?>" class="btn  btn-sm btn-primary">Add Disciple</a>
+                <div class="col-sm-1 m-b-xs">
+          <a href="<?php echo $this->url('dashboard', array('action'=>'add'));?>" class="btn  btn-sm btn-secondary">Add Disciple</a>
          
 </p>
                 </div>
-                <div class="col-sm-3">
-                    <div class="input-group"><input type="text" placeholder="Search" class="input-sm form-control"> <span class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                <div class="col-offset-sm-8">
+                   
                 </div>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped dataTables">
+          
+                <table class="table table-striped table-bordered table-hover dataTables">
                     <thead>
                     <tr>
-                         <th>Avtar</th>
-                        <th>Name </th>
-                        <th>Email </th>
-                        <th>Phone </th>
-                        <th>Country</th>
-                        <th>Action</th>
+                         <th>AVTAR</th>
+                        <th>NAME </th>
+                        <th>EMAIL </th>
+                        <th>PHONE </th>
+                        <th>COUNTRY</th>
+                         <th>BUILD STAGE</th>
+                    <th>BUILD PERCENTAGE</th>
+                      <th>ACTION</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -65,28 +141,86 @@ tr td {
 
 
 </td>
-                <td valign="middle"><?php echo $this->escapeHtml(ucwords($user->full_name));?></td>
+                <td valign="middle"><?php echo $this->escapeHtml(ucwords($user->displayName));?></td>
                 <td><?php echo $this->escapeHtml($user->email);?></td>
-                <td><?php echo $this->escapeHtml($user->phone);?></td>
-                <td><?php echo $this->escapeHtml(ucwords($countries[$user->country_id]));
-                
-               /// countries
-                
+                <td><?php echo $this->escapeHtml($user->phone_no);?></td>
+                <td><?php echo $this->escapeHtml(ucwords(strtolower($countries[$user->country])));
                 ?></td>
                 <td>
-                 <a href="" class="fbox tips btn btn-xs btn-danger"  >Added </a>
-                       
+                 
+                 <?php
+                   $stage=strtolower($user->stage);
+                   $percentage='0%';
+                   $class='';
+                  switch($stage){
+                      
+                       case 'build':
+                      $class='blue-bg ';
+                      $percentage='<div class=" font-bold text-blue">60% <i class="fa fa-level-up"></i></div>';
+                      break;
+                       case 'win':
+                      $class='yellow-bg';
+                      $percentage='<div class=" font-bold text-yellow">25%<i class="fa fa-level-up"></i></div>';
+                      break;
+                   case 'send':
+                      $class='green-bg';
+                      $percentage='<div class=" font-bold text-green">100%<i class="fa fa-level-up"></i></div>';
+                      break;
                   
-                </td>
+                  case 'added':
+                  default:    
+                      $class='btn-danger';
+                      $percentage='<div class=" font-bold text-danger">0%<i class="fa fa-level-up"></i></div>';
+                      break;
+                     
+                  
+                  }
+                  
+                   ?> 
+                 
+                  <a  href="<?php echo $this->url('movement', array('action'=>'question', 'id' => $user->id));?>" class="fbox tips btn btn-xs <?php echo $class ?> "  >
+                  <?php  echo $this->escapeHtml($user->stage==''?'ADDED':strtoupper($user->stage));  ?></a> 
+              
+               </td>
+               <td><?php echo $percentage; ?> </td>
+              <td>
+              <span class="action" >
+<a href="<?php echo $this->url('dashboard', array('action'=>'edit','id' => $user->id));?>" class="tips" title="Edit"><i class="fa fa-edit"></i> </a>
+   <span>&#x7C;</span>
+       <a href="<?php echo $this->url('dashboard', array('action'=>'delete','id' => $user->id));?>" onclick="return confirm('Are you sure you want to delete this item?');" class="tips" title="Delete"> <i class="fa fa-trash-o"></i></a>
+   	</span >
+               </td>
             </tr>
         <?php endforeach; ?>
                    
                     </tbody>
                 </table>
             </div>
-
+            
+          
         </div>
         </div>
         </div>
 
-        </div>
+      
+    <?php echo $this->headScript()
+ ->prependFile($this->basePath('js/plugins/dataTables/jquery.dataTables.js'))
+ ->prependFile($this->basePath('js/plugins/dataTables/dataTables.bootstrap.js'))
+ ->prependFile($this->basePath('js/plugins/dataTables/dataTables.responsive.js'))
+ ->prependFile($this->basePath('js/plugins/dataTables/dataTables.tableTools.min.js')) ;
+  
+  echo $this->headLink()
+ ->prependStylesheet($this->basePath('css/plugins/dataTables/dataTables.bootstrap.css'))
+ ->prependStylesheet($this->basePath('css/plugins/dataTables/dataTables.responsive.css'))
+ ->prependStylesheet($this->basePath('/css/plugins/dataTables/dataTables.tableTools.min.css')) ;
+  
+ ?>
+
+ <script>
+        $(document).ready(function() {
+            $('.dataTables').dataTable({
+        
+            });
+             
+             });
+ </script> 

@@ -1,0 +1,46 @@
+<div ng-controller="UserDetailsCtrl">
+  <div class="hidden-print">
+    <ul class="breadcrumb">
+      <li>
+        <a href="/users"><?php echo 'Access Administration'; ?></a>
+      </li>
+      <li>
+        <?php echo 'Details'; ?>
+      </li>
+    </ul>
+  </div>
+
+  <h1><?php echo $this->translate('User Details'); ?></h1>
+
+  <h3>
+    {{currentUser.displayName}}
+    <button type="button" title="<?php echo $this->translate('Delete'); ?>"class="btn btn-danger delete pull-right" ng-click="deleteUser()">
+      <span class="glyphicon glyphicon-trash"></span> <?php echo $this->translate('Delete'); ?>
+    </button>
+  </h3>
+
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading" data-toggle="collapse"  data-target="#description">
+        <h4 class="panel-title">
+          <a href="">
+            <?php echo $this->translate('Description'); ?>
+          </a>
+        </h4>
+      </div>
+      <div id="description" class="panel-collapse collapse in">
+        <div class="panel-body">
+          <table class="details">
+            <tr><td><?php echo $this->translate('Email'); ?></td><td><div ui-editable ng-model="currentUser.email" ng-change="update" ng-transclude>{{currentUser.email}}</div></td></tr>
+            <tr><td><?php echo $this->translate('First Name'); ?></td><td><div ui-editable ng-model="currentUser.firstName" ng-change="update" ng-transclude>{{currentUser.firstName}}</div></td></tr>
+            <tr><td><?php echo $this->translate('Last Name'); ?></td><td><div ui-editable ng-model="currentUser.lastName" ng-change="update" ng-transclude>{{currentUser.lastName}}</div></td></tr>
+            </table>
+        </div>
+      </div>
+    </div>
+</div>
+
+<?php
+$this->inlineScript()
+   ->appendFile($this->basePath() . '/js/vendor/jquery.jeditable.mini.js');
+?>

@@ -1,0 +1,96 @@
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Manage Roles</h5>
+            </div>
+            <div class="ibox-content">
+   <form method="post" name="SamUser" class="" action=""  id="SamUser">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label for="usr">Select Role </label>
+                            <?php  $role=array( 1 => 'User',2 => 'Superadmin',3 => 'Areaadmin',4 => 'Countryadmin') ; 
+                            
+                          
+                            ?>
+                          <select id="role" class="form-control m-b" name="role">
+                           <?php foreach($role as $key => $val){ 
+                             $selectVal='';
+                            if($roleid == $key){
+                              $selectVal = 'selected';
+                            $showval=$key;
+                            }
+                            
+                            echo "<option ". $selectVal ."  value='".$key."' >".$val."</option>";
+                              }
+                             ?>     
+                               </select>
+                        </div>
+                    </div>
+                   
+                    <div class="row jsselect " id="countrydiv"  <?php if($showval==4) { echo "style=display:block;" ; } else {  echo "style=display:none;"; } ?> >
+                        <div class="form-group col-sm-4">
+                            <label for="usr">Select Countries</label>
+                           
+                            <select id="country" class="form-control m-b" name="country" >
+                           <?php foreach($countries as $key => $val){ 
+                             $selectVal='';
+                            if($roleCountry == $key){
+                              $selectVal = 'selected';
+                            }
+                           
+                           echo "<option ". $selectVal ."  value='".$key."' >".$val."</option>";
+                              }
+                             ?>     
+                               </select>
+                                                   </div>
+                    </div>
+               
+               
+                <div class="row jsselect"  id="areagroupsdiv"  <?php if(in_array($showval,array(2,3))) { echo "style=display:block;"; }else {  echo "style=display:none;"; }?> >
+                        <div class="form-group col-sm-4">
+                            <label for="usr">Select Area Groups</label>
+                            <select id="areagroups" class="form-control m-b" name="areagroups" >
+                           <?php foreach($areagroups as $key => $val){ 
+                           $selectVal='';
+                            if($roleGroups == $key){
+                              $selectVal = 'selected';
+                            }
+                           
+                           echo "<option ". $selectVal ."  value='".$key."' >".$val."</option>";
+                           
+                              }
+                             ?>     
+                               </select>
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="form-group col-sm-4 text-right">
+                            <input type="submit" name="submit" id="submitbutton" class="btn btn-primary" value="Save">
+                           
+                        </div>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+   
+    $( "#role" ).change(function() {
+      var roleVal=$(this).val();
+    $('.jsselect').hide();
+      if(roleVal==2 || roleVal==3 ){
+    
+          $('#areagroupsdiv').show();
+      }else if(roleVal==4){
+    
+          $('#countrydiv').show();
+      }
+
+
+});
+    
+</script>

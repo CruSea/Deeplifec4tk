@@ -3,6 +3,7 @@
 namespace SamUser\Entity;
  
 use Doctrine\ORM\Mapping as ORM;
+use ZfcUser\Entity\UserInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -14,10 +15,15 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Entity
  * @ORM\Table(name="users")
  * @property string $email
+ * @property string $password
  * @property string $displayName
- * @property int $id
+ * @property string $phone_no
+ * @property string $stage
+ *  @property datetime $role_id
+ * @property datetime $created
+  * @property int $id
  */
-class Users implements InputFilterAwareInterface 
+class Users implements InputFilterAwareInterface , UserInterface
 {
     protected $inputFilter;
  
@@ -28,38 +34,65 @@ class Users implements InputFilterAwareInterface
      */
     protected $id;
   
+   /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+   
     /**
      * @ORM\Column(type="string")
      */
     protected $email;
+    
+    
 
+ /**
+     * @ORM\Column(type="string")
+     */
+    protected $displayName;
+    
+     /**
+     * @ORM\Column(type="string")
+     */
+    protected $firstName;
+ 
+ /**
+     * @ORM\Column(type="string")
+     */
+    protected $phone_no;
+ 
+
+ 
+     /**
+        * @ORM\Column(type="string");
+     * */
+    protected $country;
+    
     /** * @ORM\Column(type="string")
+       
      */
     protected $password;
 
-    /**
+   
+      /**
      * @ORM\Column(type="string")
      */
-    protected $full_name;
- 
+    protected $picture;
    
-   
-   /**
-        * @ORM\Column(type="integer");
-     * */
-    protected $country_id;
+  
  
- 
-  /**
-     * @ORM\Column(type="string")
+ /**
+     * @ORM\Column(type="integer")
      */
-    protected $phone;
+    protected $role_id;
+ 
+  
   
   
       /**
      * @ORM\Column(type="string")
      */
-    protected $picture;
+    protected $stage;
  
  /**
      * @ORM\Column(type="integer")
@@ -103,6 +136,9 @@ class Users implements InputFilterAwareInterface
         return get_object_vars($this);
     }
  
+ 
+
+ 
     /**
      * Populate from an array.
      *
@@ -112,13 +148,15 @@ class Users implements InputFilterAwareInterface
     {
         $this->id = $data['id'];
         $this->email = $data['email'];
-        $this->displayName = $data['displayName'];
-        $this->full_name = $data['full_name'];
-        $this->country_id = $data['country_id'];
-        $this->phone = $data['phone'];
-        $this->mentor_id = 1;
-        $this->role_id = 1;
-        $this->picture ='/img/'.$data['picture']['name'];
+        $this->displayName = $data['firstName'];
+        $this->firstName = $data['firstName'];
+        $this->country = $data['country'];
+        $this->phone_no = $data['phone_no'];
+        $this->mentor_id = $data['mentor_id'];
+        $this->stage = $data['stage'];
+        $this->role_id = $data['role_id'];
+         $this->password = $data['password'];
+        $this->picture =$data['picture'];
         $this->gender = $data['gender'];
      
 
@@ -147,7 +185,79 @@ class Users implements InputFilterAwareInterface
         $this->id = (int) $id;
         return $this;
     }
-   /**
+  
+
+
+ /**
+     * Get username.
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set username.
+     *
+     * @param string $username
+     *
+     * @return void
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email.
+     *
+     * @param string $email
+     *
+     * @return void
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+  /**
+     * Get displayName.
+     *
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName ? $this->displayName : "{$this->firstName}";
+    }
+
+    /**
+     * Set displayName.
+     *
+     * @param string $displayName
+     *
+     * @return void
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
+        return $this;
+    }
+
+    /**
      * Get password.
      *
      * @return string
@@ -170,12 +280,37 @@ class Users implements InputFilterAwareInterface
         return $this;
     }
 
+    /**
+     * Get state.
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set state.
+     *
+     * @param int $state
+     *
+     * @return void
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
     
  
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
+ 
+  
  
     public function getInputFilter()
     {
@@ -191,7 +326,7 @@ class Users implements InputFilterAwareInterface
  
  
   $inputFilter->add(array(
-                'name'     => 'full_name',
+                'name'     => 'firstName',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -227,19 +362,22 @@ class Users implements InputFilterAwareInterface
                 ),
             ));
            
+             $inputFilter->add(array(
+                'name'     => 'country',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                
+            ));
 
   
 
-   $inputFilter->add(array(
-                'name'     => 'country_id',
-                'required' => true,
-                'filters'  => array(
-                 array('name' => 'Int'),
-                ),
-            ));
+ 
 
   $inputFilter->add(array(
-                'name'     => 'phone',
+                'name'     => 'phone_no',
                 'required' => true,
                 'filters'  => array(
                     array('name' => 'StripTags'),
@@ -251,13 +389,13 @@ class Users implements InputFilterAwareInterface
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min'      => 1,
-                            'max'      => 100,
+                            'max'      => 15,
                         ),
                     ),
                 ),
             ));
  
-  /*
+  
    $inputFilter->add(array(
                 'name'     => 'mentor_id',
                 'required' => true,
@@ -265,14 +403,14 @@ class Users implements InputFilterAwareInterface
                     array('name' => 'Int'),
                 ),
             ));
-*/
+
 
 
 
          
             $inputFilter->add(array(
                 'name'     => 'picture',
-                'required' => true,
+                'required' => FALSE,
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
@@ -306,7 +444,8 @@ $inputFilter->add(array(
                 'name'     => 'gender',
                 'required' => true,
                 'filters'  => array(
-                    array('name' => 'Int'),
+                   array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
                 ),
             ));
 
@@ -318,16 +457,7 @@ $inputFilter->add(array(
         return $this->inputFilter;
     }
 
-//public function getEmailValidator()
-  //  {
-    //    return $this->emailValidator;
-    //}
 
-   // public function setEmailValidator($emailValidator)
-    //{
-      //  $this->emailValidator = $emailValidator;
-       // return $this;
-   // }
 
 
 }

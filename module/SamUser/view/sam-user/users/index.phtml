@@ -1,78 +1,124 @@
-<div >
-   <h1><?php echo 'Users'; ?></h1>
+  <div class="row">
+        <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Manage Roles </h5>
+       </div>
+        <div class="ibox-content">
+          
+                <table class="table table-striped table-bordered table-hover dataTables">
+                    <thead>
+                    <tr>
+                         <th>AVTAR</th>
+                        <th>NAME </th>
+                        <th>EMAIL </th>
+                        <th>PHONE </th>
+                        <th>COUNTRY</th>
+                         <th>ROLE</th>
+                        <th>ACTION</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      <?php  foreach ($users as $user) : ?>
+            <tr> 
+                <td >
+                <?php
+              $avatar='/avatar/noavatar.jpg';
+                 if( is_file('public'.$user->picture)) { 
+               $avatar=$user->picture;
+                }
+                
+                ?>
+                
+                <div style="
+background-image: url('<?php echo $this->basePath($avatar);?>');
+background-repeat: no-repeat;
+width: 40px; 
+height: 40px;
+   background-size: cover; 
+   background-position: center;
+   border: solid 2px #fff;
+" class="img-circle img-responsive"></div>	
+<style>
+.img-circle {
+   border-radius: 50%;
+}
+.img-responsive {
+   display: block;
+   max-width: 100%;
+   height: auto;
+}    
+tr td {
+    vertical-align: middle;
+}
+</style>
 
-    <div id="user-actions" class="col-xs-6 col-lg-6 pull-right table-top-action-padding hidden-print">
-        <div class="input-group">
-            <div class="input-filter-container">
-              <input type="text" class="form-control" ng-model="query" placeholder="<?php echo 'Filter or Create'; ?>" ng-disabled="!enableFilter">
-              <p class="items-count">{{tableParams.total()}}</p>
+
+</td>
+                <td valign="middle"><?php echo $this->escapeHtml(ucwords($user->displayName));?></td>
+                <td><?php echo $this->escapeHtml($user->email);?></td>
+                <td><?php echo $this->escapeHtml($user->phone_no);?></td>
+           <td><?php echo $this->escapeHtml(ucwords(strtolower($countries[$user->country])));?></td>
+            <td><?php $roleid=$user->role_id;
+            switch($roleid){
+                case 1:
+                 echo "User";
+                 break;
+                case 2:
+                 echo "Superadmin";
+                 break;
+                 case 3:
+                 echo "Areaadmin";
+                 break;
+                 case 4:
+                 echo "Countryadmin";
+                 break;
+               default:
+                 echo "Guest";
+                 break;
+            }
+            
+            
+            ?></td>
+                 <td>
+   <a  href="<?php echo $this->basePath('users/edit/'.$user->id);?>"  >
+ <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+</a>
+</td>
+            </tr>
+        <?php endforeach; ?>
+                   
+                    </tbody>
+                </table>
+               
             </div>
-            <span class="input-group-btn">
-                <button id="create-button" class="btn btn-success" type="button" ng-click="openModal('#user-create', 'email', query)"><?php echo 'Create'; ?></button>
-            </span>
-        </div>
-    </div>
-
-    <table ng-table="tableParams" class="table table-hover table-condensed table-data">
-        <tr ng-repeat="user in $data" ng-dblclick="goto('/users/details/' + user.id)">
-            <td data-title="'<?php echo 'Email'; ?>'" sortable="'email'">{{user.email}}</td>
-            <td data-title="'<?php echo 'First Name'; ?>'" sortable="'firstName'">{{user.firstName}}</td>
-            <td data-title="'<?php echo 'Last Name'; ?>'" sortable="'lastName'">{{user.lastName}}</td>
-            <td data-title="'<?php echo 'Actions'; ?>'">
-                <div class="container">
-                  <div class="btn-group btn-group-xs">
-                      <button type="button" title="'Change password'; ?>" class="btn btn-warning password" ng-click="passwordForm.id = user.id; openModal('#user-password');">
-                        <span class="glyphicon glyphicon-asterisk"></span>
-                      </button>
-                      <button type="button" title="<?php echo 'Roles'; ?>" class="btn btn-primary roles" ng-click="openModalRoles(user)">
-                        <span class="glyphicon glyphicon-tag"></span>
-                      </button>
-                      <button type="button" title="<?php echo 'Delete'; ?>" class="btn btn-danger delete" ng-click="deleteUser(user)">
-                        <span class="glyphicon glyphicon-trash"></span>
-                      </button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <div id="user-roles" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h3><?php echo $this->translate('User roles'); ?></h3>
-              </div>
-              <div class="modal-body">
-                <ul>
-                <?php foreach ($this->rolesParent as $parent): ?>
-                    <li>
-                        <label class="checkbox">
-                            <input type="checkbox" name="roles[]" value="<?php echo $this->escapeHtml($parent->getId()); ?>"/> <?php echo $this->escapeHtml($parent->getRoleId()); ?>
-                        </label>
-                        <?php foreach ($this->rolesChild as $child): ?>
-                            <ul>
-                            <?php if ($child->getParent() && $child->getParent()->getId() == $parent->getId()): ?>
-                                <li>
-                                    <label class="checkbox">
-                                        <input type="checkbox" name="roles[]" value="<?php echo $this->escapeHtml($child->getId()); ?>"/> <?php echo $this->escapeHtml($child->getRoleId()); ?>
-                                    </label>
-                                </li>
-                            <?php endif; ?>
-                            </ul>
-                        <?php endforeach; ?>
-                    </li>
-                <?php endforeach; ?>
-                </ul>
-              </div>
-              <div class="modal-footer">
-                <div class="form-group"><button type="button" class="btn btn-default form-control" data-dismiss="modal"><?php echo $this->translate('Close'); ?></button></div>
-                <div class="form-group"><button type="button" class="btn btn-primary form-control save" data-loading-text="Save" ng-click="saveRoles()"><?php echo $this->translate('Save'); ?></button></div>
-              </div>
             </div>
-        </div>
-    </div>
 
-    <?php echo $this->partial('partial/modalcreate.phtml', array('id' => 'user-create', 'title' => 'Create User', 'form' => $this->form)); ?>
-    <?php echo $this->partial('partial/modalcreate.phtml', array('id' => 'user-password', 'title' => 'Set Password', 'form' => $this->changePasswordForm)); ?>
-</div>
+        </div>
+        </div>
+      
+
+     
+
+
+   <?php echo $this->headScript()
+ ->prependFile($this->basePath('js/plugins/dataTables/jquery.dataTables.js'))
+ ->prependFile($this->basePath('js/plugins/dataTables/dataTables.bootstrap.js'))
+ ->prependFile($this->basePath('js/plugins/dataTables/dataTables.responsive.js'))
+ ->prependFile($this->basePath('js/plugins/dataTables/dataTables.tableTools.min.js')) ;
+  
+  echo $this->headLink()
+ ->prependStylesheet($this->basePath('css/plugins/dataTables/dataTables.bootstrap.css'))
+ ->prependStylesheet($this->basePath('css/plugins/dataTables/dataTables.responsive.css'))
+ ->prependStylesheet($this->basePath('/css/plugins/dataTables/dataTables.tableTools.min.css')) ;
+  
+ ?>
+
+ <script>
+        $(document).ready(function() {
+            $('.dataTables').dataTable({
+        
+            });
+             
+             });
+ </script> 

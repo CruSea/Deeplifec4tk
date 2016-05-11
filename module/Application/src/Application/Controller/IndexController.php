@@ -10,13 +10,34 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Form\Form;
+use Zend\Form\Validator;
+//use Application\Form\RegisterForm;
+use SamUser\Form\RegisterForm;
 use Zend\View\Model\ViewModel;
 use Zend\Mail;  
 use Zend\Mime\Part as MimePart;  
 use Zend\Mime\Message as MimeMessage;  
+use Zend\Session\Container; 
 
+
+
+
+use SamUser\Entity\Users;
+use Zend\Crypt\Password\Bcrypt;
 class IndexController extends AbstractActionController
 {
+    
+    protected $em;
+   
+
+    public function getEntityManager(){
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default'        );
+        }
+        return $this->em;
+    }
+    
     
     // add disciple
     Public function contactusAction()
@@ -95,4 +116,102 @@ echo 0;
         ));
        return $view;
     }
+
+    public function signupAction(){
+	
+    
+          $form = new RegisterForm();
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+        $ValueOptions=array();
+        foreach($countries as $country ){
+        $ValueOptions[$country->id]=$country->name;    
+        }
+       
+        
+   
+             
+        $form->get('country')->setValueOptions($ValueOptions);
+       //  $form->get('submit')->setValue('Save');
+        $request = $this->getRequest();
+             
+       if ($request->isPost()) {
+       //   $form->setInputFilter($form->getInputFilter());
+           $form->setData($request->getPost());
+            if ($form->isValid()) {
+          
+            $this->bcrypt = new Bcrypt();
+            $this->bcrypt->setCost(14);
+          
+            $email=trim($request->getPost('email'));
+            $phone_no=trim($request->getPost('phone_no'));
+            $password=trim($request->getPost('password')); 
+            $gender=trim($request->getPost('gender')); 
+            $country=trim($request->getPost('country')); 
+              $firstName=trim($request->getPost('firstName')); 
+            
+            $cryptPassword = $this->bcrypt->create($password);
+            $Users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('email' =>$email));
+               if (!$Users) {
+                  	
+                   $phone =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('phone_no' =>$phone_no));
+               if(!$phone){
+                         $Users = new Users(); 
+                         $Users->email=$email;
+                         $Users->displayName=$firstName;
+                         $Users->firstName=$firstName;
+                         $Users->country=$country;
+                         $Users->phone_no=$phone_no;
+                         $Users->role_id=2;
+                         $Users->gender=$gender;
+                         $Users->password=$cryptPassword;
+                          $this->getEntityManager()->persist($Users);
+                  $this->getEntityManager()->flush();
+         	   		 return $this->redirect()->toRoute('home');
+                      
+
+
+                 }else{
+                  $form->get('phone_no')->setMessages(array('This nee phone number already exists'));
+  
+                }
+              
+              
+              
+               } elseif($phone_no!=$Users->phone_no) {
+                    $form->get('phone_no')->setMessages(array('This phone number already exists'));   		
+				}elseif(strlen($Users->password)==0){
+				  $Users->password=$cryptPassword;
+			   	  $this->getEntityManager()->persist($Users);
+                  $this->getEntityManager()->flush();
+         	           
+                         return $this->redirect()->toRoute('home');
+                       
+				}else {
+                 $form->get('phone_no')->setMessages(array('This phone number already exists'));
+                 $form->get('email')->setMessages(array('This email already exists'));
+                }
+             
+            
+            
+            
+            }
+           
+              }
+       
+         
+        
+        $view = new ViewModel(array(
+            'Url' => '/',
+            'form' => $form,
+            'title' => 'Add Disciples',
+        ));
+        return $view;
+
+      }
+    
+
+
+
+
+
 }

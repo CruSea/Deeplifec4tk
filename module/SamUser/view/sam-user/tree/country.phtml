@@ -1,0 +1,315 @@
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?> 
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('js/plugins/multipleselect/bootstrap-multiselect.css')); ?> 
+ 
+ <script src="<?php echo $this->basePath('js/plugins/multipleselect/bootstrap-multiselect.js')?>"></script>
+ 
+  
+  <div class="row">
+            <div class="col-lg-3">
+                <div class="widget style1 grey-border">
+                        <div class="row">
+                            <div class="col-xs-4 text-center">
+                                         <i class="fa-disciples"></i>
+                            </div>
+                            <div class="col-xs-8 text-right">
+                                <span><strong>DISCIPLES TREE </strong></span>
+                                <h2 class="font-bold">
+                                <?php 
+                                if(isset($stage[0]['totaluser'])){
+                                    echo sprintf("%02d", $stage[0]['totaluser']);
+                                }else{
+                                     echo '00';
+                                }
+                                
+                                ?>
+                                
+                                </h2>
+                           <span>Total Disciples</span>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 yellow-border">
+                    <div class="row">
+                        <div class="col-xs-4">
+                          
+                       <i class="fa-win"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> <strong>WIN </strong></span>
+                            <h2 class="font-bold"> <?php 
+                                if(isset($stage[0]['win'])){
+                                    echo sprintf("%02d", $stage[0]['win']);
+                                }else{
+                                     echo '00';
+                                }
+                                
+                                ?></h2>
+                         <span>Aggressively evangelize </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1  blue-border">
+                    <div class="row">
+                        <div class="col-xs-4">
+                          <i class="fa-build"></i> 
+                      
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span> <strong>BUILD </strong></span>
+                            <h2 class="font-bold"> <?php 
+                                if(isset($stage[0]['build'])){
+                                    echo sprintf("%02d", $stage[0]['build']);
+                                }else{
+                                     echo '00';
+                                }
+                                
+                                ?></h2>
+                         <span> Deeply build </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="widget style1 green-border">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <i class="fa-send"></i>
+                        </div>
+                        <div class="col-xs-8 text-right">
+                            <span><strong> SEND </strong></span>
+                            <h2 class="font-bold"><?php 
+                                if(isset($stage[0]['send'])){
+                                    echo sprintf("%02d", $stage[0]['send']);
+                                }else{
+                                     echo '00';
+                                }
+                                
+                                ?></h2>
+                        <span> Urgently multiply</span> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+ 
+ 
+ <div class="row">
+        <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Statistics</h5>
+       </div>
+
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                 <label for="sel1">Select Countries </label>
+                                  <select id="bulidcountries" multiple="multiple">
+                             <?php  $stroption=""; $display=0; foreach($countries as $key=>$val ) { 
+                                   $strselect=0;
+                                  if($display<=2){  $strselect="selected='selected'";}
+                               $stroption .= "<option ".$strselect. " value='".$key."' >". $val."</option>";
+                                         $display++; } echo $stroption ;?>
+                                </select>
+                
+                </div>
+            </div>
+            </div>
+       
+        <div class="row">
+         
+        
+        
+        
+    <?php $display=0; foreach($countries as $key=>$val ) {  ?>
+         
+         
+          <div id="<?php echo $key ?>"  class="col-sm-4  " <?php if($display>2){echo 'style="display:none;"';} $display++; ?> >
+        <div class="statistics gray-bg">
+            <?php 
+            
+              $countryName=ucwords(strtolower($val));
+              ?>
+            <h2><span><img src="<?php echo $this->basePath('/img/flag/'.str_replace(' ','-',$countryName).'.png')?>"></span>
+             <?php echo $countryName; ?>
+             </h2>
+            <div class="row">
+         <div class="col-sm-4 win"><span>Win</span><span >
+         <?php 
+         if(isset($buildmovements[$key]['win'])){
+         echo sprintf("%02d", $buildmovements[$key]['win']);     
+         }else{
+             echo '00';
+         }
+         
+         
+         ?>
+             
+         </span></div> 
+                <div class="col-sm-4 build"><span>Build</span><span >
+                <?php 
+             
+         if(isset($buildmovements[$key]['build'])){
+         echo sprintf("%02d", $buildmovements[$key]['build']);     
+         }else{
+             echo '00';
+         }
+         
+         
+         ?>
+              
+                    
+                </span></div> 
+                <div class="col-sm-4 send"><span>Send</span><span>
+                
+                
+                <?php 
+         if(isset($buildmovements[$key]['send'])){
+         echo sprintf("%02d", $buildmovements[$key]['send']);     
+         }else{
+             echo '00';
+         }
+         
+         
+         ?>
+                    
+                    
+                </span></div> 
+            </div>
+        </div>
+    </div>
+         
+         
+       
+<?php } ?>
+
+   
+</div>
+<div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Chart</h5>
+       </div>
+        <div class="ibox-content">
+        <div class="row">
+            <form class="form-inline" role="form">
+ <div class="form-group col-sm-12">
+   <label for="sel1">Select Countries </label>
+   <select class="form-control" id="chartcountry" multiple="multiple" >
+   <?php echo $stroption ;?>
+   </select>
+ 
+  
+</div>
+
+</form>
+        </div>
+        <span id="msgchart">  </span>
+        <span id="buildchart"> </span>
+          </div>
+         
+</div>
+</div>
+</div>
+
+
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Alert</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select only three countries.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+    <div class="modal-backdrop fade in inside"></div>
+  </div>
+   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+ <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+        $('#bulidcountries').multiselect({
+           
+            onChange: function(option, checked, select) {
+                 var val=$(option).val();
+                             
+                  if (checked === true) {
+                    //action taken here if true
+                $('#'+val).show();
+                }
+                else if (checked === false) {
+                $('#'+val).hide();         
+                }
+            
+            }
+        });
+    
+        $('#chartcountry').multiselect({
+           
+             onInitialized: function(select, container) {
+                   var country = $('#chartcountry option:selected');  
+             var selected = [];
+                   $(country).each(function(index, country){
+            selected.push($(this).val());
+          }); 
+                                   drawChart(selected);
+                },
+            
+            
+            onChange: function(option, checked, select) {
+            var country = $('#chartcountry option:selected');  
+             var selected = [];
+            if(country.length > 3) {
+               
+              $('#myModal').modal() ;
+               $('#chartcountry').multiselect('deselect', $(option).val())
+            
+            
+            }else{
+                
+            
+          $(country).each(function(index, country){
+            selected.push($(this).val());
+          });  
+             //  console.log(selected);    
+                         
+          drawChart(selected);
+            
+            }}
+        });
+        
+    
+    });
+    
+    function drawChart(selected){
+           $.ajax({
+           type: 'POST', 
+           url:"<?php echo $this->url('tree', array('action'=>'ajaxchart'));?>",
+           data:{ids:selected},
+           success:function(result)
+           {
+                    
+         $('#buildchart').html(result);
+                 
+          } 
+       
+       });
+    }
+</script>

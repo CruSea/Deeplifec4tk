@@ -1,0 +1,78 @@
+ <div class="row" >
+                    <div class="col-sm-4">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Win</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div id="win" style="height: 250px;">
+                                                        No Data Found
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>  <div class="col-sm-4">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Build</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div id="build" style="height: 250px;">
+                                                        No Data Found
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                          <div class="col-sm-4">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Send</h5>
+                                                </div>
+                                                <div class="ibox-content">
+                                                    <div id="send" style="height: 250px;">
+                                                        No Data Found
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <!-- Morris -->
+ 
+  <?php 
+ 
+  $countries= array_slice($countries, 0, 3, true); 
+  
+  $labelsData=json_encode(array_values((array)$countries)); 
+       $countriesCount=count($countries);
+       $ykeysData=json_encode(array_keys((array)$countries));
+       $colors['win']=array('#ffc325','#cc9912','#8d6808');
+       $colors['build']=array('#00bcd8','#0095ab','#006877');
+       $colors['send']=array('#49ce3f','#1a9611','#0b6005');
+       if($countriesCount!=3){
+        $countriesCount--;
+        $colors['win'] = array_slice($colors['win'], 0, $countriesCount);
+        $colors['build']= array_slice($colors['build'], 0, $countriesCount);
+        $colors['send']  = array_slice($colors['send'], 0, $countriesCount);
+          
+       }
+       
+       
+ ?>
+ <script>
+   <?php    foreach ($chart as $key=>$valus){ ?>
+   
+   $('#<?php echo $key ?>').html('');
+     new Morris.Line({
+          // ID of the element in which to draw the chart.
+          element: <?php echo $key ?>,
+          resize: true,
+          lineColors:<?php echo json_encode($colors[$key]);?> ,
+          // Chart data records -- each entry in this array corresponds to a point on
+          data:<?php echo json_encode($valus);?> ,
+         // The name of the data record attribute that contains x-values.
+          xkey: 'year',
+          // A list of names of data record attributes that contain y-values.
+          ykeys: <?php echo $ykeysData ?>,
+          labels: <?php echo $labelsData ?>
+});
+<?php  } ?>
+ </script>

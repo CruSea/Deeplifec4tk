@@ -1,0 +1,179 @@
+
+<div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#inSlider" data-slide-to="0" class="active"></li>
+        <li data-target="#inSlider" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Everyone<br/>
+                        desciple 5.<br/>
+                        <br/>
+                    </h1>
+                    <p>Aggressively evangelize, deeply build, urgently multiply</p>
+                    <p>
+                        <a class="btn btn-lg btn-primary" href="#pricing" role="button" style="background-color:#03b2d4 ;">Learn More</a>
+                        <!--<a class="caption-link" href="#" role="button">Inspinia Theme</a>-->
+                    </p>
+                </div>
+                <!--<div class="carousel-image wow zoomIn">-->
+                <!--<img src="img/laptop.png" alt="laptop"/>-->
+                <!--</div>-->
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back one"></div>
+
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-caption blank">
+                    <h1>“Don’t be afraid; <br/> from now on you will be catching men”</h1>
+
+                    <p>Launch deep in the see. </p>
+                    <p><a class="btn btn-lg btn-primary" href="#pricing" role="button">Learn more</a></p>
+                </div>
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back two"></div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<section id="sign-in" class="container services">
+    <div class="row">
+        <div class="col-sm-6">
+            <br/><br/><br/>
+            <div class="col-sm-8 col-sm-offset-2">
+                <img  src="<?php echo $this->basePath('/img/logooo.png');?>"/>
+            </div>
+        </div>
+        <div class="col-sm-6">
+        <div class="ibox-title">
+            <h2 style="text-align: left;">Sign Up</h2>
+        </div>
+                <?php echo $this->form()->openTag($form) ?>
+                <div>
+                    <?php foreach ($form as $element): ?>
+
+<div    class="row form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+        <label class=" col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
+        <div class="col-sm-10">
+                <?php echo $this->formElement ( $element );
+                    if ($this->formElementErrors ( $element ))
+                ?>
+            <span class="help-inline "><?php echo $this->formElementErrors($element) ?></span>
+        </div>
+    </div>
+      
+
+
+                    <?php endforeach ?>
+
+
+
+                <?php if ($this->redirect): ?>
+                    <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+                <?php endif ?>
+                <?php echo $this->form()->closeTag() ?>
+                    Already have an account?
+                    <a  href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Login</a>
+
+                    
+                 
+    </div>
+
+    </div>
+</div>
+
+</section>
+<section  id="features" class="container features">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <div class="navy-line"></div>
+            <h1>Ultimate growth<br/> <span class="navy"> with high class features</span> </h1>
+            <p>Reach the globe with the spirit of God's Word. </p>
+        </div>
+    </div>
+    <section id="about">
+        <div class="row">
+            <div class="col-md-3 text-center wow fadeInLeft">
+                <div>
+                    <span class="glyphicon glyphicon-user" style="font-size: 250%; Color:deepskyblue;"></span>
+                    <h2>Win</h2>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                </div>
+                <div class="m-t-lg">
+                    <span class="glyphicon glyphicon-road" style="font-size: 250%; Color:deepskyblue;"></span>
+                    <h2>Build</h2>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-offset-1 text-center  wow zoomIn">
+                <img src="<?php echo $this->basePath('/img/logooo.png');?>" alt="dashboard" class="img-responsive">
+            </div>
+            <div class="col-md-3 text-center wow fadeInRight">
+                <div>
+                    <span class="glyphicon glyphicon-send" style="font-size: 250%; Color:deepskyblue;"></span>
+                    <h2>Send</h2>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                </div>
+                <div class="m-t-lg">
+                    <span class="glyphicon glyphicon-cloud" style="font-size: 250%; Color:deepskyblue;"></span>
+                    <h2>Track</h2>
+                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
+                </div>
+            </div>
+        </div>
+        <section id="pricing"></section>
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="navy-line"></div>
+                <h1>About Deep life</h1>
+                <!--<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>-->
+            </div>
+            <div class="row features-block">
+                <div class="col-lg-6 features-text wow fadeInLeft">
+                    <!--<small>INSPINIA</small>-->
+                    <h2>Launch out to the deep. </h2>
+                    <p>It is not a strange thing to hear the statement, “African
+                        Christianity is a mile wide but an inch deep.” This is to say that
+                        African church growth focuses mostly on quantity than quality.
+                        There could be lots of energy, time and resources put into
+                        expansion, coverage, and exposure through evangelism when
+                        compared to helping someone to truly follow Christ, get grounded in
+                        the faith and take deep root in the word of God and lead a transformed,
+                        authentic and Christ-like life style in private and public arenas.
+                        As an organization, Campus Crusade for Christ seeks to produce true followers of
+                        Jesus. It received its mandate from our Lord and savior Jesus Christ to “go…and
+                        make disciples of all nations” (Matthew 28:19). In collaboration with the body of Christ,
+                        the ministry desires to contribute meaningfully in becoming a “salt and light” to the
+                        problem for the glory of God. It is out of such genuine desire that the vision of “Deep
+                        Life” has been born. Our goal is to train and equip 100, 000 leaders who shall be
+                        planting and building 100,000 churches on cities, villages, campuses,
+                        student population centers, market places, and online networks.
+                        This vision has 3 phases of implementation. Feb 10 – 31 Dec 2014 shall
+                        be a time of prayer and preparation. Jan 1 – 31 Dec 2015 will be a
+                        year of mobilization and training. Jan 1- Oct 10/2016 shall be a
+                        time of full implementation and accelerated actions across
+                        the 24 countries of the Southern and Eastern Africa in 240
+                        locations.</p>
+                    <!--<a href="" class="btn btn-primary">Learn more</a>-->
+                </div>
+                <div class="col-lg-6 text-right wow fadeInRight">
+                    <img src="<?php echo $this->basePath('/img/dash.jpg');?>" alt="dashboard" class="img-responsive pull-right">
+                </div>
+            </div>
+           <p class="m-t" style="align-content: center"> <small>Deep-Life &copy; 2014</small> </p>
+        </div>
+
+    </section>
+</section>

@@ -1,0 +1,86 @@
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?> 
+<script src="<?php echo $this->basePath('/js/custom.js')?>" ></script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Question &amp; Answer</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="question-block">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="ques-category">
+                            <?php $stage=strtolower($stage); ?>
+     <img src="<?php echo $this->basePath('/img/'.$stage.'_tag.png')?>" width="130px">
+                             </div>
+                            <div class="ques-category">
+                                <span><?php echo ucwords($stage)?> </span>
+                                <span>
+                                <?php switch($stage){
+                                    case 'win':
+                                    echo 'Aggressively Evangelize';
+                                    break;
+                                    case 'bulid':
+                                    echo 'Deeply Bulid';
+                                    break;
+                                    case 'send':
+                                     echo 'Urgently Send';
+                                    break;
+                                } ?>
+                                
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <span class="counter"> <span id="counter" >1</span> of <?php echo count($questions); ?></span>
+                        </div>
+                    </div>
+                
+                 <?php $Qcount=1; foreach($questions as  $question ) { ?>
+                    <div class="row">
+                        <div class="questions col-sm-12 col-xs-12" style="display:none;"  >
+                            <h4> <span> Q<?php echo $Qcount++; ?>:</span><?php echo $question->question ?></h4>
+                            <form role="" action="" class="ques-form">
+                                <div class="radio radio-info radio-inline">
+            <input name="question" type="hidden" value="<?php echo $question->id ?>" />
+            <input name="mandatory" type="hidden" value="<?php echo $question->mandatory ?>" />
+<input name="country" type="hidden" value="<?php echo $country ?>" />
+<input name="stage" type="hidden" value="<?php echo $stage ?>" />
+<input name="userid" type="hidden" value="<?php echo $userid ?>" />
+
+
+                                    <input type="radio" id="inlineRadio1" value="1" name="radioInline" checked="">
+                                    <label for="inlineRadio1"> Yes </label>
+                                </div>
+                                <div class="radio radio-info radio-inline">
+                                    <input type="radio" id="inlineRadio1" value="0" name="radioInline" checked="">
+                                    <label for="inlineRadio1"> No </label>
+                                </div>
+                            </form>
+                            <div class="button-box">
+                                <button type="button"  value="Next" onlick="sum_values()" class="btn-primary btn next">Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="help-box">
+                                
+                           <?php if($question->description){ ?>
+                                <button type="button" class="btn btn-default" data-toggle="popover" title="Help" data-content="<?php echo $question->description ?>">Help</button>
+                           <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                                  <?php } ?>
+              <div class="row" id="result" style="display: none;" >
+               <div class="thank-msg alert alert-success col-sm-12"   >
+               <h3> Thank You!! You have successfully finished this stage.</h3>
+               <div class="button-box">
+                <a href="<?= $this->url('dashboard'); ?>" class="  btn-primary btn">Finish </a>
+                </div>
+                </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

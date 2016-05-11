@@ -1,42 +1,43 @@
 <style type="text/css">
-
     .node {
         cursor: pointer;
     }
-
     .overlay{
         background-color:#ffffff;
     }
-
     .node circle {
         fill: #fff;
         stroke: steelblue;
-        stroke-width: 1.5px;
+        stroke-width: 10px;
     }
-
+    .node circle.total-circle{
+        fill: #10b7d7;
+        stroke: white;
+        stroke-width: 2px;
+    }
     .node text {
         fill: black;
-
         font-size:8px;
         font-family:sans-serif;
     }
-
+    .total-node-text{
+        fill: white !important;
+        font-family:sans-serif;
+        font-weight: bold;
+    }
     .link {
         fill: none;
         stroke: orange;
         stroke-width: 1.5px;
     }
-
     .templink {
         fill: none;
         stroke: red;
         stroke-width: 3px;
     }
-
     .ghostCircle.show{
         display:block;
     }
-
     .ghostCircle, .activeDrag .ghostCircle{
         display: none;
     }
@@ -53,31 +54,51 @@
         border-radius: 8px;
         /* pointer-events: none;*/
     }
-
-
 </style>
 
 <script src="<?php echo $this->basePath('d3/scripts/d3.min.js')?>" ></script>
 <script src="<?php echo $this->basePath('d3/scripts/dndTree.js')?>" ></script>
-  <script>
-     var url="<?php echo $this->serverUrl('/tree/json'); ?>";
-       d3.json(url,tree);
-  </script>
-  <div class="row">
-        <div class="col-lg-12">
+<script>
+    var siteUrl = "<?php echo $this->serverUrl() ?>";
+    var url ="<?php echo $this->serverUrl('/tree/json/'.$id); ?>";
+    d3.json(url,tree);
+</script>
+<div class="row">
+    <div class="col-lg-12">
         <div class="ibox float-e-margins">
-        <div class="ibox-title">
-            <h5>Generation Tree  </h5>
-       </div>
-        <div class="ibox-content">
-        <div  id="tree-container" class="table-responsive ">
-        </div>
+            <div class="ibox-title">
+                <h5>Generation Tree  </h5>
+            </div>
 
+            <div class="ibox-content">
+               
+                <div  id="tree-container" class="table-responsive "></div>
+            </div>
         </div>
+    </div>
+</div>
+<svg>
+    <defs>
+        <clipPath id="clip-profile">
+            <circle cx="-1" cy="-1" r="20"/>
+        </clipPath>
+    </defs>
+</svg>
+
+
+<!-- modal -->
+<div class="modal fade" id="modal-template" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>Are you sure?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="not-confirm" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="confirm">Yes</button>
+            </div>
         </div>
-        </div>
-
-        </div>
-
-
-
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

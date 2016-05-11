@@ -1,8 +1,9 @@
 <?php
 
 namespace SamUser\Controller;
-
+use Zend\View\Model\ViewModel;
 use Zend\Validator\ValidatorChain;
+use SamUser\Entity\Rolearea;
 use DoctrineModule\Validator\ObjectExists;
 use Zend\Mvc\Controller\AbstractActionController;
 
@@ -16,59 +17,111 @@ class UsersController extends AbstractActionController
         return $this->em;
     }
 
-    protected function filterParent($var) {
-        return !$var->getParent();
-    }
-
-    protected function filterChild($var) {
-        return $var->getParent();
-    }
+   
 
     /**
      * User list / default action
      */
     public function indexAction() {
+       $this->layout()->setTemplate('layout/master');  
+     
+       $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+        $countriesData=array();
+        foreach($countries as $country ){
+        $countriesData[$country->id]=$country->name;    
+        } 
+     return new ViewModel(
+            array(
+               'countries'=>$countriesData,
+           'users' => $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findAll() 
+            )
+        );
+    
+    }
+    
+    public function editAction(){
+       
+       
+        $id = (int) $this->params()->fromRoute('id', 0);
+      if (!$id) {
+            return $this->redirect()->toRoute('users');
+        } 
+     $user = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
         
-          
-
-        // TODO: We need support for deeper children
-        $roles = $this->getEntityManager()->getRepository('SamUser\Entity\Role')->findAll();
-        $parents = array_filter($roles, array($this, "filterParent"));
-        $childs = array_filter($roles, array($this, "filterChild"));
-
-        // Service locator
-        $sl = $this->getServiceLocator();
-
-        // Create form
-        $createForm = $sl->get('EntityForm')->getForm('SamUser\Entity\User', 'create()');
-        $createForm = $sl->get('EntityForm')->getForm('SamUser\Entity\User', 'register()');
-
-        // Change password form
-        $changePasswordForm = $sl->get('FormElementManager')->get(
-            'SamUser\Form\ChangePassword',
-            array('name' => 'change-password')
+      if (!$user) {
+            return $this->redirect()->toRoute('users');
+        }
+       
+        $this->layout()->setTemplate('layout/master'); 
+         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+        $countriesData=array();
+        foreach($countries as $country ){
+        $countriesData[$country->id]=$country->name;    
+        } 
+        
+        $areaGroups=$this->getEntityManager()->getRepository('SamUser\Entity\Areagroups')->findAll( );
+        $areaGroupsData=array();
+        foreach($areaGroups as $area ){
+        $areaGroupsData[$area->id]=$area->groups_name;    
+        } 
+       
+        $roleArea=$this->getEntityManager()->getRepository('SamUser\Entity\Rolearea')->findOneBy(array('user_id'=>$id ) );
+        if(!$roleArea){
+            $roleCountry=0;
+             $roleGroups=0;
+            $roleArea= new Rolearea();
+            $roleArea->user_id=$id;
+        }else{
+            $roleCountry=$roleArea->countryid;
+             $roleGroups=$roleArea->area_groupsid;
+            
+        }
+           $request = $this->getRequest();
+          if ($request->isPost()) {
+           $rolePost=$request->getPost('role');
+           $countryPost=$request->getPost('country');
+           $areaGroups=$request->getPost('areagroups'); 
+           $user=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('id'=>$id ) );
+           $user->role_id=$rolePost;
+         $this->getEntityManager()->persist($user);
+                $this->getEntityManager()->flush();
+          if(in_array($rolePost,array(2,3,4))){
+              
+            if($rolePost==4){
+                  $roleArea->countryid=$countryPost;
+                  $roleArea->area_groupsid='';
+            }else{
+                
+                  $roleArea->countryid='';
+                  $roleArea->area_groupsid=$areaGroups;
+           
+            }
+                $this->getEntityManager()->persist($roleArea);
+                $this->getEntityManager()->flush();
+         
+          }else {
+                
+               $this->getEntityManager()->remove($roleArea);
+               $this->getEntityManager()->flush();
+          }
+         
+            return $this->redirect()->toRoute('users');
+            
+          }
+       
+        
+         return new ViewModel(
+            array(
+               'countries' => $countriesData,
+               'areagroups' =>$areaGroupsData,
+               'roleid' => $user->role_id,
+               'roleCountry' =>$roleCountry,
+                 'roleGroups' =>$roleGroups,
+            )
         );
-
-        return array(
-            'rolesParent' => $parents,
-            'rolesChild' => $childs,
-            'form' => $createForm,
-            'changePasswordForm' => $changePasswordForm,
-        );
+        
     }
-
-    /**
-     * User details
-     */
-    public function detailsAction() {
-        // TODO: We need support for deeper children
-        $roles = $this->getEntityManager()->getRepository('SamUser\Entity\Role')->findAll();
-        $parents = array_filter($roles, array($this, "filterParent"));
-        $childs = array_filter($roles, array($this, "filterChild"));
-
-        return array(
-            'rolesParent' => $parents,
-            'rolesChild' => $childs,
-        );
-    }
+    
+     
+   
 }

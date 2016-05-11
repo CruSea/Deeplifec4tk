@@ -16,20 +16,48 @@ class UsersForm extends Form
             'type' => 'Hidden',
         ));
        
-      /*  $this->add(array(
+       $this->add(array(
             'name' => 'mentor_id',
             'type' => 'Hidden',
-        ));*/
+        ));
+        
          $this->add(array(
-            'name' => 'full_name',
+            'name' => 'stage',
+            'type' => 'Hidden',
+        ));
+         
+          $this->add(array(
+            'name' => 'password',
+            'type' => 'Hidden',
+        ));
+        
+          $this->add(array(
+            'name' => 'role_id',
+            'type' => 'Hidden',
+        ));
+            $this->add(array(
+            'name' => 'picture',
+            'type' => 'File',
+            'options' => array(
+                'label' => 'Picture',
+                
+            ), 'attributes' => array(
+                           'id'       => 'picture',
+                               'class'    => 'form-control',
+                            'required' => 'required',
+                            ),
+        ));
+         
+        $this->add(array(
+            'name' => 'firstName',
             'type' => 'Text',
             'options' => array(
                 'label' => 'Name',
                 
             ), 'attributes' => array(
-                           'id'       => 'full_name',
+                           'id'       => 'firstName',
                             'class'    => 'form-control',
-                             'required' => 'required',
+                         
                             ),
         ));
      
@@ -48,7 +76,7 @@ class UsersForm extends Form
         ));
       
            $this->add(array(
-            'name' => 'country_id',
+            'name' => 'country',
             'type' => 'Select',
             'options' => array(
                 'label' => 'Country',
@@ -57,7 +85,7 @@ class UsersForm extends Form
                          
                      ),  
             ), 'attributes' => array(
-                           'id'       => 'country_id',
+                           'id'       => 'country',
                            'class'    => 'form-control',
                            'required' => 'required',
                         
@@ -66,13 +94,13 @@ class UsersForm extends Form
         ));
      
         $this->add(array(
-            'name' => 'phone',
+            'name' => 'phone_no',
             'type' => 'Text',
             'options' => array(
                 'label' => 'Phone',
                 
             ), 'attributes' => array(
-                           'id'       => 'phone',
+                           'id'       => 'phone_no',
                            'class'    => 'form-control',
                              'required' => 'required',
                             ),
@@ -88,8 +116,8 @@ class UsersForm extends Form
                       'class'    => 'form-control',
                              'required' => 'required',
           'value_options' => array(
-                           '1' => 'Male',
-                             '2' => 'Female',
+                           'Male' => 'Male',
+                             'Female' => 'Female',
                              
                      ),       
          
@@ -103,25 +131,14 @@ class UsersForm extends Form
                             ),
         ));
         
-          $this->add(array(
-            'name' => 'picture',
-            'type' => 'File',
-            'options' => array(
-                'label' => 'Picture',
-                
-            ), 'attributes' => array(
-                           'id'       => 'picture',
-                               'class'    => 'form-control',
-                            'required' => 'required',
-                            ),
-        )); 
+        
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'submitbutton',
-                 'class'    => 'btn btn-primary',
+                 'class'    => 'btn btn-primary pull-right',
                 
             ),
         ));

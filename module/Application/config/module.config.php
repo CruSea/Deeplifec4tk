@@ -35,6 +35,17 @@ return array(
                             ),
                         ),
 
+ 'signup' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Literal',
+                            'options' => array(
+                                'route' => '/signup',
+                                'defaults' => array(
+                                    'controller' => 'Application\Controller\Index',
+                                    'action'     => 'signup',
+                                ),
+                            ),
+                        ),
+
               'contactus' => array(
                             'type' => 'Zend\Mvc\Router\Http\Literal',
                             'options' => array(

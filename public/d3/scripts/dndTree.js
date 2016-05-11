@@ -1,6 +1,12 @@
 // Get JSON data
 
 function tree(error, treeData) {
+
+    //if json has error then preventing to create a tree
+    if(error !== undefined && error !== null){
+        return;
+    }
+
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 0;
@@ -45,7 +51,7 @@ function tree(error, treeData) {
     }
 
     // Call visit function to establish maxLabelLength
-    visit(treeData, function(d) {
+    visit(treeData.tree, function(d) {
         totalNodes++;
         maxLabelLength = Math.max(d.name.length, maxLabelLength);
 
@@ -53,9 +59,22 @@ function tree(error, treeData) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
 
+    //setting nodes after second level as minified
+    if(treeData.tree.children){
+        treeData.tree.children.forEach(function (child) {
+            //if child has children
+            if(child.children){
+                child.children.forEach(function (childChildren) {
+                    childChildren._children = childChildren.children;
+                    childChildren.children = null;
+                });
+            }
+        });
+    }
+    
+
 
     // sort the tree according to the node names
-
     function sortTree() {
         tree.sort(function(a, b) {
             return b.name.toLowerCase() < a.name.toLowerCase() ? 1 : -1;
@@ -149,7 +168,8 @@ function tree(error, treeData) {
         .attr("height", viewerHeight)
         .attr("class", "overlay")
         .call(zoomListener);
-
+    
+    var modal = $('#modal-template');
 
     // Define the drag listeners for drag/drop behaviour of nodes.
     dragListener = d3.behavior.drag()
@@ -200,33 +220,65 @@ function tree(error, treeData) {
             node.attr("transform", "translate(" + d.x0 + "," + d.y0 + ")");
             updateTempConnector();
         }).on("dragend", function(d) {
+
             if (d == root) {
                 return;
             }
             domNode = this;
             if (selectedNode) {
-                // now remove the element from the parent, and insert it into the new elements children
-                var index = draggingNode.parent.children.indexOf(draggingNode);
-                if (index > -1) {
-                    draggingNode.parent.children.splice(index, 1);
-                }
-                if (typeof selectedNode.children !== 'undefined' || typeof selectedNode._children !== 'undefined') {
-                    if (typeof selectedNode.children !== 'undefined') {
-                        selectedNode.children.push(draggingNode);
-                    } else {
-                        selectedNode._children.push(draggingNode);
-                    }
-                } else {
-                    selectedNode.children = [];
-                    selectedNode.children.push(draggingNode);
-                }
-                // Make sure that the node being added to is expanded so user can see added node is correctly moved
-                expand(selectedNode);
-                sortTree();
-                endDrag();
+                
+                window.selectedNode     = selectedNode;
+                window.selectedNodeTemp = selectedNode;
+                window.draggingNode     = draggingNode;
+                
+                
+                modal.modal();
+
             } else {
                 endDrag();
             }
+        });
+
+    //if click on no button on modal               
+    modal.find('.modal-footer #not-confirm').on('click', function(){
+
+        modal.modal('toggle');
+        endDrag();
+        return false;
+    });
+    
+    //if click on yes button on modal
+    modal.find('.modal-footer #confirm').on('click', function(){
+
+        // hit webservice for update of tree data and on success only update the tree view
+        $.post( "/tree/updatejson", { parent:window.selectedNode.user_id, user:window.draggingNode.user_id} )
+            .done(function() {
+                modal.modal('toggle');
+                // now remove the element from the parent, and insert it into the new elements children
+                var index = window.draggingNode.parent.children.indexOf(window.draggingNode);
+                if (index > -1) {
+                    window.draggingNode.parent.children.splice(index, 1);
+                }
+                if (typeof window.selectedNodeTemp.children !== 'undefined' || typeof window.selectedNodeTemp._children !== 'undefined') {
+                    if (typeof window.selectedNodeTemp.children !== 'undefined') {
+                        window.selectedNodeTemp.children.push(window.draggingNode);
+                    } else {
+                        window.selectedNodeTemp._children.push(window.draggingNode);
+                    }
+                } else {
+                    window.selectedNodeTemp.children = [];
+                    window.selectedNodeTemp.children.push(window.draggingNode);
+                }
+                // Make sure that the node being added to is expanded so user can see added node is correctly moved
+                expand(window.selectedNodeTemp);
+                sortTree();
+                endDrag();
+            })
+            .fail(function() {
+                                
+                endDrag();
+                return false;
+            });
         });
 
     function endDrag() {
@@ -248,6 +300,7 @@ function tree(error, treeData) {
     function collapse(d) {
         if (d.children) {
             d._children = d.children;
+
             d._children.forEach(collapse);
             d.children = null;
         }
@@ -400,64 +453,108 @@ function tree(error, treeData) {
                 return "translate(" + source.x0 + "," + source.y0 + ")";
             })
             .on('click', click);
-
+        
         nodeEnter.append("image")
+            .attr('id', function (d) {
+                return "image-" + d.id;
+            })
             .attr("xlink:href", function(d){return d.icon;})
-            .attr("x", "-12px")
-            .attr("y", "-12px")
+            .attr("x", "-21px")
+            .attr("y", "-21px")
             .attr("width","40px")
             .attr("height","40px")
             .on("mouseover", function(d) {
                 div.transition()
                     .duration(500)
                     .style("opacity", 0);})
-            .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+            .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; })
+            .attr("clip-path", "url(#clip-profile)");
+
 
         nodeEnter.append("text")
             .attr("y", function(d) {
-                return d.children || d._children ? -18 : 35;
+                if(d.parent_url === d.url){
+                    return 30;
+                }
+                return -30;
             })
-            .attr("dy", ".35em")
+            .attr("dy", ".45em")
             .attr('class', 'nodeText')
             .attr("text-anchor", "middle")
-            .on("mouseover", function(d) {
-                div.transition()
-                    .duration(500)
-                    .style("opacity", 0);
-                div.transition()
-                    .duration(200)
-                    .style("opacity", .7);
-                div .html(
-                    '<a href= "http://deeplifeorg/tree/'+ d.url+'" target="_blank">' + d.name +
-                    "</a>" +
-                    "<br/>"  + d.immediate + " | " + d.total)
-                    .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - 28) + "px");
-            })
             .text(function(d) {
                 return d.name ;
             })
+            .style('fill','#808080')
+            .style('font-weight','bold')
+            .style('font-size', function (d) {
+                if(d.url === d.parent_url){
+                    return "20px";
+                }
 
+                return "inherit";
+            })
             .style("fill-opacity", 0);
 
+        nodeEnter.append("circle")
+        .attr("cx", 19)
+        .attr("cy", 12)
+        .attr("r", 10)
+        .attr('class', 'total-circle');
 
-        node.select('text')
-            .attr("y", function(d) {
-                return d.children || d._children ? -18 : 35;
-            })
-            .attr("text-anchor", "middle")
-
+        nodeEnter.append("text")
+            .attr("y", 7)
+            .attr("dy", "1em")
+            .attr('class', 'total-node-text')
             .text(function(d) {
-                return d.name;
-            });
+                return d.total;
+            })
+            .attr('x', function (d) {
+                nodeTotal = parseInt(d.total);
+                //check length of total 
+                if(nodeTotal <= 9) {
+                    return 17;
+                } 
 
+                if(nodeTotal <= 99) {
+                    return 14;
+                } 
 
+                if(nodeTotal <= 999) {
+                    return 12;
+                } 
+
+                if(nodeTotal <= 9999) {
+                    return 10;
+                } 
+
+            })
+            .style("fill-opacity", 2);
+
+        // phantom node to give us mouseover in a radius around it
+        nodeEnter.append("circle")
+           .attr('class', 'ghostCircle')
+           .attr("r", 30)
+           .attr("opacity", 0.2) // change this to zero to hide the target area
+        .style("fill", "red")
+           .attr('pointer-events', 'mouseover')
+           .on("mouseover", function(node) {
+               overCircle(node);
+           })
+           .on("mouseout", function(node) {
+               outCircle(node);
+           });
 
         // Transition nodes to their new position.
         var nodeUpdate = node.transition()
             .duration(duration)
             .attr("transform", function(d) {
-                return "translate(" + d.x + "," + d.y + ")";
+                if(d.url === d.parent_url){
+                    
+                    return "translate(" + d.x + "," + (d.y - 40)  + ")";
+                } else {
+                    
+                    return "translate(" + d.x + "," + d.y  + ")";
+                }
             });
 
         // Fade the text in
@@ -490,12 +587,14 @@ function tree(error, treeData) {
             .attr("d", function(d) {
                 var o = {
                     x: source.x0,
-                    y: source.y0
+                    y: source.y0 
                 };
-                return diagonal({
+                var diagonalData = diagonal({
                     source: o,
                     target: o
                 });
+
+                return diagonalData;
             });
 
         // Transition links to their new position.
@@ -511,15 +610,17 @@ function tree(error, treeData) {
                     x: source.x,
                     y: source.y
                 };
-                return diagonal({
+                var diagonalData = diagonal({
                     source: o,
                     target: o
                 });
+                return diagonalData;
             })
             .remove();
 
         // Stash the old positions for transition.
         nodes.forEach(function(d) {
+            
             d.x0 = d.x;
             d.y0 = d.y;
         });
@@ -529,7 +630,7 @@ function tree(error, treeData) {
     var svgGroup = baseSvg.append("g");
 
     // Define the root
-    root = treeData;
+    root = treeData.tree;
     root.x0 = viewerHeight / 2;
     root.y0 = 0;
 

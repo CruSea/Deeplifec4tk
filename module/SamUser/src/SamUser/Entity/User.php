@@ -81,7 +81,7 @@ class User implements UserInterface, ProviderInterface
      * @ZFA\Attributes({"type":"text", "placeholder":"Ethiopia"})
      * @ZFA\Options({"label":"country"})
      */
-    protected $country_id =null;
+    protected $country =null;
 
     /**
      * @var string
@@ -93,7 +93,7 @@ class User implements UserInterface, ProviderInterface
      * @ZFA\Attributes({"type":"text", "placeholder":"0916587396"})
      * @ZFA\Options({"label":"phone number"})
      */
-    protected $phone = null;
+    protected $phone_no = null;
 
     /**
      * @var string
@@ -166,7 +166,7 @@ class User implements UserInterface, ProviderInterface
             'firstName' => $this->getFirstName(),
             'middleName' => $this->getMiddleName(),
             'sureName' => $this->getSureName(),
-            'country_id' => $this->getCountryId(),
+            'country' => $this->getCountry(),
             'phone' => $this ->getPhone(),
             'picture' => $this -> getPicture(),
             //'state' => $this->getState(),
@@ -180,9 +180,9 @@ class User implements UserInterface, ProviderInterface
     /**
      * @return string
      */
-    public function getPhone()
+    public function getPhoneNo()
     {
-        return $this->phone;
+        return $this->phone_no;
     }
 
     /**
@@ -212,17 +212,17 @@ class User implements UserInterface, ProviderInterface
     /**
      * @return string
      */
-    public function getCountryId()
+    public function getCountry()
     {
-        return $this->country_id;
+        return $this->country;
     }
 
     /**
      * @param string $country
      */
-    public function setCountry($country_id)
+    public function setCountry($country)
     {
-        $this->country_id = $country_id;
+        $this->country = $country;
     }
 
     public function __toString() {

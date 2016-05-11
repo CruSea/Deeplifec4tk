@@ -1,11 +1,14 @@
 <?php
- error_reporting(1);
+error_reporting(1);
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
  */
+defined('PUBLIC_PATH')|| define('PUBLIC_PATH', realpath(dirname(__FILE__)));
 define('REQUEST_MICROTIME', microtime(true));
 chdir(dirname(__DIR__));
+
+
 
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
