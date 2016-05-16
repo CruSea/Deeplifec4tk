@@ -16,8 +16,8 @@ use Zend\InputFilter\InputFilterInterface;
 *  @property string $iframcode
 *  @property string $country
 *  @property string $default_learn
-*  * @property int $id
-
+*   @property int $id
+* @property datetime $created
 
 *  */
 class Learningtools implements InputFilterAwareInterface 
@@ -40,7 +40,10 @@ class Learningtools implements InputFilterAwareInterface
      * @ORM\Column(type="string")
      */
       protected $title;
-
+/**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
 
 
 /**

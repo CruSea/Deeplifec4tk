@@ -20,7 +20,7 @@ class ScheduleForm extends Form
             'name' => 'userdetail',
             'type' => 'Select',
             'options' => array(
-                'label' => 'Disciples',
+                'label' => 'Person name',
                    'value_options' => array(
                       
                          
@@ -52,7 +52,7 @@ class ScheduleForm extends Form
             'name' => 'txtdate',
             'attributes' => array(
                 'type'  => 'text',
-                 'class'    => 'form-control date',
+                 'class'    => 'form-control date ',
                   'id'       => 'datetimepicker1',
                   'required' => 'required',
             ),

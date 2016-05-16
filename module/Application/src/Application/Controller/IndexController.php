@@ -18,7 +18,7 @@ use Zend\View\Model\ViewModel;
 use Zend\Mail;  
 use Zend\Mime\Part as MimePart;  
 use Zend\Mime\Message as MimeMessage;  
-use Zend\Session\Container; 
+use Zend\Session\Container;
 
 
 
@@ -120,7 +120,12 @@ echo 0;
     public function signupAction(){
 	
     
-          $form = new RegisterForm();
+           if ($this->zfcUserAuthentication()->hasIdentity()) {
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+
+     
+         $form = new RegisterForm();
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
         foreach($countries as $country ){
@@ -128,7 +133,6 @@ echo 0;
         }
        
         
-   
              
         $form->get('country')->setValueOptions($ValueOptions);
        //  $form->get('submit')->setValue('Save');
@@ -161,12 +165,15 @@ echo 0;
                          $Users->firstName=$firstName;
                          $Users->country=$country;
                          $Users->phone_no=$phone_no;
-                         $Users->role_id=2;
+                         $Users->role_id=1;
                          $Users->gender=$gender;
                          $Users->password=$cryptPassword;
-                          $this->getEntityManager()->persist($Users);
-                  $this->getEntityManager()->flush();
-         	   		 return $this->redirect()->toRoute('home');
+                         $this->getEntityManager()->persist($Users);
+                        $this->getEntityManager()->flush();
+             	   		$session = new Container('message');
+	                   $session->success = 'User was added successfully.Please login';
+	
+                         return $this->redirect()->toRoute('home');
                       
 
 
@@ -184,6 +191,9 @@ echo 0;
 			   	  $this->getEntityManager()->persist($Users);
                   $this->getEntityManager()->flush();
          	           
+                     $session = new Container('message');
+	                 $session->success = 'User was added successfully.Please login';
+	
                          return $this->redirect()->toRoute('home');
                        
 				}else {

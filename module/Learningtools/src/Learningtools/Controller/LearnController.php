@@ -38,9 +38,9 @@ public function indexAction()
   
 $this->layout()->setTemplate('layout/master');  
  $country = $this->zfcUserAuthentication()->getIdentity()->country;
-$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array('country' => $country ));
+$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array('country' => $country ),array('created' => 'DESC'));
 if(!$learn){
-$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array('default_learn' => 1 ));
+$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array('default_learn' => 1 ),array('created' => 'DESC'));
     
 }
 
@@ -155,7 +155,7 @@ public function deleteAction(){
 public function displayAction()
 {
 $this->layout()->setTemplate('layout/master');  
-$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findAll( );
+$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array(),array('created' => 'DESC'));
 return new ViewModel(
 array(
 'learning'=>$learn,

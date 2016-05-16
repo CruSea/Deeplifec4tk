@@ -39,14 +39,38 @@ foreach ( $form as $element ) :
 ?>
 <div    class="form-group <?php if($this->formElementErrors($element)) echo "error" ?>">
         <label class=" col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
-        <div class="col-sm-10">
-                <?php echo $this->formElement ( $element );
-                    if ($this->formElementErrors ( $element ))
-                ?>
-            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+        <div class="col-sm-4">
+                <?php    if($element->getLabel()==='Date'){ ?>
+        <div class="input-group date" id="datetimepicker1">
+                           <?php echo $this->formElement ( $element );
+                            if ($this->formElementErrors ( $element ))
+                        ?>
+          <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-calendar"> </span></span>
+            </div>
+          <?php }elseif($element->getLabel()==='Time') { ?> 
+                   <div class="input-group date" id="datetimepicker2">
+                           <?php echo $this->formElement ( $element );
+                            if ($this->formElementErrors ( $element ))
+                        ?>
+          <span class="input-group-addon">
+                                       <span class="glyphicon glyphicon-time"> </span></span>
+            </div>
+        
+          
+          <?php }else{ ?>         
+                  
+                   <?php echo $this->formElement ( $element );
+                            if ($this->formElementErrors ( $element ))
+                        ?>
+                  
+                    <span class="help-inline   "><?php echo $this->formElementErrors($element) ?></span>
+                <?php }?>
+                
+               
         </div>
     </div>
-      <div class="hr-line-dashed"></div>
+      
 <?php
 endforeach;
 

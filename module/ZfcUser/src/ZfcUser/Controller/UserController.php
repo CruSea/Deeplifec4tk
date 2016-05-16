@@ -9,7 +9,7 @@ use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
-
+use Zend\Session\Container;
 class UserController extends AbstractActionController
 {
     const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
@@ -75,13 +75,14 @@ class UserController extends AbstractActionController
      */
     public function loginAction()
     {
-       $pathArray = $_SERVER['HTTP_REFERER'];
-            $pathArray = explode("/",$pathArray);
          
-       if($pathArray[3] === 'signup') {
-           $flashMessenger='User was added successfully.Please login';
-       }
-        
+        $session = new Container('message');
+        if($session->offsetExists('success')){
+	    	$flashMessenger= $session->offsetGet('success');
+	             $session->getManager()->destroy();
+        }
+       
+            
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
@@ -181,6 +182,10 @@ class UserController extends AbstractActionController
             // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
+        
+        
+         return $this->redirect()->toUrl('/signup');
+        
         // if registration is disabled
         if (!$this->getOptions()->getEnableRegistration()) {
             return array('enableRegistration' => false);

@@ -7,14 +7,15 @@
  */
 
 namespace SamUser\Controller;
-
 use Zend\Validator\Digits as Digits;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use SamUser\Entity\Users;
+use SamUser\Entity\Disciplescount;
 use Doctrine\ORM\EntityManager;
 use DoctrineExtensions\Query\Mysql;
+
 
 class TreeController extends AbstractActionController
 {
@@ -23,18 +24,14 @@ class TreeController extends AbstractActionController
     protected $em;
     public $userid;
     protected $entity = 'SamUser\Entity\User';
-
     
-    public function getEntityManager()
-    {
+public function getEntityManager(){
         if (null === $this->em) {
             $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         }
         return $this->em;
     }
-
-    Public function indexAction()
-    {
+Public function indexAction() {
       
       $id = (int) $this->params()->fromRoute('id', 0);
       
@@ -47,8 +44,7 @@ class TreeController extends AbstractActionController
         ));
 
     }
-    public function jsonAction()
-    {
+public function jsonAction(){
        
            $id = (int) $this->params()->fromRoute('id', 0);
        
@@ -94,13 +90,13 @@ class TreeController extends AbstractActionController
     }
      $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
  // $url=$url.'/deeplife/public';
-    $rootUSerCount= count($users);
+    $rootUSerCount= 0;
 
           $tree['name'] =  $name;
           $tree['icon'] = $url.''.$avatar;
           $tree['user_id'] = $userid;
           $tree['immediate'] = $rootUSerCount;
-          $tree['total'] = count($this->countParentChildTree($userid));
+          $tree['total'] = $this->countParentChildTree($userid);
           $tree['url'] = $url.'/tree/'.$userid;
           $tree['parent_url'] = $url.'/tree/'.$userid;
           $tree['draggable'] = true;
@@ -111,14 +107,11 @@ class TreeController extends AbstractActionController
         $jsonArray['config']['treeType']='user' ;
         $jsonArray['config']['currentUserType']='countryAdmin';
         $jsonArray['tree']=$tree;
-   
+  
         return new JsonModel($jsonArray);
-        //return new JsonModel($tree);
+  
     }
-
-
- public function updatejsonAction()
-    {
+public function updatejsonAction(){
         $result['status']='error';
         $result['code']='401';
         $request = $this->getRequest();
@@ -133,8 +126,14 @@ class TreeController extends AbstractActionController
                  $result['code']='402';
            }else{
             $em =$this->getEntityManager();
-            $user = $em->find('SamUser\Entity\Users', $user);
-            $user->mentor_id=$parent;
+            $users = $em->find('SamUser\Entity\Users', $user);
+           if($users->id!=$parent){
+                $users->mentor_id=$parent;
+           }else {
+               $result['status']='error';
+                 $result['code']='4022';
+           }
+           
             try {
             $result['status']='success';
             $result['code']='0';
@@ -154,10 +153,7 @@ class TreeController extends AbstractActionController
   
         return new JsonModel($result);
     }
-    
 public function parentChildTree($parent = 0) {
-   
-   $children_tree_array = array();
    $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $parent ));
 if(isset($_SERVER['HTTPS'])){
       $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
@@ -183,11 +179,12 @@ if(isset($_SERVER['HTTPS'])){
             $tree[$i]['parent_url'] = $url.'/tree/'.$user->mentor_id;
             }
             $tree[$i]['draggable'] = true;
-            $tree[$i]['total'] = count($this->countParentChildTree($user->id));
+            $tree[$i]['total'] = $this->countParentChildTree($user->id);
             $tree[$i]['url'] = $url.'/tree/'.$user->id;
                  
-             
-             $children=$this->parentChildTree($user->id );
+           if($user->id!=$user->mentor_id){   
+          $children=$this->parentChildTree($user->id );
+          }
            if(is_array($children)){
                 $childCount=count($children);
                 $tree[$i]['children'] =$children;
@@ -203,32 +200,27 @@ if(isset($_SERVER['HTTPS'])){
 
 	return $tree;
 }
-    
-    
-   public  function countParentChildTree($parent = 0, $spacing = '', $category_tree_array = '') {
-	if (!is_array($category_tree_array))
-		$category_tree_array = array();
+public  function countParentChildTree($userid) {
+
+$disciplescount=0;
+$usersCouny = $this->getEntityManager()->getRepository('SamUser\Entity\Disciplescount')->findOneBy(array('user_id' => $userid ));
+if(!$usersCouny ){
+    $disciplescount=0;
+ }else{
+     $disciplescount=$usersCouny->disciplescount;
+  }
  
-	$users = $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $parent ));
-	
+  return $disciplescount;
 
-foreach ($users as $user){
-    $category_tree_array[] = array("id" => $user->id, "name" =>$user->displayName);
-    $category_tree_array[] = $this->countParentChildTree($user->id, '&nbsp;&nbsp;&nbsp;&nbsp;'.$spacing . '-&nbsp;', $category_tree_array);
-       }
-    
-    
-	
-	return $category_tree_array;
 }
-
- public function ajaxchartAction() {
+public function ajaxchartAction() {
      
         $request = $this->getRequest();
       if ($request->isPost()) {
           
       
-      $countriesid=$this->getRequest()->getPost('ids');
+       $countriesid=$this->getRequest()->getPost('ids');
+         
      $countryChartData=$this->countryChartData($countriesid);
  
     
@@ -242,6 +234,10 @@ foreach ($users as $user){
       foreach($countries as $country ){
         $countriesData[$country['id']]=$country['name'];    
         } 
+        
+     
+        
+      
      $this->renderer = $this->getServiceLocator()->get('ViewRenderer');
      echo $content =$this->renderer->render('chart',array('chart'=>$countryChartData, 'countries'=>$countriesData));
    
@@ -250,8 +246,7 @@ foreach ($users as $user){
        }
        
  }
-
-  public function countryAction() {
+public function countryAction() {
     $this->layout()->setTemplate('layout/master');  
     $countryData=array();
     $countriesid=array();   
@@ -310,7 +305,6 @@ foreach ($users as $user){
         );
     
    }
-
 public function countryData($countryIds) {
    $countryData=array();    
    $countryInfo=array();
@@ -332,9 +326,9 @@ public function countryData($countryIds) {
     }
 public function countryChartData($countryIds) {
         $countryData=array();    
-       $countryIds = array_slice($countryIds, 0, 3); 
+        $countryIds = array_slice($countryIds, 0, 3); 
     
-       
+          
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select("u.country,YEAR(u.created) as ycreated,SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")->from('SamUser\Entity\Users', 'u')
         ->andWhere('u.country IN (:country)')
@@ -380,10 +374,11 @@ public function countryChartData($countryIds) {
    if(count($send))
   $countryData['send']=$send;
   
+   
+    
+    
     return $countryData;
     }
-
-
 public function learnAction() {
     $this->layout()->setTemplate('layout/master');  
     
@@ -397,9 +392,51 @@ public function learnAction() {
         );
     
    }
+public function totalAction() {
+    
+   $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findAll( );
+   echo "Start Cron Time:: ".date('m/d/Y h:i:s a', time()).'<br/>';
+  foreach($users as $user){
+      $total=0;
+           
+      $total=count($this->disciplecount($user->id));
+      $usersTotal = $this->getEntityManager()->getRepository('SamUser\Entity\Disciplescount')->findOneBy(array('user_id' => $user->id ));
+     if(!$usersTotal ){
+     $usersTotal=new Disciplescount();
+     $usersTotal->user_id=$user->id;
+     }
+     $usersTotal->disciplescount=$total;
+     $this->getEntityManager()->persist($usersTotal);
+     $this->getEntityManager()->flush();
+   
+   } 
+   echo "End Cron Time:: ".date('m/d/Y h:i:s a', time());
+   die;
+   }
+public function disciplecount($parent){
+    ini_set('max_execution_time', 0);
+ $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $parent ));
+    foreach ($users as $user){
+          $tree[$user->id]=$user->id;
+       // echo $user->id.'<br/>---';
+
+         if($user->id!=$user->mentor_id){
+             $children=$this->disciplecount($user->id );
+         }
+
+          if(is_array($children)){
+                 $tree = array_merge($tree,$children);
+               
+               
+           }
+  }
+return $tree;
+
+}
 
 
 
 }
+
 
 

@@ -16,7 +16,8 @@ use Zend\InputFilter\InputFilterInterface;
  * @property string $question
  * @property string $description
  * @property int $mandatory
-  * * @property int $id
+  *  @property int $id
+  *  @property datetime $created
  */
 class Questions implements InputFilterAwareInterface 
 {
@@ -38,7 +39,10 @@ class Questions implements InputFilterAwareInterface
      * @ORM\Column(type="string")
      */
     protected $question;
-
+/**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
   
     /**
      * @ORM\Column(type="string")

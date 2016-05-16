@@ -112,7 +112,7 @@ class QuestionForm extends Form
             'name' => 'submit',
             'attributes' => array(
                 'type'  => 'submit',
-                'value' => 'Go',
+                'value' => 'Save',
                 'id' => 'submitbutton',
                  'class'    => 'btn btn-primary',
             ),

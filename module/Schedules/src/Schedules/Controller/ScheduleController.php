@@ -46,7 +46,7 @@ public function getUserId(){
 public function indexAction()
 {
 $this->layout()->setTemplate('layout/master');  
-$schedule=$this->getEntityManager()->getRepository('Schedules\Entity\Schedule')->findBy(array('user_Id' => $this->getUserId() ));
+$schedule=$this->getEntityManager()->getRepository('Schedules\Entity\Schedule')->findBy(array('user_Id' => $this->getUserId() ),array('created' => 'DESC'));
 
   
   

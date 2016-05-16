@@ -48,7 +48,9 @@
        $colors['build']=array('#00bcd8','#0095ab','#006877');
        $colors['send']=array('#49ce3f','#1a9611','#0b6005');
        if($countriesCount!=3){
-        $countriesCount--;
+        if($countriesCount<3){
+            $countriesCount=3;
+        }
         $colors['win'] = array_slice($colors['win'], 0, $countriesCount);
         $colors['build']= array_slice($colors['build'], 0, $countriesCount);
         $colors['send']  = array_slice($colors['send'], 0, $countriesCount);

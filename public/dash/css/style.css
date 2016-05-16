@@ -6429,6 +6429,16 @@ Author: Sunakshi (ITHands)
 Date: 20 April 2016
 Description: custom css 
  */
+ :focus {
+    outline: 0 !important;
+}
+ input[type=file]:focus, input[type=radio]:focus, input[type=checkbox]:focus {
+    outline: 0;
+}
+ select.input-sm, select.form-group-sm .form-control {
+    height: 35px;
+    line-height: 30px;
+}
  a:focus {
     outline: 0;
 }
@@ -6514,6 +6524,12 @@ li.subactive a {
 .modal-header {
   border-bottom: 0;
 }
+.select2-container .select2-choice .select2-arrow {
+    right: -12px !important;
+}
+.select2-container .select2-choice {
+    overflow: inherit !important;
+}
 /* Button
  Overwrite css for button 
  by Sunakshi ITHands
@@ -6521,7 +6537,7 @@ li.subactive a {
  */
  .float-e-margins .btn {
     margin-bottom: 5px;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     padding: 8px 30px;
     font-size: 15px;
 }
@@ -6841,15 +6857,32 @@ ul.multiselect-container.dropdown-menu {
   min-height: 1600px;
   z-index: 2002;
 }
-
-
+/* .glyphicon.glyphicon-calendar,.glyphicon.glyphicon-time {
+    position: absolute;
+    top: 0px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    right: 15px;
+    background-color: #ffc325;
+    border: 1px solid #E5E6E7;
+    border-radius: 1px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    padding: 9px 12px;
+    text-align: center;
+    z-index: 0;
+} */
 
 /* Learning */
 ul.learning {
   list-style: none;
 }
 .image-holder {
-  width: 170px;
+  width: auto;
   height: auto;
   background: #ccc;
 }
@@ -6870,9 +6903,15 @@ ul.learning li:last-child {
     border-bottom: 0;
 }
 /* Media Queries */
+@media (max-width: 1280px) {
+    .widget span:last-child {
+    font-size: 12px;
+}
+}
   @media (max-width: 350px) {
     .question-block .counter {
     float: left;
     margin-top: 30px;
 }
 }
+

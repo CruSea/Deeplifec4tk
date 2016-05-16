@@ -18,6 +18,7 @@ use Zend\InputFilter\InputFilterInterface;
  * @property string $password
  * @property string $displayName
  * @property string $phone_no
+ * @property string $picture
  * @property string $stage
  *  @property datetime $role_id
  * @property datetime $created
@@ -100,7 +101,7 @@ class Users implements InputFilterAwareInterface , UserInterface
     protected $mentor_id;
  
   /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     protected $gender;
 
@@ -156,7 +157,7 @@ class Users implements InputFilterAwareInterface , UserInterface
         $this->stage = $data['stage'];
         $this->role_id = $data['role_id'];
          $this->password = $data['password'];
-        $this->picture =$data['picture'];
+        $this->picture =isset($data['picture'])?$data['picture']:'';
         $this->gender = $data['gender'];
      
 
@@ -415,26 +416,7 @@ class Users implements InputFilterAwareInterface , UserInterface
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
-                'validators' => array(
                
-                 array (
-                                    'name' => 'filemimetype',
-                                    'options' => array (
-                                            'mimeType' => 'image/png,image/x-png,image/jpg,image/jpeg,image/gif',
-                                    )
-                            ),
-                            array (
-                                    'name' => 'fileimagesize',
-                                    'options' => array (
-                                            'target'=>'public/img/',
-                                            'randomize'=>true,
-                                            'maxWidth' => 700,
-                                            'maxHeight' => 700
-                                    )
-                            ),
-               
-               
-                ),
             ));
             
 

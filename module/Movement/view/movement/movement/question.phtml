@@ -17,14 +17,18 @@
                             <div class="ques-category">
                                 <span><?php echo ucwords($stage)?> </span>
                                 <span>
-                                <?php switch($stage){
+                              
+                                <?php  switch($stage){
                                     case 'win':
+                                     case 'WIN':
                                     echo 'Aggressively Evangelize';
                                     break;
-                                    case 'bulid':
+                                    case 'build':
+                                    case 'BUILD':
                                     echo 'Deeply Bulid';
                                     break;
                                     case 'send':
+                                    case 'SEND':
                                      echo 'Urgently Send';
                                     break;
                                 } ?>

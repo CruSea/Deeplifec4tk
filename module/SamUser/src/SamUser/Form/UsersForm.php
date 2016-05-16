@@ -136,7 +136,7 @@ class UsersForm extends Form
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Save',
                 'id' => 'submitbutton',
                  'class'    => 'btn btn-primary pull-right',
                 

@@ -16,7 +16,7 @@ use Zend\InputFilter\InputFilterInterface;
 *  @property string $disciple_phone
 *  @property int $user_Id
 *  @property int $id
-
+* @property datetime $created
 
 *  */
 class Schedule implements InputFilterAwareInterface 
@@ -60,7 +60,10 @@ class Schedule implements InputFilterAwareInterface
      */
       protected $time;
     
-    
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
     /**
      * Magic getter to expose protected properties.
      *

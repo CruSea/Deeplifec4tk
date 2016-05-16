@@ -13,14 +13,23 @@
                             
 $form->setAttribute('method', 'post');
 $form->setAttribute('class', 'form-horizontal');
-$form->setAttribute('action', $this->url('dashboard', array('action' => 'add')));
+$form->setAttribute('action', $this->url('dashboard', array('action' => 'profile')));
 $form->prepare();
 echo $this->form()->openTag($form); ?>
 
 
-<?php foreach ( $form as $element ) :
 
-if($element->getLabel()=='Picture'){ ?>
+
+<?php 
+
+foreach ( $form as $element ) :
+
+ if($element->getName()=='submit'){
+     $submitelement=$element;
+ continue;
+ }
+
+if($element->getLabel()=='Picture'  ){ ?>
 
 <div class="row">
                         <div class="col-sm-8 col-xs-12">
@@ -29,9 +38,17 @@ if($element->getLabel()=='Picture'){ ?>
                                  Change Picture
                                 </label>
                <input type='file' name="picture"  class="form-control photo" id="inputFile">
+                               
+                                 
                                 <div class="form-photo">
-                                <?php $avatar='/avatar/noavatar.jpg'; ?> 
-                                <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="auto" height="100" alt="" /></div>
+                                 <?php $avatar='/avatar/noavatar.jpg'; 
+                                 if(strlen($image)){
+                                     $avatar=$image;
+                                 }
+                                 
+                                 ?> 
+                    <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="auto" height="100" alt="" />
+                                </div>
                              </div>
                              <div class="form-group">
                             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -46,7 +63,6 @@ if($element->getLabel()=='Picture'){ ?>
                             <h4>Personal Information</h4>
                         </div>
                     </div>
-
 
 
 <?php }else {?>
@@ -64,9 +80,18 @@ if($element->getLabel()=='Picture'){ ?>
    
      
 <?php }
-endforeach;
+endforeach; ?>
+<div    class="form-group <?php if($this->formElementErrors($submitelement)) echo "has-error" ?>">
+        <label class=" col-sm-2 col-md-1 control-label"><?php echo $submitelement->getLabel() ?></label>
+        <div class="col-sm-4 col-md-4">
+                <?php echo $this->formElement ( $submitelement );
+                    if ($this->formElementErrors ( $submitelement ))
+                ?>
+    <span class="help-inline  error "><?php echo $this->formElementErrors($submitelement) ?></span>
+        </div>
+    </div>
 
-
+<?php 
 echo $this->form()->closeTag();
 ?>
 
@@ -95,8 +120,11 @@ span.help-inline ul li {
                     var reader = new FileReader();
 
                     reader.onload = function(e) {
+                        
+                        
                         $('#image-preview').attr('src', e.target.result);
                     }
+
 
                     reader.readAsDataURL(input.files[0]);
                 }
@@ -107,3 +135,7 @@ span.help-inline ul li {
             });
 
         </script>
+
+
+
+

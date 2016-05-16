@@ -48,7 +48,7 @@ $this->layout()->setTemplate('layout/master');
 return new ViewModel(
 array(
 'countries'=>$countriesData,
-'questions' => $this->getEntityManager()->getRepository('Movement\Entity\Questions')->findAll() ));
+'questions' => $this->getEntityManager()->getRepository('Movement\Entity\Questions')->findBy(array(),array('created' => 'DESC')) ));
 
 }
 public function addAction()
@@ -62,7 +62,7 @@ public function addAction()
           
         $form = new QuestionForm();
         $form->get('country')->setValueOptions($ValueOptions);
-        $form->get('submit')->setValue('Add');
+       // $form->get('submit')->setValue('Add');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $question = new Questions();
@@ -105,7 +105,7 @@ public function editAction()
         $form->get('category')->setValue($movement->category) ;
         $form->get('mandatory')->setValue($movement->mandatory) ;
         
-        $form->get('submit')->setAttribute('value', 'Edit');
+      //  $form->get('submit')->setAttribute('value', 'Edit');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($movement->getInputFilter());

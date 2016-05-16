@@ -24,9 +24,12 @@ class Login extends ProvidesEventsForm
             'name' => 'identity',
             'options' => array(
                 'label' => '',
+                  
             ),
             'attributes' => array(
-                'type' => 'text'
+                'type' => 'text',
+                   'required' => 'required',
+                   'placeholder'=>"Email or Phone number",
             ),
         ));
 
@@ -45,6 +48,9 @@ class Login extends ProvidesEventsForm
             ),
             'attributes' => array(
                 'type' => 'password',
+                 'required' => 'required',
+                  'placeholder'=>"Password"
+
             ),
         ));
 

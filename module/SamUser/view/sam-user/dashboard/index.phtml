@@ -94,7 +94,7 @@
                 <table class="table table-striped table-bordered table-hover dataTables">
                     <thead>
                     <tr>
-                         <th>AVTAR</th>
+                         <th>AVATAR</th>
                         <th>NAME </th>
                         <th>EMAIL </th>
                         <th>PHONE </th>
@@ -219,7 +219,7 @@ tr td {
  <script>
         $(document).ready(function() {
             $('.dataTables').dataTable({
-        
+        "aoColumnDefs": [ { "bSortable": false, "targets": [ 0 ] } ],
             });
              
              });

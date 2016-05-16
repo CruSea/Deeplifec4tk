@@ -46,17 +46,25 @@ $('.next').click(function(){
 });
  /*TOOLTIP*/
  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-})
+  $('[data-toggle="tooltip"]').tooltip();
+});
 
 
  /*Bootstrap Datetimepicker*/
  $(function () {
+       if( $('#datetimepicker1').lenght){
+           
+       
         $('#datetimepicker1').datetimepicker({
               format: 'MMM DD YYYY',
               minDate:new Date(),
         });
+        }
+       if( $('#datetimepicker2').lenght){
+       
         $('#datetimepicker2').datetimepicker({
                     format: 'LT'
                 });
+            
+            }
             });

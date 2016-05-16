@@ -5,12 +5,8 @@
   header("Location:".$actual_link); /* Redirect browser */
     /* Make sure that code below does not get executed when we redirect. */
        exit;
-
-
-                                 }
-
+  }
  $url=end(explode( '/',$_SERVER['REQUEST_URI']));
-
 
 ?>
 
@@ -20,9 +16,17 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element"> <span>
            
-                  <img alt="image" height="48" class="img-circle" src="<?php echo $this->basePath($this->zfcUserIdentity()->picture)?>" />
+                            
+   <?php $avatar='/avatar/noavatar.jpg';
+   if(strlen($this->zfcUserIdentity()->picture)){
+       $avatar=$this->zfcUserIdentity()->picture;
+   }
+   
+   ?>    
+           
+                  <img alt="image" height="48" class="img-circle" src="<?php echo $this->basePath($avatar)?>" />
                                    </span>
-                        <a  href="#">
+                        <a  href="<?php echo $this->url('dashboard',array('action'=> 'profile'))?>" > 
                 <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">
                                 <?php 
                                                       
@@ -83,7 +87,7 @@
              <li <?php if(in_array($url,array('country','movement','display','users'))){?> class="active" <?php } ?> >     <a href="#"><i class="fa fa-cog fa-yellow "></i> <span class="nav-label"><?php echo $admin; ?> </span></a>
     <ul class="nav nav-second-level">
     <li <?php if($url=='country'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('tree', array('action'=>'country'));?>" ><i class="fa fa-tree fa-yellow"></i>Country</a></li>
-    <li <?php if($url=='movement'){?> class="active" <?php } ?> ><a href="<?php echo $this->url('movement', array('action'=>'index'));?>"><i class="fa fa-question-circle fa-yellow "></i>Build Movement</a></li>
+    <li <?php if($url=='movement'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('movement', array('action'=>'index'));?>"><i class="fa fa-question-circle fa-yellow "></i>Build Movement</a></li>
              <li <?php if($url=='display'){?> class="subactive" <?php } ?> >
         <a href="<?php echo $this->url('learn', array('action'=>'display'))  ?>">
            <i class="fa fa-leanpub fa-yellow" aria-hidden="true"></i><span class="nav-label">Learning Tools</span></a>
