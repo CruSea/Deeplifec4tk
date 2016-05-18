@@ -90,3 +90,20 @@ echo $this->form()->closeTag();
                     </div>
                 </div>
 </div>
+
+<script>
+/*Bootstrap Datetimepicker*/
+ $(function () {
+      
+        $('#datetimepicker1').datetimepicker({
+              format: 'MMM DD YYYY',
+              minDate:new Date(),
+        });
+       
+        $('#datetimepicker2').datetimepicker({
+                    format: 'LT'
+                });
+         
+     
+            });
+            </script>

@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Movement\Entity\Answers;
 use Movement\Entity\Questions;
 use Movement\Form\QuestionForm;
-
+use Zend\Session\Container;
 class MovementController extends AbstractActionController
 {
 /**   
@@ -76,6 +76,8 @@ public function addAction()
                 $question->populate($form->getData());
                 $this->getEntityManager()->persist($question);
                 $this->getEntityManager()->flush();
+                   $session = new Container('message');
+	    $session->success = 'Data saved successfully';
                 // Redirect to list of movement
                 return $this->redirect()->toRoute('movement');
             }
@@ -113,6 +115,9 @@ public function editAction()
             if ($form->isValid()) {
                 $form->bindValues();
                 $this->getEntityManager()->flush();
+                 $session = new Container('message');
+	    $session->success = 'Data saved successfully';
+      
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('movement');
             }
@@ -132,7 +137,9 @@ public function deleteAction(){
        $movement = $this->getEntityManager()->find('Movement\Entity\Questions', $id);    
        $this->getEntityManager()->remove($movement);
         $this->getEntityManager()->flush();
-       
+        $session = new Container('message');
+	   $session->success = ' Deleted successfully';
+      
          return $this->redirect()->toRoute('movement');
 }
 

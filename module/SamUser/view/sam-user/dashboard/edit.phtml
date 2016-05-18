@@ -35,7 +35,14 @@ if($element->getLabel()=='Picture'){ ?>
                                      $avatar=$image;
                                  }
                                   ?> 
-                                <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="auto" height="100" alt="" /></div>
+                                
+                               <?php if(strpos($avatar,'data:image')!==false){ ?>
+                    <img id="image-preview" src="<?php echo $avatar ?>" width="auto" height="100" alt="" />                        <?php }else{ ?>
+        <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="auto" height="100" alt="" />
+                                <?php  }    ?> 
+                                
+                             
+                                </div>
                              </div>
                              <div class="form-group">
                             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -64,7 +71,7 @@ if($element->getLabel()=='Picture'){ ?>
                 ?>
     <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
         </div>
-    </div>
+ </div>
    
      
 <?php }

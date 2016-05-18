@@ -8,6 +8,11 @@
   }
  $url=end(explode( '/',$_SERVER['REQUEST_URI']));
 
+    const USER  =1;
+    const SUPERADMIN=2;
+    const AREAADMIN=3;
+    const COUNTRYADMIN=4;
+   
 ?>
 
 <nav class="navbar-default navbar-static-side" role="navigation" >
@@ -37,13 +42,13 @@
              
              <?php 
                 switch($this->zfcUserIdentity()->role_id){
-                 case 2 :
+                 case SUPERADMIN :
                 echo $admin='Super Admin Panel';
                  break;
-                 case 3:
+                 case AREAADMIN:
                  echo $admin='Area Admin Panel';
                  break;
-                  case 4:
+                  case COUNTRYADMIN:
                  echo $admin='Country Admin Panel';
                  break;
              default :
@@ -66,22 +71,9 @@
                     <a href="<?php echo $this->url('dashboard') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>"><i class="fa fa-th-large fa-yellow "></i> <span class="nav-label">Dashboard</span> </a>
                     </li>
                                 
-         <?php /* this code for  admin */ if($this->zfcUserIdentity()->role_id==2 ||$this->zfcUserIdentity()->role_id==3 ||$this->zfcUserIdentity()->role_id==4 ){
+         <?php /* this code for  admin */ if($this->zfcUserIdentity()->role_id==SUPERADMIN ||$this->zfcUserIdentity()->role_id==AREAADMIN ||$this->zfcUserIdentity()->role_id==COUNTRYADMIN ){
              
-             switch($this->zfcUserIdentity()->role_id){
-                 case 2 :
-                 $admin='Super Admin Panel';
-                 break;
-                 case 3:
-                  $admin='Area Admin Panel';
-                 break;
-                  case 4:
-                  $admin='Country Admin Panel';
-                 break;
-             }
-             
-             
-             
+                         
              
                ?>
              <li <?php if(in_array($url,array('country','movement','display','users'))){?> class="active" <?php } ?> >     <a href="#"><i class="fa fa-cog fa-yellow "></i> <span class="nav-label"><?php echo $admin; ?> </span></a>
@@ -92,7 +84,7 @@
         <a href="<?php echo $this->url('learn', array('action'=>'display'))  ?>">
            <i class="fa fa-leanpub fa-yellow" aria-hidden="true"></i><span class="nav-label">Learning Tools</span></a>
 </li>
- <?php   if($this->zfcUserIdentity()->role_id==2 ||$this->zfcUserIdentity()->role_id==3){ ?>
+ <?php   if($this->zfcUserIdentity()->role_id==SUPERADMIN ||$this->zfcUserIdentity()->role_id==AREAADMIN){ ?>
                 <li <?php if($url=='users'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('users', array('action'=>'index'));?>" ><i class="fa fa-users fa-yellow "></i>
 Manage Roles </a></li>
       <?php } ?>

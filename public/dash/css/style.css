@@ -2317,7 +2317,7 @@ label.error {
   border-right: none;
 }
 /* Toastr custom style */
-#toast-container > .toast {
+/*#toast-container > .toast {
   background-image: none !important;
 }
 #toast-container > .toast:before {
@@ -2379,7 +2379,7 @@ label.error {
 }
 .toast-bottom-full-width {
   margin-bottom: 20px;
-}
+}*
 /* Notifie */
 .cg-notify-message.inspinia-notify {
   background: #fff;
@@ -6524,12 +6524,7 @@ li.subactive a {
 .modal-header {
   border-bottom: 0;
 }
-.select2-container .select2-choice .select2-arrow {
-    right: -12px !important;
-}
-.select2-container .select2-choice {
-    overflow: inherit !important;
-}
+
 /* Button
  Overwrite css for button 
  by Sunakshi ITHands
@@ -6830,6 +6825,17 @@ input[type="file"],input[type="button" i] {
     border-left: 0 !important;
     background: transparent !important;
     background-image: none !important;
+}
+
+.select2-container .select2-choice .select2-arrow {
+    right: -12px !important;
+}
+.select2-container .select2-choice {
+    overflow: inherit !important;
+}
+.select2-container .select2-choice {
+    padding: 0 !important;
+  
 }
 div#DataTables_Table_0_filter input {
     background-color: #FFFFFF;

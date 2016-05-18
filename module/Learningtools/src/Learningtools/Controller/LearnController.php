@@ -6,7 +6,7 @@ use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use Learningtools\Entity\Learningtools;
 use Learningtools\Form\LearnForm;
-
+use Zend\Session\Container;
 class LearnController extends AbstractActionController
 {
 /**   
@@ -81,6 +81,8 @@ public function addAction()
                 $learningTools->populate($form->getData());
                 $this->getEntityManager()->persist($learningTools);
                 $this->getEntityManager()->flush();
+                $session = new Container('message');
+	            $session->success = 'Data saved successfully';
                 // Redirect to list of Learningtools
                 return $this->redirect()->toRoute('learn',array(
                 'action' => 'display'
@@ -124,6 +126,9 @@ public function editAction()
             if ($form->isValid()) {
                 $form->bindValues();
                 $this->getEntityManager()->flush();
+                $session = new Container('message');
+	            $session->success = 'Data saved successfully';
+                
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('learn' ,array(
                 'action' => 'display'
@@ -146,7 +151,9 @@ public function deleteAction(){
        $learningTools = $this->getEntityManager()->find('Learningtools\Entity\Learningtools', $id);    
        $this->getEntityManager()->remove($learningTools);
         $this->getEntityManager()->flush();
-       
+       $session = new Container('message');
+	   $session->success = ' Deleted successfully';
+                
          return $this->redirect()->toRoute('learn',array(
                 'action' => 'display'
             ));

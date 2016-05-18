@@ -134,9 +134,6 @@ class Schedule implements InputFilterAwareInterface
             )));
 
  
-   
-
-
    $inputFilter->add($factory->createInput(array(
                 'name'     => 'txtdate',
                 'required' => true,

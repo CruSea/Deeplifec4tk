@@ -21,10 +21,11 @@ class ScheduleForm extends Form
             'type' => 'Select',
             'options' => array(
                 'label' => 'Person name',
-                   'value_options' => array(
-                      
+                     'empty_option' => 'Select Disciple',
+                   'value_options' => array(                     
                          
                      ),  
+                     
             ), 'attributes' => array(
                            'id'       => 'userdetail',
                            'class'    => 'form-control',
@@ -53,7 +54,7 @@ class ScheduleForm extends Form
             'attributes' => array(
                 'type'  => 'text',
                  'class'    => 'form-control date ',
-                  'id'       => 'datetimepicker1',
+                  'id'       => 'datetimepicker11',
                   'required' => 'required',
             ),
             'options' => array(
@@ -66,7 +67,7 @@ class ScheduleForm extends Form
             'attributes' => array(
                 'type'  => 'text',
                  'class'    => 'form-control date',
-                 'id'       => 'datetimepicker2',
+                 'id'       => 'datetimepicker12',
                    'required' => 'required',
             ),
             'options' => array(

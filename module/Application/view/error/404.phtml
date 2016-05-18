@@ -1,8 +1,62 @@
-<h1><?php echo $this->translate('A 404 error occurred') ?></h1>
+<div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#inSlider" data-slide-to="0" class="active"></li>
+        <li data-target="#inSlider" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <div class="container">
+                <div class="carousel-caption">
+                    <h1>Everyone<br/>
+                        desciple 5.<br/>
+                        <br/>
+                    </h1>
+                    <p>Aggressively evangelize, deeply build, urgently multiply</p>
+                    <p>
+                        <a class="btn btn-lg btn-primary" href="#pricing" role="button" style="background-color:#03b2d4 ;">Learn More</a>
+                        <!--<a class="caption-link" href="#" role="button">Inspinia Theme</a>-->
+                    </p>
+                </div>
+                <!--<div class="carousel-image wow zoomIn">-->
+                <!--<img src="img/laptop.png" alt="laptop"/>-->
+                <!--</div>-->
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back one"></div>
+
+        </div>
+        <div class="item">
+            <div class="container">
+                <div class="carousel-caption blank">
+                    <h1>“Don’t be afraid; <br/> from now on you will be catching men”</h1>
+
+                    <p>Launch deep in the see. </p>
+                    <p><a class="btn btn-lg btn-primary" href="#pricing" role="button">Learn more</a></p>
+                </div>
+            </div>
+            <!-- Set background for slide in css -->
+            <div class="header-back two"></div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+<div class="container error-page">
+<div class="row">
+<div class="col-sm-6 col-sm-offset-3" >
+
+<h1><?php echo $this->translate('404 error occurred') ?></h1>
 <h2><?php echo $this->message ?></h2>
 
-<?php if (isset($this->reason) && $this->reason): ?>
+<span style="display: none ;" >
 
+<?php if (isset($this->reason) && $this->reason): ?>
 <?php
 $reasonMessage= '';
 switch ($this->reason) {
@@ -24,7 +78,7 @@ switch ($this->reason) {
 }
 ?>
 
-<p><?php echo $reasonMessage ?></p>
+<p><?php //echo $reasonMessage ?></p>
 
 <?php endif ?>
 
@@ -111,3 +165,8 @@ if (isset($this->controller_class)
 <?php endif ?>
 
 <?php endif ?>
+</span>
+
+</div>
+</div>
+</div>

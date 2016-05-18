@@ -6,7 +6,7 @@ use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use Schedules\Entity\Schedule;
 use Schedules\Form\ScheduleForm;
-
+use Zend\Session\Container;
 class ScheduleController extends AbstractActionController
 {
 /**   
@@ -64,13 +64,12 @@ public function addAction()
         $form = new ScheduleForm();
         $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $this->getUserId()) );
         $usersData=array();
-        foreach($users as $user ){
-        $usersData[$user->id.'#'.$user->phone_no.'#'.$user->displayName]=$user->displayName;    
+          foreach($users as $user ){
+        $usersData[$user->phone_no.'#'.$user->displayName]=$user->displayName;    
         } 
         
         $form->get('userdetail')->setValueOptions($usersData) ;
-     //   $form->get('user_Id')->setValue($this->getUserId());
-        $form->get('submit')->setValue('Save');
+         $form->get('submit')->setValue('Save');
         $request = $this->getRequest();
         if ($request->isPost()) {
             $schedule = new Schedule();
@@ -80,7 +79,7 @@ public function addAction()
              $timeVal=$request->getPost('txttime');
          
             $data=array();
-           list($data['user_Id'],$data['disciple_phone'],$data['name'])=explode('#',$Userdetail);
+           list($data['disciple_phone'],$data['name'])=explode('#',$Userdetail);
           $data['time']=$dateVal." ".$timeVal;  
          $temp=$this->getRequest()->getPost()->toArray();
           unset($temp['userdetail']);
@@ -100,6 +99,8 @@ public function addAction()
                 $schedule->populate($datatemp);
                 $this->getEntityManager()->persist($schedule);
                 $this->getEntityManager()->flush();
+                  $session = new Container('message');
+	   $session->success = 'Data saved successfully';
                 // Redirect to list of schedule
                 return $this->redirect()->toRoute('schedule');
             }
@@ -115,6 +116,8 @@ array(
 
 public function editAction()
 {
+    
+   
           $this->layout()->setTemplate('layout/master');  
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -122,13 +125,16 @@ public function editAction()
         }
         $schedule = $this->getEntityManager()->find('Schedules\Entity\Schedule', $id);
         
-        $formUsers=$schedule->user_Id.'#'.$schedule->disciple_phone.'#'.$schedule->name;
-              
+       $formUsers=$schedule->disciple_phone.'#'.$schedule->name;
+     
+             
         $form  = new ScheduleForm();
         $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $this->getUserId()) );
         $usersData=array();
         foreach($users as $user ){
-        $usersData[$user->id.'#'.$user->phone_no.'#'.$user->displayName]=$user->displayName;    
+    
+        $usersData[$user->phone_no.'#'.$user->displayName]=$user->displayName;    
+       
         } 
         
         $form->get('userdetail')->setValueOptions($usersData)->setValue($formUsers) ;
@@ -147,12 +153,12 @@ public function editAction()
         
         if ($request->isPost()) {
             
-                       $Userdetail =  $request->getPost('userdetail');
+             $Userdetail =  $request->getPost('userdetail');
              $dateVal=$request->getPost('txtdate');
              $timeVal=$request->getPost('txttime');
          
             $data=array();
-           list($data['user_Id'],$data['disciple_phone'],$data['name'])=explode('#',$Userdetail);
+           list($data['disciple_phone'],$data['name'])=explode('#',$Userdetail);
           $data['time']=$dateVal." ".$timeVal;  
            $data['user_Id']=$this->getUserId();
          $temp=$this->getRequest()->getPost()->toArray();
@@ -172,12 +178,12 @@ public function editAction()
             if ($form->isValid()) {
               
               
-              $schedule->populate($datatemp);
+                $schedule->populate($datatemp);
                 $this->getEntityManager()->persist($schedule);
                 $this->getEntityManager()->flush();
                
-               // $form->bindValues();
-              //  $this->getEntityManager()->flush();
+                $session = new Container('message');
+	            $session->success = 'Data saved successfully';
                 // Redirect to list of albums
               return $this->redirect()->toRoute('schedule');
             }
@@ -200,6 +206,8 @@ public function deleteAction(){
        $schedule = $this->getEntityManager()->find('Schedules\Entity\Schedule', $id);    
        $this->getEntityManager()->remove($schedule);
         $this->getEntityManager()->flush();
+                 $session = new Container('message');
+	   $session->success = ' Deleted successfully';
                return $this->redirect()->toRoute('schedule');
 }
 

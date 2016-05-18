@@ -24,4 +24,45 @@ span.help-inline ul {
     list-style: none;
     color: #a94442;
 }
+.error-page {
+    text-align: center;
+    padding: 60px 0 20px;
+}
+.error-page h1{
+    font-size: 50px;
+    color: #03b2d4;
+    font-weight: 400;
+}
+/* overwrite for select */
+.select2-drop-active,.select2-drop.select2-drop-above.select2-drop-actives {
+    border: 0 !important;
+}
+.select2-container .select2-choice {
+    border: 0 !important;
+    background-image: none !important;
+}
+.select2-drop.select2-drop-above,.select2-drop,.select2-container-active .select2-choice,
+.select2-container-active .select2-choices {
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+}
+.select2-dropdown-open .select2-choice{
+  background-color: transparent !important;
+}
+.select2-container .select2-choice .select2-arrow {
+    border-left: 0 !important;
+    background: transparent !important;
+    background-image: none !important;
+}
+
+.select2-container .select2-choice .select2-arrow {
+    right: -12px !important;
+}
+.select2-container .select2-choice {
+    overflow: inherit !important;
+}
+.select2-container .select2-choice {
+    padding: 0 !important;
+  
+}
 /* This beautiful CSS-File has been crafted with LESS (lesscss.org) and compiled by simpLESS (wearekiss.com/simpless) */

@@ -10,6 +10,7 @@
 namespace Application;
 
 return array(
+
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -98,16 +99,7 @@ return array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
         ),
     ),
-//    'translator' => array(
-//        'locale' => 'en_us',
-//        'translation_file_patterns' => array(
-//            array(
-//                'type'     => 'gettext',
-//                'base_dir' => __DIR__ . '/../language',
-//                'pattern'  => '%s.mo',
-//            ),
-//        ),
-//    ),
+
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' =>'Application\Controller\IndexController'
@@ -132,6 +124,9 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    
+    
+  
     // Placeholder for console routes
     'console' => array(
         'router' => array(

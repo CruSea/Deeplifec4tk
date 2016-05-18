@@ -18,6 +18,8 @@ use Zend\Mail;
 use DoctrineModule\Validator\NoObjectExists as NoObjectExistsValidator;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Session\Container;
+
 class DashboardController  extends AbstractActionController
 {
    
@@ -27,7 +29,7 @@ class DashboardController  extends AbstractActionController
    
     protected $em;
     public $userid;
-    public $fileuploaderr=array('size'=>array('The image you tried to upload.it needs to be at min Width 100 and Max Width 300') ,'type'=>array('Please enter a value with a valid extension (jpg, gif, png) in Picture.') );
+    public $fileuploaderr=array('size'=>array('The image you tried to upload.it needs to be at min Width 100 and Max Width 300') ,'type'=>array('Please enter a file with a valid extension (jpg, gif, png) in Picture.'),'sizemb'=>array('file  size 1 kb to 1 mb') );
 
     public function getMUserId() {
         if ($this->zfcUserAuthentication()->hasIdentity()) {
@@ -85,6 +87,7 @@ Public function indexAction()  {
 Public function addAction()  {
        
         $this->layout()->setTemplate('layout/master');   
+          $picture='';
         $form = new UsersForm();
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
@@ -112,6 +115,11 @@ Public function addAction()  {
                $Users = new Users();
                $form->setInputFilter($Users->getInputFilter());
                $files   = $request->getFiles();
+     
+            
+         
+      // $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
+            
                $data =$this->getRequest()->getPost()->toArray() ;
               $form->setData($this->getRequest()->getPost());
               $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
@@ -127,6 +135,9 @@ Public function addAction()  {
                 $validIsImage = new \Zend\Validator\File\IsImage();
              /* values here minWidth,minHeight,maxWidth,maxHeight   */
                 $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
+                $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
+             
+             
              if(!$validIsImage->isValid($files['picture'])){
               
               $form->get('picture')->setMessages($this->fileuploaderr['type']);  
@@ -136,7 +147,12 @@ Public function addAction()  {
                   $form->get('picture')->setMessages($this->fileuploaderr['size']);  
                   $flag=0;
             
+            }elseif(!$validSize->isValid($files['picture'])){
+                $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
+                  $flag=0;
             }
+             
+             
              }
               
                  if($emailStatus){
@@ -160,6 +176,8 @@ Public function addAction()  {
                 $Users->exchangeArray($data);
                 $this->getEntityManager()->persist($Users);
                 $this->getEntityManager()->flush();
+                   $session = new Container('message');
+	    $session->success = 'Data saved successfully';
                 // Redirect to list of dashboard
                 return $this->redirect()->toRoute('dashboard');
                }
@@ -171,6 +189,7 @@ Public function addAction()  {
             'Url' => '/',
             'form' => $form,
             'title' => 'Add Disciples',
+             'image' =>$picture,
         ));
         return $view;
 
@@ -216,7 +235,8 @@ Public function editAction()  {
                $form->setInputFilter($user->getInputFilter());
                 $files   = $request->getFiles();
                $data =$this->getRequest()->getPost()->toArray();
-             
+          //    $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
+         
                     
               
               $form->setData($this->getRequest()->getPost());
@@ -232,6 +252,7 @@ Public function editAction()  {
                 $validIsImage = new \Zend\Validator\File\IsImage();
              /* values here minWidth,minHeight,maxWidth,maxHeight   */
                 $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
+              $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
              if(!$validIsImage->isValid($files['picture'])){
               
               $form->get('picture')->setMessages($this->fileuploaderr['type']);  
@@ -241,7 +262,11 @@ Public function editAction()  {
                   $form->get('picture')->setMessages($this->fileuploaderr['size']);  
                   $flag=0;
             
+            }elseif(!$validSize->isValid($files['picture'])){
+                $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
+                  $flag=0;
             }
+             
              }
               
               
@@ -274,7 +299,8 @@ Public function editAction()  {
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
                 // Redirect to list of dashboard
-              //  $this->flashMessenger()->addSuccessMessage('You are now logged in.');
+                 $session = new Container('message');
+	           $session->success = 'Data saved successfully';
                 return $this->redirect()->toRoute('dashboard');
                }
               }                
@@ -301,7 +327,8 @@ Public function editAction()  {
         $user->mentor_id='';
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
-            
+               $session = new Container('message');
+	   $session->success = 'Data saved successfully';
                 return $this->redirect()->toRoute('dashboard');
       
 }
@@ -362,6 +389,8 @@ Public function profileAction()  {
        
               $form->setInputFilter($user->getInputFilter());
               $files   = $request->getFiles();
+               $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
+         
               $data =$this->getRequest()->getPost()->toArray();
               $form->setData($this->getRequest()->getPost());
               $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
@@ -374,6 +403,7 @@ Public function profileAction()  {
                 $validIsImage = new \Zend\Validator\File\IsImage();
              /* values here minWidth,minHeight,maxWidth,maxHeight   */
                 $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
+              $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
              if(!$validIsImage->isValid($files['picture'])){
               
               $form->get('picture')->setMessages($this->fileuploaderr['type']);  
@@ -383,7 +413,11 @@ Public function profileAction()  {
                   $form->get('picture')->setMessages($this->fileuploaderr['size']);  
                   $flag=0;
             
+            }elseif(!$validSize->isValid($files['picture'])){
+                $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
+                  $flag=0;
             }
+             
              }
                
                
@@ -429,9 +463,10 @@ Public function profileAction()  {
                 
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
+                 $session = new Container('message');
+	   $session->success = 'Data saved successfully';
                 // Redirect to list of dashboard
-              //  $this->flashMessenger()->addSuccessMessage('You are now logged in.');
-                return $this->redirect()->toRoute('dashboard');
+               return $this->redirect()->toRoute('dashboard');
                }
               }                
                

@@ -6,10 +6,18 @@ use Zend\Validator\ValidatorChain;
 use SamUser\Entity\Rolearea;
 use DoctrineModule\Validator\ObjectExists;
 use Zend\Mvc\Controller\AbstractActionController;
-
+use Zend\Session\Container;
 class UsersController extends AbstractActionController
 {
+    
     protected $em;
+
+ public function __construct()
+    {
+       
+       
+
+    }
 
     protected function getEntityManager() {
         if (null === $this->em)
@@ -17,8 +25,7 @@ class UsersController extends AbstractActionController
         return $this->em;
     }
 
-   
-
+    
     /**
      * User list / default action
      */
@@ -104,7 +111,8 @@ class UsersController extends AbstractActionController
                $this->getEntityManager()->remove($roleArea);
                $this->getEntityManager()->flush();
           }
-         
+            $session = new Container('message');
+	       $session->success = 'Data saved successfully';
             return $this->redirect()->toRoute('users');
             
           }
