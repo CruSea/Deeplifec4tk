@@ -29,7 +29,7 @@ class DashboardController  extends AbstractActionController
    
     protected $em;
     public $userid;
-    public $fileuploaderr=array('size'=>array('The image you tried to upload.it needs to be at min Width 100 and Max Width 300') ,'type'=>array('Please enter a file with a valid extension (jpg, gif, png) in Picture.'),'sizemb'=>array('file  size 1 kb to 1 mb') );
+    public $fileuploaderr=array('size'=>array('The image you tried to upload.it needs to be at min Width 100 and Max Width 300') ,'type'=>array('Please enter a file with a valid extension (jpg, gif, png) in Picture.'),'sizemb'=>array(' Image must be smaller than 4 MB') );
 
     public function getMUserId() {
         if ($this->zfcUserAuthentication()->hasIdentity()) {
@@ -134,8 +134,8 @@ Public function addAction()  {
               if(strlen($newImage))  {
                 $validIsImage = new \Zend\Validator\File\IsImage();
              /* values here minWidth,minHeight,maxWidth,maxHeight   */
-                $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
-                $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
+                //$validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
+                $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '4MB'));
              
              
              if(!$validIsImage->isValid($files['picture'])){
@@ -143,9 +143,9 @@ Public function addAction()  {
               $form->get('picture')->setMessages($this->fileuploaderr['type']);  
                   $flag=0;
             
-             }elseif(!$validImageSize->isValid($files['picture'])){
-                  $form->get('picture')->setMessages($this->fileuploaderr['size']);  
-                  $flag=0;
+            // }elseif(!$validImageSize->isValid($files['picture'])){
+              //    $form->get('picture')->setMessages($this->fileuploaderr['size']);  
+                //  $flag=0;
             
             }elseif(!$validSize->isValid($files['picture'])){
                 $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
@@ -251,16 +251,16 @@ Public function editAction()  {
               if(strlen($newImage))  {
                 $validIsImage = new \Zend\Validator\File\IsImage();
              /* values here minWidth,minHeight,maxWidth,maxHeight   */
-                $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
+            //    $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
               $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
              if(!$validIsImage->isValid($files['picture'])){
               
               $form->get('picture')->setMessages($this->fileuploaderr['type']);  
                   $flag=0;
             
-             }elseif(!$validImageSize->isValid($files['picture'])){
-                  $form->get('picture')->setMessages($this->fileuploaderr['size']);  
-                  $flag=0;
+            // }elseif(!$validImageSize->isValid($files['picture'])){
+           //       $form->get('picture')->setMessages($this->fileuploaderr['size']);  
+              //    $flag=0;
             
             }elseif(!$validSize->isValid($files['picture'])){
                 $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
@@ -375,7 +375,7 @@ Public function profileAction()  {
      
         $form->get('country')->setValueOptions($ValueOptions)->setValue($user->country) ;
         $form->get('gender')->setValue($user->gender) ;
-        $form->get('mentor_id')->setValue($this->getMUserId());
+        $form->get('mentor_id')->setValue($user->mentor_id);
         $form->get('stage')->setValue($user->stage);
         $form->get('password')->setValue($user->password);
         $form->get('role_id')->setValue($user->role_id);
@@ -389,7 +389,7 @@ Public function profileAction()  {
        
               $form->setInputFilter($user->getInputFilter());
               $files   = $request->getFiles();
-               $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
+      //         $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
          
               $data =$this->getRequest()->getPost()->toArray();
               $form->setData($this->getRequest()->getPost());
@@ -402,16 +402,16 @@ Public function profileAction()  {
               if(strlen($newImage))  {
                 $validIsImage = new \Zend\Validator\File\IsImage();
              /* values here minWidth,minHeight,maxWidth,maxHeight   */
-                $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
+           //     $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
               $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
              if(!$validIsImage->isValid($files['picture'])){
               
               $form->get('picture')->setMessages($this->fileuploaderr['type']);  
                   $flag=0;
             
-             }elseif(!$validImageSize->isValid($files['picture'])){
-                  $form->get('picture')->setMessages($this->fileuploaderr['size']);  
-                  $flag=0;
+           //  }elseif(!$validImageSize->isValid($files['picture'])){
+               //   $form->get('picture')->setMessages($this->fileuploaderr['size']);  
+               //   $flag=0;
             
             }elseif(!$validSize->isValid($files['picture'])){
                 $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  

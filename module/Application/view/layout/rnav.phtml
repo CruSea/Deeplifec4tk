@@ -82,7 +82,7 @@
     <li <?php if($url=='movement'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('movement', array('action'=>'index'));?>"><i class="fa fa-question-circle fa-yellow "></i>Build Movement</a></li>
              <li <?php if($url=='display'){?> class="subactive" <?php } ?> >
         <a href="<?php echo $this->url('learn', array('action'=>'display'))  ?>">
-           <i class="fa fa-leanpub fa-yellow" aria-hidden="true"></i><span class="nav-label">Learning Tools</span></a>
+           <i class="fa fa-leanpub fa-yellow" aria-hidden="true"></i>Learning Tools</a>
 </li>
  <?php   if($this->zfcUserIdentity()->role_id==SUPERADMIN ||$this->zfcUserIdentity()->role_id==AREAADMIN){ ?>
                 <li <?php if($url=='users'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('users', array('action'=>'index'));?>" ><i class="fa fa-users fa-yellow "></i>
