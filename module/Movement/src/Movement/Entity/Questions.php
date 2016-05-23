@@ -6,7 +6,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface; 
-
+use Zend\Stdlib\DateTime;
 /**
  * questions.
  *
@@ -43,6 +43,7 @@ class Questions implements InputFilterAwareInterface
      * @ORM\Column(type="datetime")
      */
     protected $created;
+   
   
     /**
      * @ORM\Column(type="string")
@@ -110,7 +111,7 @@ class Questions implements InputFilterAwareInterface
         $this->description = $data['description'];
         $this->mandatory = $data['mandatory'];
         $this->country=$data['country'];
-    
+        $this->created = new DateTime(); 
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)

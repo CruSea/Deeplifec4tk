@@ -12,6 +12,7 @@ return array(
         'Application',
         'DoctrineModule',
         'DoctrineORMModule',
+        'Share',
         'ZfcBase',
         'ZfcUser',
         'ZfcUserDoctrineORM',

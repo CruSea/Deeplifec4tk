@@ -47,6 +47,29 @@ return array(
                             ),
                         ),
 
+ 'ajaxforgot' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Literal',
+                            'options' => array(
+                                'route' => '/ajaxforgot',
+                                'defaults' => array(
+                                    'controller' => 'Application\Controller\Index',
+                                    'action'     => 'ajaxforgot',
+                                ),
+                            ),
+                        ),
+
+
+ 'resetpassword' => array(
+                            'type' => 'Zend\Mvc\Router\Http\Literal',
+                            'options' => array(
+                                'route' => '/resetpassword',
+                                'defaults' => array(
+                                    'controller' => 'Application\Controller\Index',
+                                    'action'     => 'resetpassword',
+                                ),
+                            ),
+                        ),
+
               'contactus' => array(
                             'type' => 'Zend\Mvc\Router\Http\Literal',
                             'options' => array(
@@ -114,7 +137,8 @@ return array(
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/master'           => __DIR__ . '/../view/layout/master.phtml',
-            
+             'forgot' => __DIR__ . '/../view/application/index/email/forgot.phtml',
+             'contactusemail' => __DIR__ . '/../view/application/index/email/contactusemail.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',

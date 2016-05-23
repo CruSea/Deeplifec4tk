@@ -7,6 +7,7 @@ use SamUser\Entity\Rolearea;
 use DoctrineModule\Validator\ObjectExists;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
+use Zend\Stdlib\DateTime;
 class UsersController extends AbstractActionController
 {
     
@@ -32,15 +33,17 @@ class UsersController extends AbstractActionController
     public function indexAction() {
        $this->layout()->setTemplate('layout/master');  
      
-       $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+       $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll();
         $countriesData=array();
         foreach($countries as $country ){
         $countriesData[$country->id]=$country->name;    
         } 
+     
+     $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array(),array('created' => 'DESC'));
      return new ViewModel(
             array(
                'countries'=>$countriesData,
-           'users' => $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findAll() 
+           'users' => $users
             )
         );
     
@@ -90,7 +93,8 @@ class UsersController extends AbstractActionController
            $areaGroups=$request->getPost('areagroups'); 
            $user=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('id'=>$id ) );
            $user->role_id=$rolePost;
-         $this->getEntityManager()->persist($user);
+           $user->created =new DateTime();
+           $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
           if(in_array($rolePost,array(2,3,4))){
               

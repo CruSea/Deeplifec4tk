@@ -6,7 +6,8 @@
     /* Make sure that code below does not get executed when we redirect. */
        exit;
   }
- $url=end(explode( '/',$_SERVER['REQUEST_URI']));
+  $urlArray=explode('/',$_SERVER['REQUEST_URI']);
+ $url=end($urlArray);
 
     const USER  =1;
     const SUPERADMIN=2;

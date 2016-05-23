@@ -1,5 +1,5 @@
  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
- <div class="row">
+  <div class="row">
             <div class="col-md-3 col-sm-6">
                 <div class="widget style1 grey-bg">
                         <div class="row">
@@ -95,6 +95,7 @@
                 <table class="table table-striped  table-hover dataTables nowrap">
                     <thead>
                     <tr>
+                    <th class="nodisplay" ></th>
                          <th>AVATAR</th>
                         <th>NAME </th>
                         <th>EMAIL </th>
@@ -107,7 +108,7 @@
                     </thead>
                     <tbody>
                       <?php  foreach ($users as $user) : ?>
-            <tr> 
+            <tr>  <td class="nodisplay" ></td>
                 <td >
                 <?php
               $avatar='/avatar/noavatar.jpg';
@@ -211,8 +212,8 @@ tr td {
  <script>
         $(document).ready(function() {
             $('.dataTables').dataTable({
-     	"order": [[ 1, "asc" ]],
-       "columnDefs": [ {"targets": 0,"orderable": false},{"targets": 7,"orderable": false} ],
+     	"order": [[ 0, "asc" ]],
+       "columnDefs": [ {"targets": 1,"orderable": false},{"targets": 8,"orderable": false} ],
 
             });
              

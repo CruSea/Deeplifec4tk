@@ -19,6 +19,7 @@ use Zend\Mail;
 use Zend\Mime\Part as MimePart;  
 use Zend\Mime\Message as MimeMessage;  
 use Zend\Session\Container;
+use SamUser\Entity\Resetpassword;
 
 
 
@@ -91,8 +92,7 @@ echo 0;
 
    
  }
-    
-    
+
     // add disciple
     Public function indexAction()
     {
@@ -117,7 +117,7 @@ echo 0;
        return $view;
     }
 
-    public function signupAction(){
+   public function signupAction(){
 	
     
            if ($this->zfcUserAuthentication()->hasIdentity()) {
@@ -191,7 +191,7 @@ echo 0;
 			   	  $this->getEntityManager()->persist($Users);
                   $this->getEntityManager()->flush();
          	           
-                     $session = new Container('message');
+                    $session = new Container('message');
 	                 $session->success = 'User was added successfully.Please login';
 	
                          return $this->redirect()->toRoute('home');
@@ -219,9 +219,194 @@ echo 0;
 
       }
     
+   public function ajaxforgotAction(){
+       $mailSend=0;
+         $request = $this->getRequest();
+        if($request->isXmlHttpRequest()){
+	        $data = $request->getPost();
+	   
+         
+           if(isset($data['phone']) && !empty($data['phone'])){
+	    $phone=$data['phone'];
+	        }else{
+                 $mailSend=0;
+            }
+	       if(isset($data['email']) && !empty($data['email'])){
+	     $email=$data['email'];
+	        }else{
+                 $mailSend=0;
+            }
+	    
+       
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select("u.id")   
+         ->from('SamUser\Entity\Users', 'u')
+             ->andWhere('u.email = (:email)')
+            ->andWhere('u.phone_no = (:phone_no)')
+            // ->andWhere('u.password !=""')
+            ->setParameter('email', $email)
+              ->setParameter('phone_no', $phone);
+  
+       $userid = $queryBuilder->getQuery()->getOneOrNullResult();
+          
+       if($userid){
+      $keycode=$this->randomKeycode();
+      $Users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('id' =>$userid['id']));
+ 
+ if(isset($_SERVER['HTTPS'])){
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    }
+    else{
+        $protocol = 'http';
+    }
+     $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
+ $mailSend=$this->sendMail($keycode,$email,$url);
+if($mailSend){
+     $dataSave=array();
+      $dataSave['email']=$email;
+      $dataSave['keycode']=$keycode;
+      $dataSave['status']=1;
+      $resetPassword =new Resetpassword();
+      $resetPassword->exchangeArray($dataSave);
+       $this->getEntityManager()->persist($resetPassword);
+                $this->getEntityManager()->flush();
+    
+}
+     
+     
+       }else{
+           
+      $mailSend=0;
+       }
+       
+       
+       
+        }	    
+     
+     echo $mailSend;
+       $viewModel = new ViewModel();
+       $viewModel->setTerminal(true);
+       return $viewModel;
+   }
+
+
+public function resetpasswordAction(){
+     
+  $status=1;
+  $msg='';
+  $email= $this->params()->fromQuery('email');
+  $keycode= $this->params()->fromQuery('keycode');
+  if(isset($_SERVER['HTTPS'])){
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    } else{
+        $protocol = 'http';
+    }
+   $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
+   $url.='/resetpassword?email='.$email.'&keycode='.$keycode;
+  $usersReset =$this->getEntityManager()->getRepository('SamUser\Entity\Resetpassword')->findOneBy(array('email' =>$email,'keycode' =>$keycode));
+  
+
+    if($usersReset)
+    {
+       if(!$usersReset->status){ 
+        $status=0;  
+       }else {
+           
+          $request = $this->getRequest();
+          if ($request->isPost()) {
+          
+           $pass=$request->getPost('pass');
+           $cpass=$request->getPost('cpass');
+          if(strcmp($pass,$cpass)){
+          $msg='Sorry. . . Your password  and Confirm password do not match. Please try again.';    
+          }else{
+            
+            $this->bcrypt = new Bcrypt();
+            $this->bcrypt->setCost(14);   
+            $cryptPassword = $this->bcrypt->create($pass);
+            $Users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('email' =>$email));
+            $Users->password=$cryptPassword;
+                         $this->getEntityManager()->persist($Users);
+                        $this->getEntityManager()->flush();
+             	   		$usersReset->status=0;
+                     $this->getEntityManager()->persist($usersReset);
+                        $this->getEntityManager()->flush();
+             	            
+                        $session = new Container('message');
+	                   $session->success = 'User was added successfully.Please login';
+	
+                         return $this->redirect()->toRoute('home');
+          
+          }    
+       
+       
+       
+            
+       
+       
+       
+       
+       
+       
+            }
 
 
 
+       }
+    
+    }else{
+       $status=0; 
+    }
 
+     
+        $view = new ViewModel(array(
+            'Url' => $url,
+            'title' => 'Reset password',
+            'flashMessages'=>$msg,
+            'active'=>$status
+        ));
+        return $view;
+}
+public function randomKeycode( $length = 10 ) {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $password = substr( str_shuffle( $chars ), 0, $length );
+    return $password;
+}
+public function sendMail($keycode,$email,$url){
+    
+
+  $dataArray=array();
+  $dataArray['keycode']=$keycode;
+  $dataArray['email']=$email;
+  $dataArray['url']=$url;
+  $options = new Mail\Transport\SmtpOptions(array(
+            'name' => 'localhost',
+            'host' => 'smtp.gmail.com',
+            'port'=> 587,
+            'connection_class' => 'login',
+            'connection_config' => array(
+                'username' => 'appsdeeplife@gmail.com',
+                'password' => 'aarav321',
+                'ssl'=> 'tls',
+            ),
+    ));
+                 
+$renderer = $this->getServiceLocator()->get('ViewRenderer');
+$content =$renderer->render('forgot', $dataArray);
+// make a header as html
+$html = new MimePart($content);
+$html->type = "text/html";
+$body = new MimeMessage();
+$body->setParts(array($html,));
+// instanc    e mail 
+$mail = new Mail\Message();
+$mail->setBody($body); // will generate our code html from template.phtml
+$mail->setFrom('info@deeplife.com','Deeplife');
+$mail->setTo($email);
+$mail->setSubject('Deeplife forgot password ');
+$transport = new Mail\Transport\Smtp($options);
+$transport->send($mail);
+return 1;
+}
 
 }

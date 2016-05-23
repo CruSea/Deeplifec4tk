@@ -241,7 +241,7 @@ body:not(.fixed-sidebar):not(.canvas-menu).mini-navbar .nav li:hover > .nav-seco
 .mini-navbar .nav li:focus > .nav-second-level {
   display: block;
   border-radius: 0 2px 2px 0;
-  min-width: 140px;
+  min-width: 160px;
   height: auto;
 }
 body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
@@ -258,7 +258,7 @@ body.mini-navbar .navbar-default .nav > li > .nav-second-level li a {
   position: absolute;
   left: 70px;
   top: 0px;
-  background-color: #2f4050;
+  background-color: #00a3bb;
   padding: 10px 10px 10px 10px;
   font-size: 12px;
 }
@@ -6815,7 +6815,7 @@ input[type="file"],input[type="button" i] {
     border: 0 !important;
     background-image: none !important;
 }
-.select2-drop.select2-drop-above,.select2-drop,.select2-container-active .select2-choice,
+.select2-container-active .select2-choice,
 .select2-container-active .select2-choices {
     -webkit-box-shadow: none !important;
             box-shadow: none !important;
@@ -6897,6 +6897,9 @@ ul.learning {
 .learn-content {
   display: table;
   min-height: 125px;
+}
+.nodisplay {
+    display: none;
 }
 .learn-content .cell {
   display:  table-cell;

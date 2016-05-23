@@ -6,6 +6,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface; 
+use Zend\Stdlib\DateTime;
 /**
  * answers.
  *
@@ -104,7 +105,7 @@ class Learningtools implements InputFilterAwareInterface
         $this->iframcode = $data['iframcode'];
         $this->title = $data['title'];
         $this->default_learn = $data['default_learn'];
-    
+          $this->created = new DateTime(); 
     }
 
      public function setInputFilter(InputFilterInterface $inputFilter)

@@ -95,6 +95,7 @@ $form->setAttribute('class', 'm-t');
                       
 <?php if ($this->enableRegistration) : ?>
                    Not registered? <a href="<?php echo $this->url('signup') ?>">Sign up!</a>
+                     Forgot password? <a data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a>
                <?php endif; ?>
                        
                    <?php echo $this->form()->closeTag() ?>

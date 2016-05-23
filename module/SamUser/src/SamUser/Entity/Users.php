@@ -26,6 +26,8 @@ use Zend\InputFilter\InputFilterInterface;
  */
 class Users implements InputFilterAwareInterface , UserInterface
 {
+   
+   
     protected $inputFilter;
  
     /**
@@ -39,6 +41,8 @@ class Users implements InputFilterAwareInterface , UserInterface
      * @ORM\Column(type="datetime")
      */
     protected $created;
+   
+  
    
     /**
      * @ORM\Column(type="string")

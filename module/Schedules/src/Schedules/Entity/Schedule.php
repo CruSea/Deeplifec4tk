@@ -5,6 +5,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface; 
+use Zend\Stdlib\DateTime;
 /**
  
  * @ORM\Entity
@@ -110,7 +111,7 @@ class Schedule implements InputFilterAwareInterface
         $this->type = 'Normal';
         $this->disciple_phone = $data['disciple_phone'];
         $this->time = $data['time'];
-    
+     $this->created = new DateTime(); 
     }
 
      public function setInputFilter(InputFilterInterface $inputFilter)

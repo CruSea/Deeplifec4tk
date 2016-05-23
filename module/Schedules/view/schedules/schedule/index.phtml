@@ -18,7 +18,7 @@
                <div class="table-responsive">
                 <table class="table table-striped  table-hover dataTables">
                     <thead>
-                    <tr>
+                    <tr> <th class="nodisplay" ></th>
                         <th> DATE</th>
                         <th> NAME </th>
                          <th> Description </th>  
@@ -30,7 +30,7 @@
                     
                    
                 <?php  foreach ($schedules as $schedule) : ?>
-                <tr> 
+                <tr>  <td class="nodisplay" ></td>
                 <td><?php echo $this->escapeHtml(date_format(date_create($schedule->time), 'g:ia \o\n l jS F Y'));?></td>
                  <td><?php echo $this->escapeHtml(ucwords($schedule->name));?></td>
                 <td><?php echo $this->escapeHtml(ucwords($schedule->description));?></td>
@@ -71,7 +71,7 @@
  <script>
         $(document).ready(function() {
             $('.dataTables').dataTable({
-         "order": [[ 1, "asc" ]],
+         "order": [[ 0, "asc" ]],
         "columnDefs": [{"targets": 4,"orderable": false} ],
             });
              

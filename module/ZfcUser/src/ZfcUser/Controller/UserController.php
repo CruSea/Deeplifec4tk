@@ -75,7 +75,7 @@ class UserController extends AbstractActionController
      */
     public function loginAction()
     {
-         
+        $flashMessenger=''; 
         $session = new Container('message');
         if($session->offsetExists('success')){
 	    	$flashMessenger= $session->offsetGet('success');

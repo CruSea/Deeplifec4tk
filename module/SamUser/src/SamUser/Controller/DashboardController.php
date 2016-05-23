@@ -11,7 +11,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use SamUser\Entity\Users;
 use Zend\Form\Form;
-
+use Zend\Stdlib\DateTime;
 use SamUser\Form\UsersForm;
 use Doctrine\ORM\EntityManager;
 use Zend\Mail;
@@ -296,6 +296,7 @@ Public function editAction()  {
 			  	$user->$key=$val;
 			  } 
               	$user->password=$user->password;
+               $user->created =new DateTime();
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
                 // Redirect to list of dashboard

@@ -19,6 +19,7 @@
                 <table class="table table-striped  table-hover dataTables">
                     <thead>
                     <tr>
+                         <th class="nodisplay" ></th>
                         <th>TITLE</th>
                         <th>DESCRIPTION </th>
                         <th>Action</th>
@@ -29,7 +30,7 @@
                     <?php  $isno=1;?>
                 <?php  foreach ($learning as $learn) : ?>
                 <tr> 
-                
+                 <td class="nodisplay" ></td>
                 <td ><?php echo $this->escapeHtml(ucwords($learn->title));?></td>
                 <td><?php echo $this->escapeHtml($learn->description);?></td>
                          <td>
