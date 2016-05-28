@@ -43,7 +43,6 @@ class ServiceImpl implements Service
         $this->apiRepository = $apiRepository;
     }
     public function LogError($error){
-
     }
 
     public function isValidUser(User $user)

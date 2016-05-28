@@ -79,7 +79,7 @@ class RepositoryImpl implements RepositoryInterface
                 'picture'=>$user->getPicture(),
             ))
             ->into('users');
-        $statement = $sql->prepareStatementForSqlObject($insert);
+        $statement = $sql->prepareStatementForSqlObject($insert);;
         $result = $statement->execute();
         return $result->valid();
     }

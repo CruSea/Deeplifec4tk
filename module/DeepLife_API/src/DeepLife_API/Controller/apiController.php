@@ -206,8 +206,10 @@ class apiController extends AbstractRestfulController
                 $new_user = $hydrator->GetDisciple($data);
                 $new_user->setId($this->api_user->getId());
                 $new_user->setMentorId($this->api_user->getId());
-                $new_user->setPassword('-'); 
-                $state = $smsService->AddNew_Disciple($new_user,$new_user);
+                $new_user->setPassword('new_pass');
+                $new_user->setRoleId(1);
+                $new_user->setPicture('Default');
+                $state = $smsService->AddNew_Disciple($this->api_user,$new_user);
                 if($state){
                     /**
                      * @var \DeepLife_API\Model\User $_user
