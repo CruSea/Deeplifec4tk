@@ -434,7 +434,49 @@ return $tree;
 
 }
 
-
+      public function userjsonAction(){
+           $str=$this->params()->fromQuery('q', 0);
+           $str='%'.$str.'%';
+           
+           $result = $this->getEntityManager()->getRepository("SamUser\Entity\Users")->createQueryBuilder('o')
+           ->where('o.displayName LIKE  :displayName')
+            ->orWhere('o.email LIKE :email')
+           ->setParameter('email', $str)
+           ->setParameter('displayName', $str)
+           ->setMaxResults(5)
+           ->getQuery()
+           ->getResult(); 
+            $data=array();
+        
+          if(isset($_SERVER['HTTPS'])){
+      $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    }
+    else{
+       $protocol = 'http';
+    }
+    $url= $protocol. "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
+           
+           
+           $i=0;
+            foreach($result as $val){
+             $avatar='/avatar/noavatar.jpg';
+              if( is_file('public'.$val->picture)) { 
+              $avatar=$val->picture;
+              } 
+                  $url.= $avatar;
+                   $data[$i]['id']=ucwords($val->id);
+                  $data[$i]['first_name']=ucwords($val->displayName);
+                  $data[$i]['last_name']='';
+                  $data[$i]['url']=trim($url);
+                  $data[$i++]['email']=$val->email;
+           $url='';
+           
+            }
+                              
+            
+    
+       return new JsonModel($data);
+      }
 
 }
 

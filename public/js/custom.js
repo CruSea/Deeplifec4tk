@@ -30,8 +30,14 @@ $('.next').click(function(){
              data: {answersdata: answers,flagsave: flagSave},
              type: 'post',
              success: function(output) {
-                    $('#result').show();
+                   if(output==1){
+                      $('#result').show();
+                      
+                   }else{
+                       $('#stageresult').show();
                    
+                   }
+                    
                       }
                     }); 
         

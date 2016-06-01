@@ -1,0 +1,63 @@
+<?php
+
+namespace UserCountries\View\Helper;
+use Zend\View\Helper\AbstractHelper;
+use Doctrine\ORM\EntityManager;
+use DoctrineExtensions\Query\Mysql;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\Session\Container;
+class UserCountries extends AbstractHelper   {
+   
+  protected $em;
+    public function __invoke($role_id,$id) {
+  $countryids =array();
+ 
+ 
+ 
+ 
+  $roleArea =$this->getEntityManager()
+        ->getRepository('SamUser\Entity\Rolearea')
+        ->findOneBy(array('user_id' => $id ));
+
+ if($roleArea){
+       $roleAreaid=$roleArea->area_groupsid;
+       if(!$roleAreaid){
+        $countryids[]=$roleArea->countryid;
+       }elseif($roleAreaid){
+
+    $areaGroups =$this->getEntityManager()
+                ->getRepository('SamUser\Entity\Areagroups')
+                ->findOneBy(array('id' => $roleAreaid ));
+    if($areaGroups){
+        $countryids=json_decode($areaGroups->countries_ids) ; 
+     } 
+     
+       }
+
+
+}
+
+
+   $session = new Container('userCountryids');
+   $session->countryids = $countryids;
+
+
+    }
+
+    
+public function getEntityManager(){
+        if (null === $this->em) {
+          
+           $this->em = $this->getView()
+                        ->getHelperPluginManager()
+                        ->getServiceLocator()
+                        ->get('doctrine.entitymanager.orm_default');
+  
+        }
+        return $this->em;
+    }
+
+
+
+}

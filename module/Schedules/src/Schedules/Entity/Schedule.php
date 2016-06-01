@@ -16,6 +16,7 @@ use Zend\Stdlib\DateTime;
 *  @property string $type
 *  @property string $disciple_phone
 *  @property int $user_Id
+*   @property int $recurring
 *  @property int $id
 * @property datetime $created
 
@@ -35,6 +36,11 @@ class Schedule implements InputFilterAwareInterface
      * @ORM\Column(type="integer")
      */
       protected $user_Id;
+      
+        /**
+     * @ORM\Column(type="integer")
+     */
+      protected $recurring;
 
     /**
      * @ORM\Column(type="string")
@@ -111,6 +117,7 @@ class Schedule implements InputFilterAwareInterface
         $this->type = 'Normal';
         $this->disciple_phone = $data['disciple_phone'];
         $this->time = $data['time'];
+          $this->recurring = $data['recurring'];
      $this->created = new DateTime(); 
     }
 

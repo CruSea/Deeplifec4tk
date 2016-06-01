@@ -75,7 +75,25 @@ class ScheduleForm extends Form
             ),
         ));
         
-        
+          $this->add(array(
+            'name' => 'recurring',
+            'type' => 'Select',
+            'options' => array(
+                'label' => 'Repeat',
+                       'value_options' => array(                     
+                         '0'=>'Only once',
+                         '1'=>'Weekly',
+                         '2'=>'Monthly',
+                     ),  
+                     
+            ), 'attributes' => array(
+                           'id'       => 'repeat',
+                           'class'    => 'form-control',
+                           'required' => 'required',
+                        
+                           
+                            ),
+        ));
         
         
         $this->add(array(

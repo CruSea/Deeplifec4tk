@@ -30,7 +30,15 @@ $this->em = $this->getServiceLocator()
 }
 return $this->em;
 }
-
+ protected function getuserCountryids() {
+      $userCountryids=array();
+      $session = new Container('userCountryids');
+      if($session->offsetExists('countryids')){
+	     $userCountryids= $session->offsetGet('countryids');
+	     }
+      
+        return $userCountryids;
+     }
 /**
 * Index action displays a list of all the albums
 * @return \Zend\View\Model\ViewModel
@@ -39,7 +47,7 @@ public function indexAction()
 {
 $this->layout()->setTemplate('layout/master');  
   $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
- 
+   $userCountryids=$this->getuserCountryids();
   
        $countriesData=array();
         foreach($countries as $country ){
@@ -49,7 +57,7 @@ $this->layout()->setTemplate('layout/master');
 return new ViewModel(
 array(
 'countries'=>$countriesData,
-'questions' => $this->getEntityManager()->getRepository('Movement\Entity\Questions')->findBy(array(),array('created' => 'DESC')) ));
+'questions' => $this->getEntityManager()->getRepository('Movement\Entity\Questions')->findBy(array('country'=>$userCountryids),array('created' => 'DESC')) ));
 
 }
 public function addAction()
@@ -57,7 +65,9 @@ public function addAction()
          $this->layout()->setTemplate('layout/master');  
          $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
-        foreach($countries as $country ){
+       $userCountryids=$this->getuserCountryids();
+       foreach($countries as $country ){
+        if(in_array($country->id,$userCountryids))
         $ValueOptions[$country->id]=$country->name;    
         }
           
@@ -98,7 +108,9 @@ public function editAction()
         $movement = $this->getEntityManager()->find('Movement\Entity\Questions', $id);
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
+        $userCountryids=$this->getuserCountryids();
         foreach($countries as $country ){
+         if(in_array($country->id,$userCountryids))
         $ValueOptions[$country->id]=$country->name;    
         }
        
@@ -237,7 +249,7 @@ public function localbuildAction(){
    
   //  $viewModel = new ViewModel();
    //$viewModel->setTerminal(true);
-   echo '1';
+   echo $flagSave;
    die;
    //return $viewModel;
     

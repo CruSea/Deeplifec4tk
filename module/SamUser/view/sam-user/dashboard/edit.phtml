@@ -101,6 +101,10 @@ span.help-inline ul li {
 }
 </style>
 <script type="text/javascript">
+           
+              $('#country').on('change', function() {
+     $("#countrycode").val($(this).val());
+});
             function readURL(input) {
                 if (input.files) {
                     var reader = new FileReader();

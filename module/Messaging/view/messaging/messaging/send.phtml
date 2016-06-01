@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Messaging</h5>
+            </div>
+                <div class="ibox-content">
+            <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-3">
+                
+                    <div class="ibox-content mailbox-content">
+                        <div class="file-manager">
+                            <a class="btn btn-block btn-primary compose-mail" href="<?php echo $this->url('messaging', array('action' => 'compose'))?>" >Compose Mail</a>
+                            <div class="space-25"></div>
+                            <h5>Folders</h5>
+                            <ul class="folder-list m-b-md" style="padding: 0">
+                              <li><a href="<?php echo $this->url('messaging', array('action' => 'index'))?>"> <i class="fa fa-inbox "></i> Inbox <span class="label label-warning pull-right"><?php echo $readcount ?></span> </a></li>
+                          <li><a href="<?php echo $this->url('messaging', array('action' => 'send'))?>"> <i class="fa fa-envelope-o"></i> Send Mail</a></li>
+                               
+                                  </ul>
+                          
+                          
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+             
+            </div>
+            <div class="col-lg-9 animated fadeInRight">
+             
+            <div class="mail-box-header">
+                  <h2>
+                    Send box
+                </h2>
+                
+            </div>
+                <div class="mail-box">
+
+                <table class="table table-hover table-mail">
+                <tbody>
+            <?php if(count($messages)){  foreach ($messages as $message) : ?>
+                <tr class="<?php  if($message['status']==1){ echo "unread"; }else{echo "read"; } ?>">
+                   
+                <td class="check-mail">
+                 <a href="<?php echo $this->url('messaging', array('action' => 'delete','id'=>$id))?>" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </a>
+                 </td>
+               <td class="mail-subject"  ><a href="<?php echo $this->url('messaging', array('action' => 'maildetail','id'=>$message['id']))?>" ><?php echo $this->escapeHtml(ucwords($message['displayName']));?></a></td>
+               <td class="mail-subject"><a href="<?php echo $this->url('messaging', array('action' => 'maildetail','id'=>$message['id']))?>" ><?php echo $this->escapeHtml(ucwords($message['subject']));?></a></td>
+         <td class="text-right mail-date"><a href="<?php echo $this->url('messaging', array('action' => 'maildetail','id'=>$message['id']))?>" ><?php echo $this->escapeHtml(date('h:m a',strtotime($message['created'])));?></a></td>
+              
+                </tr>
+             
+               
+            
+              
+              <?php endforeach;}else { ?>
+                   
+               <tr class="read" >
+                <td  colspan="2" > No send mail  </td>
+                </tr>
+               
+               <?php } ?>
+                </tbody>
+                </table>
+
+
+                </div>
+            
+        </div>
+        </div>
+        </div>
+            
+                </div>
+        </div>
+    </div>
+</div>
+
+
+

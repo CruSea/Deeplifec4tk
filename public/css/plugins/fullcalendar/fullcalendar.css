@@ -124,9 +124,9 @@ body .fc { /* extra precedence to overcome jqui */
 /* Firefox has an annoying inner border */
 .fc button::-moz-focus-inner { margin: 0; padding: 0; }
 
-.fc-state-default { /* non-theme */
+/* .fc-state-default { non-theme
     border: 1px solid;
-}
+} */
 
 .fc-state-default.fc-corner-left { /* non-theme */
     border-top-left-radius: 4px;
@@ -151,7 +151,7 @@ body .fc { /* extra precedence to overcome jqui */
   borrowed from twitter bootstrap (http://twitter.github.com/bootstrap/)
 */
 
-.fc-state-default {
+/* .fc-state-default {
     background-color: #f5f5f5;
     background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
     background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
@@ -199,7 +199,7 @@ body .fc { /* extra precedence to overcome jqui */
     box-shadow: none;
 }
 
-
+ */
 /* Buttons Groups
 --------------------------------------------------------------------------------------------------*/
 
@@ -483,7 +483,7 @@ be a descendant of the grid when it is being dragged.
 
 .fc-day-grid-event {
     margin: 1px 2px 0; /* spacing between events and edges */
-    padding: 0 1px;
+   /*  padding: 0 1px; */
 }
 
 /* events that are continuing to/from another week. kill rounded corners and butt up against edge */

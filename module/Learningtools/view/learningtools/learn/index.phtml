@@ -28,7 +28,7 @@
                    <li>
 
                         <div class="row">
-                            <div class="col-sm-2">
+                            <div class="col-sm-3 col-md-2">
                                 <div class="image-holder">
                                  <div class="video-container" id="video-contain">
                           <?php  if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',$learn->iframcode, $match)) {
@@ -39,13 +39,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-8 learn-content">
+                            <div class="col-sm-6 col-md-8 learn-content">
                                 <div class="cell">
                                     <h2><?php echo $this->escapeHtml(ucwords($learn->title));?></h2>
                                     <p><?php echo $this->escapeHtml($learn->description);?></p>
                                 </div>
                             </div>
-                            <div class="col-sm-2 learn-content">
+                            <div class="col-sm-2 col-md-2 learn-content">
                                 <div class="cell">
                                     
                                     <a class="btn btn-primary" href="<?php echo $learn->iframcode;?>" role="button" data-width="640" data-height="360">View</a>

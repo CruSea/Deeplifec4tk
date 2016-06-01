@@ -27,17 +27,7 @@ class QuestionForm extends Form
                 'label' => 'Question',
             ),
         ));
-        $this->add(array(
-            'name' => 'description',
-            'attributes' => array(
-                'type'  => 'Zend\Form\Element\Textarea',
-                 'class'    => 'form-control',
-                   'required' => 'required',
-            ),
-            'options' => array(
-                'label' => 'Description',
-            ),
-        ));
+   
 
   
         
@@ -85,27 +75,7 @@ class QuestionForm extends Form
         
         
         
- $this->add(array(
-            'name' => 'mandatory',
-            'type' => 'Select',
-            'options' => array(
-                'label' => 'Mandatory',
-                
-          'value_options' => array(
-                           '1' => 'YES',
-                           '0' => 'NO',
-                          
-                     ),       
-         
-            ), 
-            
-         
-            'attributes' => array(
-                           'id'       => 'mandatory',
-                           'class'    => 'form-control',
-                           'required' => 'required',
-                            ),
-        ));
+
         
         
         $this->add(array(

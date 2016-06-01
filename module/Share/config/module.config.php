@@ -4,8 +4,8 @@ namespace Share;
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Ishares\Controller\Ishares' => 'Share\Controller\ShareController',
-             'Ishares\Controller\Question' => 'Share\Controller\QuestionController',
+            'Share\Controller\Share' => 'Share\Controller\ShareController',
+       
         ),
     ),
     'router' => array(
@@ -19,7 +19,7 @@ return array(
                         'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Ishares\Controller\Share',
+                        'controller' => 'Share\Controller\Share',
                         'action'     => 'index',
                     ),
                 ),

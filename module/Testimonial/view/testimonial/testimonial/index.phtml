@@ -1,0 +1,175 @@
+
+<style>
+
+a.morelink {
+    text-decoration:none;
+    outline: none;
+}
+.morecontent span {
+    display: none;
+}
+.comment {
+    width: 400px;
+    background-color: #f0f0f0;
+    margin: 10px;
+}
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Testimonial</h5>
+            </div>
+                <div class="ibox-content">
+             
+               
+   <div class="chat-form">
+        <div class="row  success" style="display: none"   >
+<div class="thank-msg alert alert-success col-sm-12"   >
+ <h3> Thank You!! You have successfully post a testimonial pending for approval.</h3>
+   </div>
+ </div>
+
+<div class="row  error"   style="display: none" >
+<div class="thank-msg alert alert-danger col-sm-12"   >
+<h3> oops something went wrong. try again.</h3>
+ </div>
+</div> 
+
+                
+                            <form role="form">
+                                <div class="form-group">
+                                    <textarea class="form-control" id='msgtestimonial' name="msgtestimonial" placeholder="Message"></textarea>
+                                </div>
+                                <div class="text-right">
+        <button type="button" class="btn btn-sm btn-primary m-t-n-xs testimonialid">Post</button>
+                                </div>
+                            </form>
+                        </div>
+                         <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+
+                    
+                <div class="chat-activity-list">
+       
+       <?php  foreach ($testimonials as $testimonial) : ?>
+                    <div class="chat-element">
+                        <a href="#" class="pull-left">
+                            
+                             <?php
+              $avatar='/avatar/noavatar.jpg';
+                 if( is_file('public'.$testimonial['picture'])) { 
+               $avatar=$testimonial['picture'];
+                }
+                
+                ?>
+                
+                <div style="
+background-image: url('<?php echo $this->basePath($avatar);?>');
+background-repeat: no-repeat;
+width: 40px; 
+height: 40px;
+   background-size: cover; 
+   background-position: center;
+   border: solid 2px #fff;
+" class="img-circle img-responsive"></div>	
+<style>
+.img-circle {
+   border-radius: 50%;
+}
+.img-responsive {
+   display: block;
+   max-width: 100%;
+   height: auto;
+}    
+
+</style>
+                      
+                      
+                        </a>
+                        <div class="media-body ">
+                           
+                     <strong><?php echo $this->escapeHtml(ucwords($testimonial['displayName']));?></strong>
+                            <p class="m-b-xs">
+                         <span class="more" ><?php echo $this->escapeHtml(ucwords($testimonial['description']));?> </span >
+                            </p>
+   <small class="text-muted">
+   <?php echo $this->escapeHtml(date('l jS F Y',strtotime($testimonial['created'])));?>
+      </small>
+                        </div>
+                    </div>
+              <?php endforeach; ?>  
+                </div>
+                 </div>
+                </div>
+      
+           
+                </div>
+        </div>
+    </div>
+</div>
+<script>
+   $(document).ready(function() {
+    var showChar = 100;
+    var ellipsestext = "...";
+    var moretext = "more";
+    var lesstext = "less";
+    $('.more').each(function() {
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+ 
+            $(this).html(html);
+        }
+ 
+    });
+ 
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+
+$('.testimonialid').click(function(){
+    $('.success').hide(); 
+    $('.error').hide();
+      $('.testimonialid').prop('disabled', true);
+ var testmess=$.trim($('#msgtestimonial').val());
+ if(testmess!= ''){
+     
+
+ $.ajax({
+             url: "/testimonial/add",
+             data: {testmess: testmess},
+             type: 'post',
+             success: function(output) {
+      
+                       if(output==1){
+                          $('#msgtestimonial').val('');
+                          $('.success').show(); 
+                       }else if(output==0)
+                       $('.error').show();
+                      }
+        }); 
+        }else{
+             $('.error').show();
+        }
+  
+ $('.testimonialid').prop('disabled', false);
+});
+
+});
+</script>
+<script src="<?php //echo $this->basePath('/js/custom.js')?>" ></script>

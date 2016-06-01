@@ -7,7 +7,7 @@
        exit;
   }
   $urlArray=explode('/',$_SERVER['REQUEST_URI']);
- $url=end($urlArray);
+  $url=end($urlArray);
 
     const USER  =1;
     const SUPERADMIN=2;
@@ -55,6 +55,8 @@
              default :
             echo  'Missionarry'; 
              }
+            
+             $this->UserCountries($this->zfcUserIdentity()->role_id,$this->zfcUserIdentity()->id);
              ?>
              
            </span> </span> </a>
@@ -77,7 +79,7 @@
                          
              
                ?>
-             <li <?php if(in_array($url,array('country','movement','display','users'))){?> class="active" <?php } ?> >     <a href="#"><i class="fa fa-cog fa-yellow "></i> <span class="nav-label"><?php echo $admin; ?> </span></a>
+             <li <?php if(in_array($url,array('country','movement','display','users','testimonialtool','newstool','ishare'))){?> class="active" <?php } ?> >     <a href="#"><i class="fa fa-cog fa-yellow "></i> <span class="nav-label"><?php echo $admin; ?> </span> <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level">
     <li <?php if($url=='country'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('tree', array('action'=>'country'));?>" ><i class="fa fa-tree fa-yellow"></i>Country</a></li>
     <li <?php if($url=='movement'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('movement', array('action'=>'index'));?>"><i class="fa fa-question-circle fa-yellow "></i>Build Movement</a></li>
@@ -85,6 +87,20 @@
         <a href="<?php echo $this->url('learn', array('action'=>'display'))  ?>">
            <i class="fa fa-leanpub fa-yellow" aria-hidden="true"></i>Learning Tools</a>
 </li>
+<li <?php if($url=='ishare'){?> class="subactive" <?php } ?> >
+        <a href="<?php echo $this->url('share', array('action'=>'ishare'))  ?>">
+           <i class="fa fa-share-alt fa-yellow" aria-hidden="true"></i>Share Tools</a>
+</li>
+
+ <li <?php if($url=='testimonialtool'){?> class="subactive" <?php } ?> >
+        <a href="<?php echo $this->url('testimonial', array('action'=>'testimonialtool')) ?>">
+     <i class="fa fa-quote-left  fa-yellow "></i> Testimonial Tool</a>
+</li>        
+
+ <li <?php if($url=='newstool'){?> class="subactive" <?php } ?> >
+        <a href="<?php echo $this->url('news', array('action'=>'newstool')) ?>">
+     <i class="fa fa-newspaper-o  fa-yellow "></i> News Tool</a>
+</li>  
  <?php   if($this->zfcUserIdentity()->role_id==SUPERADMIN ||$this->zfcUserIdentity()->role_id==AREAADMIN){ ?>
                 <li <?php if($url=='users'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('users', array('action'=>'index'));?>" ><i class="fa fa-users fa-yellow "></i>
 Manage Roles </a></li>
@@ -105,11 +121,30 @@ Manage Roles </a></li>
         <a href="<?php echo $this->url('learn')  ?>">
            <i class="fa fa-leanpub fa-yellow" aria-hidden="true"></i><span class="nav-label">Learn </span></a>
 </li>
+      
+      
       <li <?php if($url=='schedule'){?> class="active" <?php } ?> >
         <a href="<?php echo $this->url('schedule') ?>">
                 <i class="fa fa-clock-o  fa-yellow "></i> <span class="nav-label">Schedule</span></a>
 </li>     
-                
+     
+      <li <?php if($url=='messaging'){?> class="active" <?php } ?> >
+        <a href="<?php echo $this->url('messaging') ?>">
+                <i class="fa fa-envelope-o  fa-yellow "></i> <span class="nav-label">Messaging</span></a>
+</li>     
+      <li <?php if($url=='share'){?> class="active" <?php } ?> >
+        <a href="<?php echo $this->url('share') ?>">
+                <i class="fa fa-share-alt  fa-yellow "></i> <span class="nav-label">Share</span></a>
+</li>    
+          <li <?php if($url=='testimonial'){?> class="active" <?php } ?> >
+        <a href="<?php echo $this->url('testimonial') ?>">
+                <i class="fa fa-quote-left  fa-yellow "></i> <span class="nav-label">Testimonial</span></a>
+</li>        
+         <li <?php if($url=='news'){?> class="active" <?php } ?> >
+        <a href="<?php echo $this->url('news') ?>">
+                <i class="fa fa-newspaper-o  fa-yellow "></i> <span class="nav-label">News</span></a>
+</li>      
+       
             </ul>
 
         </div>

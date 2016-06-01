@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Messaging</h5>
+            </div>
+                <div class="ibox-content">
+            <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-lg-3">
+               
+                    <div class="ibox-content mailbox-content">
+                        <div class="file-manager">
+                            <a class="btn btn-block btn-primary compose-mail" href="">Compose Mail</a>
+                            <div class="space-25"></div>
+                            <h5>Folders</h5>
+                            <ul class="folder-list m-b-md" style="padding: 0">
+                               <li><a href="<?php echo $this->url('messaging', array('action' => 'index'))?>"> <i class="fa fa-inbox "></i> Inbox <span class="label label-warning pull-right"><?php echo $readcount ?></span> </a></li>
+                          <li><a href="<?php echo $this->url('messaging', array('action' => 'send'))?>"> <i class="fa fa-envelope-o"></i> Send Mail</a></li>
+                               
+                                  </ul>
+                          
+                          
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+              
+            </div>
+            
+            <div class="col-lg-9 animated fadeInRight">
+            <div class="mail-box-header">
+                <div class="pull-right tooltip-demo">
+                   
+                             </div>
+                <h2>
+                    View Message
+                </h2>
+                <div class="mail-tools tooltip-demo m-t-md">
+
+
+                    <h3>
+     <span class="font-noraml">Subject: </span><?php echo $this->escapeHtml(ucwords($message['subject']));?>
+                    </h3>
+                    <h5>
+        <span class="pull-right font-noraml"><?php echo $this->escapeHtml(date_format($message['created'],'h:m a'));?></span>
+             <span class="font-noraml">From: </span><?php echo $this->escapeHtml($message['displayName']);?>
+                    </h5>
+                </div>
+            </div>
+                <div class="mail-box">
+
+
+                <div class="mail-body">
+                    <?php echo $this->escapeHtml($message['description']);?>
+                </div>
+                   
+                        <div class="mail-body text-right tooltip-demo">
+                          
+                               
+                                <a href="<?php echo $this->url('messaging', array('action' => 'delete','id'=>$id))?>" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="fa fa-trash-o"></i> Remove</a>
+                        </div>
+                        <div class="clearfix"></div>
+
+
+                </div>
+            </div>
+           
+        </div>
+        </div>
+            
+                </div>
+        </div>
+    </div>
+</div>
+
+
+

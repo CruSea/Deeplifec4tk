@@ -5,6 +5,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use Schedules\Entity\Schedule;
+use Zend\View\Model\JsonModel;
 use Schedules\Form\ScheduleForm;
 use Zend\Session\Container;
 class ScheduleController extends AbstractActionController
@@ -46,17 +47,64 @@ public function getUserId(){
 public function indexAction()
 {
 $this->layout()->setTemplate('layout/master');  
-$schedule=$this->getEntityManager()->getRepository('Schedules\Entity\Schedule')->findBy(array('user_Id' => $this->getUserId() ),array('created' => 'DESC'));
-
-  
   
 return new ViewModel(
-array(
-'schedules'=>$schedule
- ));
+array( ));
 
 }
 
+public function eventjsonAction()
+{
+$this->layout()->setTemplate('layout/master');  
+$schedules=$this->getEntityManager()->getRepository('Schedules\Entity\Schedule')->findBy(array('user_Id' => $this->getUserId() ),array('created' => 'DESC'));
+$jsonArray=array();
+$iCount=0;
+foreach($schedules as $schedule ){
+
+ $date = date_create($schedule->time);
+ 
+if($schedule->recurring==1){ 
+ $fdate=date_format($date, 'H:i:s');
+ $date=date_format($date,"Y-m-d");
+ $dayOfWeek=date('w', strtotime($date));
+$jsonArray[$iCount]['id']=$schedule->id;
+$jsonArray[$iCount]['title']=ucwords($schedule->description);
+ $jsonArray[$iCount]['start']=$fdate;
+ $jsonArray[$iCount]['dow']=array($dayOfWeek);
+   
+}elseif($schedule->recurring==2){
+$date=date_format($date,"Y-m-d H:i:s");
+//while(1){
+//$date=date( "Y-m-d H:i:s", strtotime($date) );  
+//$jsonArray[$iCount]['start']=$date;
+//$jsonArray[$iCount]['id']=$schedule->id;
+//$jsonArray[$iCount]['title']=ucwords($schedule->description);
+//$iCount++;
+//$month=(int)date( "m", strtotime($date) );
+//$date=date( "Y-m-d H:i:s", strtotime( $date."+1 month" ) );  
+//if($month==12){
+ // break;
+//}
+
+//}
+
+
+
+}else{
+ $fdate=date_format($date, 'Y-m-d H:i:s');
+ $jsonArray[$iCount]['id']=$schedule->id;
+$jsonArray[$iCount]['title']=ucwords($schedule->description);
+ $jsonArray[$iCount]['start']=$fdate;
+
+}
+
+$iCount++;
+
+}
+
+
+return new JsonModel($jsonArray);
+}
 
 public function addAction()
 {
@@ -139,7 +187,7 @@ public function editAction()
         
         $form->get('userdetail')->setValueOptions($usersData)->setValue($formUsers) ;
          $form->get('description')->setValue($schedule->description) ;
-  
+             $form->get('recurring')->setValue($schedule->recurring) ; 
   			$datetime = date_create($schedule->time);
  			$date = date_format($datetime,"Y-m-d");
 		 	$time = date_format($datetime,"H:i");

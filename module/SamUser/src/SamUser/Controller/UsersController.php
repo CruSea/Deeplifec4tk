@@ -7,6 +7,7 @@ use SamUser\Entity\Rolearea;
 use DoctrineModule\Validator\ObjectExists;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
+use Zend\View\Model\JsonModel;
 use Zend\Stdlib\DateTime;
 class UsersController extends AbstractActionController
 {
@@ -19,6 +20,17 @@ class UsersController extends AbstractActionController
        
 
     }
+    
+     protected function getuserCountryids() {
+      $userCountryids=array();
+      $session = new Container('userCountryids');
+      if($session->offsetExists('countryids')){
+	     $userCountryids= $session->offsetGet('countryids');
+	     }
+      
+        return $userCountryids;
+     }
+
 
     protected function getEntityManager() {
         if (null === $this->em)
@@ -32,14 +44,14 @@ class UsersController extends AbstractActionController
      */
     public function indexAction() {
        $this->layout()->setTemplate('layout/master');  
-     
-       $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll();
+            $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll();
         $countriesData=array();
+       $userCountryids=$this->getuserCountryids();
         foreach($countries as $country ){
         $countriesData[$country->id]=$country->name;    
         } 
      
-     $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array(),array('created' => 'DESC'));
+     $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('country'=>$userCountryids ),array('created' => 'DESC'));
      return new ViewModel(
             array(
                'countries'=>$countriesData,
@@ -65,7 +77,9 @@ class UsersController extends AbstractActionController
         $this->layout()->setTemplate('layout/master'); 
          $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $countriesData=array();
+         $userCountryids=$this->getuserCountryids();
         foreach($countries as $country ){
+         if(in_array($country->id,$userCountryids))
         $countriesData[$country->id]=$country->name;    
         } 
         
@@ -134,6 +148,7 @@ class UsersController extends AbstractActionController
         
     }
     
+
      
    
 }

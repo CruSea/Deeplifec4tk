@@ -2,7 +2,7 @@
 
 namespace Share\Entity;
 use Doctrine\ORM\Mapping as ORM;
-
+use Zend\Stdlib\DateTime;
 /**
  * reports.
  *
@@ -102,8 +102,8 @@ class Answers
         $this->report_form_id = $data['report_form_id'];
         $this->country = $data['country'];
         $this->value = $data['value'];
-         $this->stage = $data['stage'];
-      
+        $this->stage = $data['stage'];
+        $this->created = new DateTime(); 
     
     }
 

@@ -6,7 +6,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface; 
-
+use Zend\Stdlib\DateTime;
 /**
  * report_forms.
  *
@@ -14,9 +14,8 @@ use Zend\InputFilter\InputFilterInterface;
  * @ORM\Table(name="report_forms")
  * @property string $category
  * @property string $question
- * @property string $description
- * @property int $mandatory
   *  @property int $id
+  *  @property int $$country
   *  @property datetime $created
  */
 class Questions implements InputFilterAwareInterface 
@@ -45,17 +44,6 @@ class Questions implements InputFilterAwareInterface
     protected $created;
   
     /**
-     * @ORM\Column(type="string")
-     */
-    protected $description;
-
-
-  /**
-     * @ORM\Column(type="integer")
-     */
-    protected $mandatory;
-
-  /**
      * @ORM\Column(type="integer")
      */
     protected $country;
@@ -107,10 +95,8 @@ class Questions implements InputFilterAwareInterface
         $this->id = $data['id'];
         $this->category = $data['category'];
         $this->question = $data['question'];
-        $this->description = $data['description'];
-        $this->mandatory = $data['mandatory'];
-        $this->country=$data['country'];
-    
+         $this->country=$data['country'];
+         $this->created = new DateTime(); 
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -152,24 +138,7 @@ class Questions implements InputFilterAwareInterface
                 ),
             )));
 
-            $inputFilter->add($factory->createInput(array(
-                'name'     => 'description',
-                'required' => true,
-                'filters'  => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name'    => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 1000,
-                        ),
-                    ),
-                ),
-            )));
+           
 
             $this->inputFilter = $inputFilter;        
         }

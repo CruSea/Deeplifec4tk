@@ -80,7 +80,7 @@ class UsersForm extends Form
             'type' => 'Select',
             'options' => array(
                 'label' => 'Country',
-                   'value_options' => array(
+                                'value_options' => array(
                              '1' => 'India',
                          
                      ),  
@@ -93,6 +93,23 @@ class UsersForm extends Form
                             ),
         ));
      
+         $this->add(array(
+            'name' => 'countrycode',
+            'type' => 'Select',
+            'options' => array(
+                'label' => 'Countrycode',
+                 'empty_option' => 'Select', 
+                   'value_options' => array(
+                             
+                         
+                     ),  
+            ), 'attributes' => array(
+                           'id'       => 'countrycode',
+                           'class'    => 'form-control',
+                                            
+                           
+                            ),
+        ));
         $this->add(array(
             'name' => 'phone_no',
             'type' => 'Text',

@@ -30,6 +30,16 @@ $this->em = $this->getServiceLocator()
 return $this->em;
 }
 
+ protected function getuserCountryids() {
+      $userCountryids=array();
+      $session = new Container('userCountryids');
+      if($session->offsetExists('countryids')){
+	     $userCountryids= $session->offsetGet('countryids');
+	     }
+      
+        return $userCountryids;
+     }
+
 /**
 * Index action displays a list of all the albums
 * @return \Zend\View\Model\ViewModel
@@ -63,7 +73,12 @@ public function addAction()
          $this->layout()->setTemplate('layout/master');  
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
          $ValueOptions=array();
+          $userCountryids=$this->getuserCountryids();
+        
+      
+        
          foreach($countries as $country ){
+         if(in_array($country->id,$userCountryids))
          $ValueOptions[$country->id]=$country->name;    
          }
           
@@ -108,7 +123,9 @@ public function editAction()
         
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
+         $userCountryids=$this->getuserCountryids();
         foreach($countries as $country ){
+         if(in_array($country->id,$userCountryids))
         $ValueOptions[$country->id]=$country->name;    
         }
       
@@ -162,8 +179,11 @@ public function deleteAction(){
 
 public function displayAction()
 {
+      
+    
 $this->layout()->setTemplate('layout/master');  
-$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array(),array('created' => 'DESC'));
+    $userCountryids=$this->getuserCountryids();
+$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array('country'=>$userCountryids),array('created' => 'DESC'));
 return new ViewModel(
 array(
 'learning'=>$learn,

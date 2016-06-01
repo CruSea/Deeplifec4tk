@@ -90,10 +90,16 @@ Public function addAction()  {
           $picture='';
         $form = new UsersForm();
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+        
+      
         $ValueOptions=array();
+        $Countrycode=array();
         foreach($countries as $country ){
         $ValueOptions[$country->id]=$country->name;    
+        $Countrycode[$country->id]=$country->phonecode;
         }
+       
+       
         $emailValidator = new \DoctrineModule\Validator\ObjectExists(array(
         'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
     'fields' => array('email')));
@@ -103,6 +109,8 @@ Public function addAction()  {
           
              
         $form->get('country')->setValueOptions($ValueOptions);
+        $form->get('countrycode')->setValueOptions($Countrycode);
+        
         $form->get('mentor_id')->setValue($this->getMUserId());
         $form->get('stage')->setValue('Added');
         $form->get('password')->setValue('');
@@ -177,7 +185,7 @@ Public function addAction()  {
                 $this->getEntityManager()->persist($Users);
                 $this->getEntityManager()->flush();
                    $session = new Container('message');
-	    $session->success = 'Data saved successfully';
+	             $session->success = 'Data saved successfully';
                 // Redirect to list of dashboard
                 return $this->redirect()->toRoute('dashboard');
                }
@@ -215,6 +223,7 @@ Public function editAction()  {
         $ValueOptions=array();
         foreach($countries as $country ){
         $ValueOptions[$country->id]=$country->name;    
+         $Countrycode[$country->id]=$country->phonecode;
         }
         
           
@@ -225,7 +234,7 @@ Public function editAction()  {
         $form->get('stage')->setValue($user->stage);
         $form->get('password')->setValue($user->password);
         $form->get('role_id')->setValue($user->role_id);
-        
+        $form->get('countrycode')->setValueOptions($Countrycode)->setValue($user->country) ;
         
         $form->get('submit')->setValue('Save');
         $request = $this->getRequest();

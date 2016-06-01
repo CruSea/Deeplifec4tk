@@ -1221,6 +1221,7 @@ button.dim:active:before {
   box-sizing: content-box;
 }
 /* FULLCALENDAR */
+
 .fc-state-default {
   background-color: #ffffff;
   background-image: none;
@@ -1245,8 +1246,8 @@ button.dim:active:before {
   white-space: nowrap;
 }
 .fc-state-active {
-  background-color: #1ab394;
-  border-color: #1ab394;
+  background-color: #C2C2C2;
+  border-color: #B2ADAD;
   color: #ffffff;
 }
 .fc-header-title h2 {
@@ -1280,9 +1281,9 @@ button.dim:active:before {
 .fc-event a {
   padding: 4px 6px;
   background-color: #1ab394;
-  /* background color */
+ 
   border-color: #1ab394;
-  /* border color */
+  border color 
 }
 .fc-event-time,
 .fc-event-title {
@@ -1292,7 +1293,7 @@ button.dim:active:before {
 .ui-calendar .fc-event-time,
 .ui-calendar .fc-event-title {
   color: #fff;
-}
+} 
 /* Chat */
 .chat-activity-list .chat-element {
   border-bottom: 1px solid #e7eaec;
@@ -2763,7 +2764,7 @@ a.forum-item-title:hover {
 .sidebard-panel .feed-element,
 .media-body,
 .sidebard-panel p {
-  font-size: 12px;
+  font-size: 14px;
 }
 .sidebard-panel .feed-element {
   margin-top: 20px;
@@ -6527,6 +6528,14 @@ li.subactive a {
   border-bottom: 0;
 }
 
+ul.token-input-list {
+    width: 100%;
+    border: 1px solid #e5e6e7 !important;
+}
+
+
+
+
 /* Button
  Overwrite css for button 
  by Sunakshi ITHands
@@ -6885,9 +6894,86 @@ ul.multiselect-container.dropdown-menu {
     z-index: 0;
 } */
 
+.arrow-right {
+  height: 0; 
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid #10b7d7;
+}
+
+.arrow-left {
+  height: 0; 
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent; 
+  border-right: 20px solid #f8ac59; 
+}
+.increament-box,.arrow-left,.arrow-right {
+ width: auto;
+ float: left;
+  display: block;
+  margin-right: 10px;
+}
+/*Share Questions*/
+.share-widget {
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 120px;
+    height: 45px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 16px;
+    float: left;
+    margin-right: 20px;
+    text-transform: uppercase;
+}
+.share-widget.inactive {
+  background-color: #adadad;
+  color: #fff;
+}
+.share-widget.inactive .fa-win:before {
+   background-image: url('/img/win-inactive.png')
+}
+.share-widget.inactive .fa-build:before {
+   background-image: url('/img/build-inactive.png')
+}
+.share-widget.inactive .fa-send:before {
+   background-image: url('/img/send-inactive.png')
+}
+.share-widget .fa-win:before {
+    background-image: url('/img/win.png');
+    content: "";
+    height: 31px;
+    width: 28px;
+    position: absolute;
+    background-size: cover;
+    top: -7px;
+}
+.share-widget .fa-build:before {
+    background-image: url('/img/build.png');
+    content: "";
+    height: 28px;
+    width: 34px;
+    position: absolute;
+    background-size: cover;
+    top: -7px;
+    left: -5px;
+}
+.share-widget .fa-send:before {
+    background-image: url('/img/send.png');
+    content: "";
+    height: 33px;
+    width: 37px;
+    position: absolute;
+    background-size: cover;
+    top: -7px;
+    left: -8px;
+}
 /* Learning */
 ul.learning {
   list-style: none;
+  padding: 0;
 }
 .image-holder {
   width: auto;

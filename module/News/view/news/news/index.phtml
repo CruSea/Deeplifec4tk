@@ -1,0 +1,91 @@
+<style>
+
+a.morelink {
+    text-decoration:none;
+    outline: none;
+}
+.morecontent span {
+    display: none;
+}
+.comment {
+    width: 400px;
+    background-color: #f0f0f0;
+    margin: 10px;
+}
+</style>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>NEWS</h5>
+            </div>
+               <div class="ibox-content">
+            <div id="vertical-timeline" class="vertical-container dark-timeline">
+               
+                            <?php  foreach ($news as $new) : ?>
+                            <div class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon yellow-bg">
+                                    <i class="fa fa-newspaper-o  fa-yellow "></i>
+                                </div>
+                           <div class="vertical-timeline-content">
+                          <h2><?php echo $this->escapeHtml(ucwords($new->title));?></h2>
+             <p><span class="more" ><?php echo $this->escapeHtml(ucwords($new->description));?> </span ></p>
+                                   
+                                    <span class="vertical-date">
+              <small><?php echo $this->escapeHtml(date_format($new->created, '  l jS F Y'));?>
+             </small>
+                                    </span>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>  
+                           
+
+
+                        
+
+                         
+                          
+
+                           
+                        </div>
+       
+            
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   $(document).ready(function() {
+    var showChar = 100;
+    var ellipsestext = "...";
+    var moretext = "more";
+    var lesstext = "less";
+    $('.more').each(function() {
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar-1, content.length - showChar);
+ 
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+ 
+            $(this).html(html);
+        }
+ 
+    });
+ 
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+</script>
