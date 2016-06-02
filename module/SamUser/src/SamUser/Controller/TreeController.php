@@ -14,6 +14,7 @@ use Zend\View\Model\JsonModel;
 use SamUser\Entity\Users;
 use SamUser\Entity\Disciplescount;
 use Doctrine\ORM\EntityManager;
+use Zend\Session\Container;
 use DoctrineExtensions\Query\Mysql;
 
 
@@ -24,6 +25,16 @@ class TreeController extends AbstractActionController
     protected $em;
     public $userid;
     protected $entity = 'SamUser\Entity\User';
+    
+    protected function getuserCountryids() {
+      $userCountryids=array();
+      $session = new Container('userCountryids');
+      if($session->offsetExists('countryids')){
+	     $userCountryids= $session->offsetGet('countryids');
+	     }
+      
+        return $userCountryids;
+     } 
     
 public function getEntityManager(){
         if (null === $this->em) {
@@ -43,6 +54,110 @@ Public function indexAction() {
             'id'=>$id ,       
         ));
 
+    }
+
+Public function countrytreeAction() {
+      
+      $id = (int) $this->params()->fromRoute('id', 0);
+      
+          $userCountryids=$this->getuserCountryids();
+       
+     /*  if(!in_array($id,$userCountryids)||$id!=0){
+             return $this->redirect()->toRoute('tree' ,array(
+                'action' => 'country'
+            ));
+         }
+       */
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy(array('id'=>$userCountryids) );
+        $countriesData=array();
+       
+        foreach($countries as $country ){
+           $countriesData[$country->id]=$country->name;    
+        }  
+        
+        
+        
+       $this->layout()->setTemplate('layout/master'); 
+        return new ViewModel(array(
+            'Url' => '/',
+            'title' => 'Country Tree',
+             'countries'  =>$countriesData,
+            'id'=>$id ,       
+        ));
+
+    }
+
+public function countryjsonAction(){
+       
+      $id = (int) $this->params()->fromRoute('id', 0);
+          if (!$id) {
+     
+            } 
+     $country=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findOneBy(array('id'=>$id) );          
+     $users =$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('country' =>$id,'mentor_id'=>0 ));
+   
+  // print_r($country);
+    //print_r($users);
+   //die;
+  if(isset($_SERVER['HTTPS'])){
+        $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+    }
+    else{
+        $protocol = 'http';
+    }
+     $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
+ // $url=$url.'/deeplife/public';
+    $rootUSerCount= 0;
+    $avatar='/avatar/noavatar.jpg';
+       $countryName=ucwords(strtolower($country->name));
+          if( is_file('public/img/flag/'.str_replace(' ','-',$countryName).'.png')) { 
+              $avatar='/img/flag/'.str_replace(' ','-',$countryName).'.png';
+                }   
+         
+         
+          $tree['name'] =  $countryName;
+          $tree['icon'] = $url.''.$avatar;
+          $tree['user_id'] = $country->id;
+          $tree['immediate'] =0;
+          $tree['total'] = 0;
+          $tree['url'] = 0;
+          $tree['parent_url'] = 0;
+          $tree['draggable'] = false;
+          $children=array();
+        $i=0;
+     
+       foreach($users as $user){
+            
+        $avatar='/avatar/noavatar.jpg';
+            if( is_file('public'.$user->picture)) { 
+              $avatar=$user->picture;
+                }    
+          $children[$i]['name'] = ucwords($user->displayName);;
+          $children[$i]['icon'] = $url.''.$avatar;
+          $children[$i]['user_id'] = $user->id;
+          $children[$i]['immediate'] =0;
+          $children[$i]['total'] = 0;
+          $children[$i]['url'] = 0;
+          $children[$i]['parent_url'] = 0;
+          $children[$i++]['draggable'] = false;
+       
+     
+             
+       
+       }
+      
+        
+        
+         $tree['children'] = $children;
+        
+         $jsonArray= array();
+        $jsonArray['config']['isDraggable']=false;
+        $jsonArray['config']['treeType']='user' ;
+        $jsonArray['config']['currentUserType']='countryAdmin';
+        $jsonArray['tree']=$tree;
+  
+        return new JsonModel($jsonArray);
+  
     }
 public function jsonAction(){
        
@@ -253,23 +368,8 @@ public function countryAction() {
     $countriesData=array();
     $countryChartData=array();
     $stageData=array();
-    $userid = $this->zfcUserAuthentication()->getIdentity()->getId();
-    $user =$this->getEntityManager()->getRepository('SamUser\Entity\Rolearea')->findOneBy(array('user_id' => $userid ));
-    $roleCountry=trim($user->area_groupsid);
-   if($roleCountry){
-
-  $areaGroups =$this->getEntityManager()->getRepository('SamUser\Entity\Areagroups')->findOneBy(array('id' => $roleCountry ));
-  if(count($areaGroups)){
    
-     $countriesid=json_decode($areaGroups->countries_ids) ; 
-  } 
-  
-   }else {
-   $roleCountry=trim($user->countryid);
-   $countriesid=array($roleCountry);   
-   }
-   
- 
+  $countriesid=$this->getuserCountryids();
   if(count($countriesid)){
       
  

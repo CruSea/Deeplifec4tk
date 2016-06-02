@@ -64,36 +64,40 @@ foreach($schedules as $schedule ){
  $date = date_create($schedule->time);
  
 if($schedule->recurring==1){ 
- $fdate=date_format($date, 'H:i:s');
+ $fdate=date_format($date, 'Y-m-d H:i:s');
  $date=date_format($date,"Y-m-d");
  $dayOfWeek=date('w', strtotime($date));
-$jsonArray[$iCount]['id']=$schedule->id;
-$jsonArray[$iCount]['title']=ucwords($schedule->description);
+ $jsonArray[$iCount]['id']=$schedule->id;
+ $jsonArray[$iCount]['title']=ucwords($schedule->description);
  $jsonArray[$iCount]['start']=$fdate;
  $jsonArray[$iCount]['dow']=array($dayOfWeek);
    
 }elseif($schedule->recurring==2){
 $date=date_format($date,"Y-m-d H:i:s");
-//while(1){
-//$date=date( "Y-m-d H:i:s", strtotime($date) );  
-//$jsonArray[$iCount]['start']=$date;
-//$jsonArray[$iCount]['id']=$schedule->id;
-//$jsonArray[$iCount]['title']=ucwords($schedule->description);
-//$iCount++;
-//$month=(int)date( "m", strtotime($date) );
-//$date=date( "Y-m-d H:i:s", strtotime( $date."+1 month" ) );  
+$I=0;
+while($I<=5){
+$date=date( "Y-m-d H:i:s", strtotime($date) );  
+ 
+$jsonArray[$iCount]['start']=$date;
+$jsonArray[$iCount]['id']=$schedule->id;
+$jsonArray[$iCount]['title']=ucwords($schedule->description);
+$iCount++;
+$month=(int)date( "m", strtotime($date) );
+$date=date( "Y-m-d H:i:s", strtotime( $date."+1 month" ) );  
+$I++;
+
 //if($month==12){
- // break;
+ //break;
 //}
 
-//}
+}
 
 
 
 }else{
  $fdate=date_format($date, 'Y-m-d H:i:s');
  $jsonArray[$iCount]['id']=$schedule->id;
-$jsonArray[$iCount]['title']=ucwords($schedule->description);
+ $jsonArray[$iCount]['title']=ucwords($schedule->description);
  $jsonArray[$iCount]['start']=$fdate;
 
 }
@@ -101,8 +105,10 @@ $jsonArray[$iCount]['title']=ucwords($schedule->description);
 $iCount++;
 
 }
-
-
+//print('<pre>');
+//print_r($jsonArray);
+//print('</pre>');
+//die;
 return new JsonModel($jsonArray);
 }
 
@@ -260,7 +266,11 @@ public function deleteAction(){
 }
 
 
-
+public function validateDate($date, $format = 'Y-m-d H:i:s')
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) == $date;
+}
 
 
 

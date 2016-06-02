@@ -302,7 +302,7 @@ public function resetpasswordAction(){
         $protocol = 'http';
     }
    $url= $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
-   $url.='/resetpassword?email='.$email.'&keycode='.$keycode;
+   $url.='/resetpassword?email='.urlencode($email).'&keycode='.urlencode($keycode);
   $usersReset =$this->getEntityManager()->getRepository('SamUser\Entity\Resetpassword')->findOneBy(array('email' =>$email,'keycode' =>$keycode));
   
 
@@ -333,7 +333,7 @@ public function resetpasswordAction(){
                         $this->getEntityManager()->flush();
              	            
                         $session = new Container('message');
-	                   $session->success = 'User was added successfully.Please login';
+	                   $session->success = 'Your password has been reset successfully.Please login';
 	
                          return $this->redirect()->toRoute('home');
           
@@ -376,8 +376,8 @@ public function sendMail($keycode,$email,$url){
     
 
   $dataArray=array();
-  $dataArray['keycode']=$keycode;
-  $dataArray['email']=$email;
+  $dataArray['keycode']=urlencode($keycode);
+  $dataArray['email']=urlencode($email);
   $dataArray['url']=$url;
   $options = new Mail\Transport\SmtpOptions(array(
             'name' => 'localhost',

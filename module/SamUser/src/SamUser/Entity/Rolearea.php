@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="role_area")
  * @property int $countryid
  * @property int $user_id
- * @property int $area_groupsid
+ * @property string $area_groupsid
  * @property int $id
  */
 class Rolearea 
@@ -34,7 +34,7 @@ class Rolearea
     protected $countryid;
 
    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     protected $area_groupsid;
 

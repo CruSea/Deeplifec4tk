@@ -6644,7 +6644,7 @@ span.action {
 /*Category logo*/
 .fa-win,.fa-send,.fa-build,.fa-disciples {
     position: relative;
-    display: -webkit-box;
+    display: block;
 }
 .fa-win:before {
     background-image: url('/img/win.png');
@@ -6949,6 +6949,7 @@ ul.multiselect-container.dropdown-menu {
     position: absolute;
     background-size: cover;
     top: -7px;
+    left: 0;
 }
 .share-widget .fa-build:before {
     background-image: url('/img/build.png');

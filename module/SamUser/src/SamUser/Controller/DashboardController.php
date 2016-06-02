@@ -364,6 +364,7 @@ Public function profileAction()  {
         $ValueOptions=array();
         foreach($countries as $country ){
         $ValueOptions[$country->id]=$country->name;    
+         $Countrycode[$country->id]=$country->phonecode;
         }
        
 
@@ -389,6 +390,7 @@ Public function profileAction()  {
         $form->get('stage')->setValue($user->stage);
         $form->get('password')->setValue($user->password);
         $form->get('role_id')->setValue($user->role_id);
+         $form->get('countrycode')->setValueOptions($Countrycode)->setValue($user->country) ;
         $form->get('submit')->setValue('Save');
         $request = $this->getRequest();
      

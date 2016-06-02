@@ -22,16 +22,24 @@ class UserCountries extends AbstractHelper   {
 
  if($roleArea){
        $roleAreaid=$roleArea->area_groupsid;
+     
+      
+      
        if(!$roleAreaid){
         $countryids[]=$roleArea->countryid;
        }elseif($roleAreaid){
-
     $areaGroups =$this->getEntityManager()
                 ->getRepository('SamUser\Entity\Areagroups')
-                ->findOneBy(array('id' => $roleAreaid ));
-    if($areaGroups){
-        $countryids=json_decode($areaGroups->countries_ids) ; 
-     } 
+                ->findBy(array('id' => json_decode($roleAreaid) ));
+     $countryids=array();
+    foreach($areaGroups as $areaGroup )
+   {
+     $tempdata=json_decode($areaGroup->countries_ids) ;
+     $countryids=array_merge($countryids,$tempdata);
+   
+   }
+    
+    
      
        }
 
@@ -40,7 +48,7 @@ class UserCountries extends AbstractHelper   {
 
 
    $session = new Container('userCountryids');
-   $session->countryids = $countryids;
+   $session->countryids = array_unique($countryids);
 
 
     }

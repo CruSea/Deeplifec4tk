@@ -1,4 +1,5 @@
-
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?> 
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('js/plugins/multipleselect/bootstrap-multiselect.css')); ?> 
 <div class="row">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -10,16 +11,18 @@
                     <div class="row">
                         <div class="form-group col-sm-4">
                             <label for="usr">Select Role </label>
-                            <?php  $role=array( 1 => 'User',2 => 'Superadmin',3 => 'Areaadmin',4 => 'Countryadmin') ; 
-                            
-                          
+                            <?php  $role=array( 1 => 'User',4 => 'Countryadmin') ; 
+                           if($myroleid==2){
+                               $role[2] = 'Superadmin';
+                               $role[3] = 'Areaadmin';
+                              }
                             ?>
                           <select id="role" class="form-control m-b" name="role">
                            <?php foreach($role as $key => $val){ 
                              $selectVal='';
                             if($roleid == $key){
-                              $selectVal = 'selected';
-                            $showval=$key;
+                                  $selectVal = 'selected';
+                                 $showval=$key;
                             }
                             
                             echo "<option ". $selectVal ."  value='".$key."' >".$val."</option>";
@@ -46,15 +49,17 @@
                                </select>
                                                    </div>
                     </div>
-               
+              
                
                 <div class="row jsselect"  id="areagroupsdiv"  <?php if(in_array($showval,array(2,3))) { echo "style=display:block;"; }else {  echo "style=display:none;"; }?> >
                         <div class="form-group col-sm-4">
-                            <label for="usr">Select Area Groups</label>
-                            <select id="areagroups" class="form-control m-b" name="areagroups" >
+                        
+                        <?php $roleGroups=json_decode($roleGroups);?>
+                          <label for="usr">Select Area Groups</label>
+                           <select id="areagroups" class="form-control m-b" name="areagroups[]" multiple="multiple" >
                            <?php foreach($areagroups as $key => $val){ 
                            $selectVal='';
-                            if($roleGroups == $key){
+                            if(in_array($key,$roleGroups)){
                               $selectVal = 'selected';
                             }
                            
@@ -77,6 +82,10 @@
         </div>
     </div>
 </div>
+
+ 
+ <script src="<?php echo $this->basePath('js/plugins/multipleselect/bootstrap-multiselect.js')?>"></script>
+ 
 <script>
    
     $( "#role" ).change(function() {
@@ -94,3 +103,38 @@
 });
     
 </script>
+
+ <script type="text/javascript">
+    $(document).ready(function() {
+     
+           $('#areagroups').multiselect({
+          // onChange: function(option, checked, select) {
+                         //  var country = $('#areagroups option:selected');  
+             //alert ( $('#role').val());
+           //}
+        
+        
+        });
+           });
+</script>
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Alert</h4>
+        </div>
+        <div class="modal-body">
+          <p>Please select only three countries.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+    <div class="modal-backdrop fade in inside"></div>
+  </div>

@@ -1,5 +1,4 @@
 <?php
-
 namespace SamUser\Controller;
 use Zend\View\Model\ViewModel;
 use Zend\Validator\ValidatorChain;
@@ -44,18 +43,22 @@ class UsersController extends AbstractActionController
      */
     public function indexAction() {
        $this->layout()->setTemplate('layout/master');  
-            $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll();
+       $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll();
         $countriesData=array();
        $userCountryids=$this->getuserCountryids();
         foreach($countries as $country ){
         $countriesData[$country->id]=$country->name;    
         } 
-     
+      if ($this->zfcUserAuthentication()->hasIdentity()) {
+            //get the user_id of the user
+            $role_id = $this->zfcUserAuthentication()->getIdentity()->role_id;
+        }
      $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('country'=>$userCountryids ),array('created' => 'DESC'));
      return new ViewModel(
             array(
                'countries'=>$countriesData,
-           'users' => $users
+           'users' => $users,
+           'myroleid'=>$role_id,
             )
         );
     
@@ -88,8 +91,8 @@ class UsersController extends AbstractActionController
         foreach($areaGroups as $area ){
         $areaGroupsData[$area->id]=$area->groups_name;    
         } 
-       
-        $roleArea=$this->getEntityManager()->getRepository('SamUser\Entity\Rolearea')->findOneBy(array('user_id'=>$id ) );
+    $roleArea=$this->getEntityManager()->getRepository('SamUser\Entity\Rolearea')->findOneBy(array('user_id'=>$id ) );
+  
         if(!$roleArea){
             $roleCountry=0;
              $roleGroups=0;
@@ -100,11 +103,18 @@ class UsersController extends AbstractActionController
              $roleGroups=$roleArea->area_groupsid;
             
         }
+         
+         
+        
+         
            $request = $this->getRequest();
           if ($request->isPost()) {
+          
+       
+          
            $rolePost=$request->getPost('role');
            $countryPost=$request->getPost('country');
-           $areaGroups=$request->getPost('areagroups'); 
+           $areaGroups=json_encode($request->getPost('areagroups')); 
            $user=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('id'=>$id ) );
            $user->role_id=$rolePost;
            $user->created =new DateTime();
@@ -136,13 +146,19 @@ class UsersController extends AbstractActionController
           }
        
         
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
+            //get the user_id of the user
+            $role_id = $this->zfcUserAuthentication()->getIdentity()->role_id;
+        }
+        
          return new ViewModel(
             array(
                'countries' => $countriesData,
                'areagroups' =>$areaGroupsData,
                'roleid' => $user->role_id,
+               'myroleid'=>$role_id,
                'roleCountry' =>$roleCountry,
-                 'roleGroups' =>$roleGroups,
+               'roleGroups' =>$roleGroups,
             )
         );
         

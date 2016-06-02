@@ -45,9 +45,11 @@ protected function getuserCountryids() {
 */
 public function indexAction()
 {
-  
+  if ($this->zfcUserAuthentication()->hasIdentity()) {
+           $country = $this->zfcUserAuthentication()->getIdentity()->country;
+       }
 $this->layout()->setTemplate('layout/master');  
-$news=$this->getEntityManager()->getRepository('News\Entity\News')->findBy(array('status'=>1),array('created' => 'DESC'));
+$news=$this->getEntityManager()->getRepository('News\Entity\News')->findBy(array('status'=>1,'country'=>$country),array('created' => 'DESC'));
 
 return new ViewModel(
 array(

@@ -7,7 +7,14 @@
        exit;
   }
   $urlArray=explode('/',$_SERVER['REQUEST_URI']);
-  $url=end($urlArray);
+  
+
+  if(in_array('countrytree',$urlArray)){
+      $url='countrytree';
+  }else{
+      $url=end($urlArray);     
+  }
+ 
 
     const USER  =1;
     const SUPERADMIN=2;
@@ -79,9 +86,11 @@
                          
              
                ?>
-             <li <?php if(in_array($url,array('country','movement','display','users','testimonialtool','newstool','ishare'))){?> class="active" <?php } ?> >     <a href="#"><i class="fa fa-cog fa-yellow "></i> <span class="nav-label"><?php echo $admin; ?> </span> <span class="fa arrow"></span></a>
+             <li <?php if(in_array($url,array('countrytree','country','movement','display','users','testimonialtool','newstool','ishare'))){?> class="active" <?php } ?> >     <a href="#"><i class="fa fa-cog fa-yellow "></i> <span class="nav-label"><?php echo $admin; ?> </span> <span class="fa arrow"></span></a>
     <ul class="nav nav-second-level">
-    <li <?php if($url=='country'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('tree', array('action'=>'country'));?>" ><i class="fa fa-tree fa-yellow"></i>Country</a></li>
+    <li <?php if($url=='country'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('tree', array('action'=>'country'));?>" ><i class="fa fa-flag fa-yellow"></i>Country</a></li>
+    <li <?php if($url=='countrytree'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('tree', array('action'=>'countrytree'));?>" ><i class="fa fa-tree fa-yellow"></i>Country Tree</a></li>
+ 
     <li <?php if($url=='movement'){?> class="subactive" <?php } ?> ><a href="<?php echo $this->url('movement', array('action'=>'index'));?>"><i class="fa fa-question-circle fa-yellow "></i>Build Movement</a></li>
              <li <?php if($url=='display'){?> class="subactive" <?php } ?> >
         <a href="<?php echo $this->url('learn', array('action'=>'display'))  ?>">
