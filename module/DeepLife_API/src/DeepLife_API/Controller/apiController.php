@@ -122,6 +122,8 @@ class apiController extends AbstractRestfulController
                 $new_user->setEmail($param['User_Email']);
                 $new_user->setPassword($param['User_Pass']);
                 $new_user->setGender($param['User_Gender']);
+                $new_user->setRoleId(1);
+                $new_user->setPicture('Default');
                 if(!$smsService->isThere_User($new_user)){
                     $state = $smsService->AddNew_User($new_user);
                     if($state){
