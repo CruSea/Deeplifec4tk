@@ -20,7 +20,7 @@ $this->headTitle($title);
                             
 $form->setAttribute('method', 'post');
 $form->setAttribute('class', 'form-horizontal');
-$form->setAttribute('action', $this->url('share', array('action' => 'add')));
+$form->setAttribute('action', $this->url('Share', array('action' => 'add')));
 $form->prepare();
 echo $this->form()->openTag($form);
 foreach ( $form as $element ) :

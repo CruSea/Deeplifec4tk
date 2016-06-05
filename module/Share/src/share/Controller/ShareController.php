@@ -127,7 +127,7 @@ $userAnswer= $this->getEntityManager()->getRepository('Share\Entity\Answers')->f
            $session = new Container('message');
 	            $session->success = 'Data saved successfully';
                 // Redirect to list of Learningtools
-                return $this->redirect()->toRoute('share',array(
+                return $this->redirect()->toRoute('Share',array(
                 'action' => 'index', 'id'=>$stageShare
             ));
        
@@ -141,7 +141,7 @@ $userAnswer= $this->getEntityManager()->getRepository('Share\Entity\Answers')->f
 return new ViewModel(
 array(
  'sharetext'=>$stageSharetext,
- 'share'=>$stageShare,
+ 'Share'=>$stageShare,
  'answerData'=>$answerData,
 'questions' =>$questions ));
 
@@ -178,7 +178,7 @@ public function addAction()
 	    $session->success = 'Data saved successfully';
                 // Redirect to list of movement
              
-              return $this->redirect()->toRoute('share', array(
+              return $this->redirect()->toRoute('Share', array(
                 'action' => 'ishare'
             ));
             
@@ -191,7 +191,7 @@ public function editAction()
           $this->layout()->setTemplate('layout/master');  
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('share', array(
+            return $this->redirect()->toRoute('Share', array(
                 'action' => 'add'
             ));
         }
@@ -219,7 +219,7 @@ public function editAction()
                 $this->getEntityManager()->flush();
                  $session = new Container('message');
 	    $session->success = 'Data saved successfully';
-                      return $this->redirect()->toRoute('share', array(
+                      return $this->redirect()->toRoute('Share', array(
                 'action' => 'ishare'
             ));
             }
@@ -232,14 +232,14 @@ public function editAction()
 public function deleteAction(){
      $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('share');
+            return $this->redirect()->toRoute('Share');
         }
        $share = $this->getEntityManager()->find('Share\Entity\Questions', $id);    
        $this->getEntityManager()->remove($share);
         $this->getEntityManager()->flush();
         $session = new Container('message');
 	   $session->success = ' Deleted successfully';
-       return $this->redirect()->toRoute('share', array(
+       return $this->redirect()->toRoute('Share', array(
                 'action' => 'ishare'
             ));
 }

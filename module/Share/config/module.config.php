@@ -10,10 +10,10 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'share' => array(
+            'Share' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/share[/:action][/:id]',
+                    'route'    => '/Share[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',

@@ -6839,7 +6839,7 @@
 					}
 				}
 				else if ( type === 'column' || type === 'column-rows' || type === 'row' || type === 'cell' ) {
-					// columns and rows share the same structure.
+					// columns and rows Share the same structure.
 					// 'this' is an array of column indexes for each context
 					items = this[i];
 	
