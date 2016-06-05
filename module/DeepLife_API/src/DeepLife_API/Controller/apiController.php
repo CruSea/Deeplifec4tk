@@ -414,11 +414,12 @@ class apiController extends AbstractRestfulController
             // GetNew NewsFeed
             $this->api_Response['Response'] = array('NewsFeeds',$smsService->GetNew_NewsFeeds($this->api_user));
         }elseif($service == $this->api_Services[23]){
-            // GetNew Testimony
+            // Add New Testimony
             foreach($this->api_Param as $data){
                 $sch = new Testimony();
                 $sch->setUserId($this->api_user->getId());
                 $sch->setTitle($data['title']);
+                $sch->setCountryId($this->api_user->getCountry());
                 $sch->setDetail($data['detail']);
                 $state = $smsService->AddTestimony($sch);
                 if($state){
