@@ -584,6 +584,7 @@ class RepositoryImpl implements RepositoryInterface
             ->values(array(
                 'id'=>$testimony->getId(),
                 'user_id'=>$testimony->getUserId(),
+                'country'=>$testimony->getCountryId(),
                 'title'=>$testimony->getTitle(),
                 'detail'=>$testimony->getDetail(),
             ))
