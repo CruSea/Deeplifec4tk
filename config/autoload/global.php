@@ -14,7 +14,7 @@
 return array(
     'db' => array(
         'driver' => 'Pdo',
-        'dsn' => 'mysql:dbname=new_deeplife;
+        'dsn' => 'mysql:dbname=test_deeplife;
         host=localhost',
         'username' => 'root',
         'password' => '',
@@ -31,7 +31,7 @@ return array(
                     'port'     => '3306',
                     'user'     => 'root',
                     'password' => '',
-                    'dbname'   => 'new_deeplife',
+                    'dbname'   => 'test_deeplife',
                     'driverOptions' => array(1002 => 'SET NAMES utf8')
                 ),
             ),

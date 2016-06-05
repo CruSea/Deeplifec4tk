@@ -12,7 +12,7 @@ $this->headTitle($title);
         <div class="ibox-content">
             <div class="row">
                 <div class="col-sm-9 m-b-xs">
-          <a href="<?php echo $this->url('share', array('action'=>'add'));?>" class="btn  btn-sm btn-secondary">Add Question</a>
+          <a href="<?php echo $this->url('Share', array('action'=>'add'));?>" class="btn  btn-sm btn-secondary">Add Question</a>
          
 </p>
                 </div>
@@ -90,10 +90,10 @@ $this->headTitle($title);
                
               
 <td><span class="action" >
-<a href="<?php echo $this->url('share',
+<a href="<?php echo $this->url('Share',
             array('action'=>'edit', 'id' => $question->id));?>" class="tips" title="Edit"><i class="fa fa-edit"></i> </a>
    <span>&#x7C;</span>
-       <a href="<?php echo $this->url('share',
+       <a href="<?php echo $this->url('Share',
             array('action'=>'delete', 'id' => $question->id));?>" onclick="return confirm('Are you sure you want to delete this item?');" class="tips" title="Delete"> <i class="fa fa-trash-o"></i></a>
    	</span >
 </td>
