@@ -45,10 +45,15 @@ public function ishareAction()
 {
     
 $this->layout()->setTemplate('layout/master');  
-  $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-  $userCountryids=$this->getuserCountryids();
   
-       $countriesData=array();
+   $userCountryids=$this->getuserCountryids();
+   $whereData=array();
+   if(count($userCountryids)){
+      $whereData= array('country'=>$userCountryids);
+   }
+  
+  $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+        $countriesData=array();
         foreach($countries as $country ){
         $countriesData[$country->id]=$country->name;    
         } 
@@ -56,7 +61,7 @@ $this->layout()->setTemplate('layout/master');
 return new ViewModel(
 array(
 'countries'=>$countriesData,
-'questions' => $this->getEntityManager()->getRepository('Share\Entity\Questions')->findBy(array('country'=>$userCountryids),array('created' => 'DESC')) ));
+'questions' => $this->getEntityManager()->getRepository('Share\Entity\Questions')->findBy($whereData,array('created' => 'DESC')) ));
 
 }
 public function indexAction()
@@ -127,7 +132,7 @@ $userAnswer= $this->getEntityManager()->getRepository('Share\Entity\Answers')->f
            $session = new Container('message');
 	            $session->success = 'Data saved successfully';
                 // Redirect to list of Learningtools
-                return $this->redirect()->toRoute('Share',array(
+                return $this->redirect()->toRoute('share',array(
                 'action' => 'index', 'id'=>$stageShare
             ));
        
@@ -141,7 +146,7 @@ $userAnswer= $this->getEntityManager()->getRepository('Share\Entity\Answers')->f
 return new ViewModel(
 array(
  'sharetext'=>$stageSharetext,
- 'Share'=>$stageShare,
+ 'share'=>$stageShare,
  'answerData'=>$answerData,
 'questions' =>$questions ));
 
@@ -151,18 +156,23 @@ array(
 public function addAction()
 {
          $this->layout()->setTemplate('layout/master');  
-         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-        $ValueOptions=array();
-        $userCountryids=$this->getuserCountryids();
-        foreach($countries as $country ){
-          if(in_array($country->id,$userCountryids))
-        $ValueOptions[$country->id]=$country->name;    
+         $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+         
+         $ValueOptions=array();
+          foreach($countries as $country ){
+             $ValueOptions[$country->id]=$country->name;    
         }
           
         $form = new QuestionForm();
         $form->get('country')->setValueOptions($ValueOptions);
-       // $form->get('submit')->setValue('Add');
-        $request = $this->getRequest();
+         $request = $this->getRequest();
         if ($request->isPost()) {
             $question = new Questions();
             $form->setInputFilter($question->getInputFilter());
@@ -178,7 +188,7 @@ public function addAction()
 	    $session->success = 'Data saved successfully';
                 // Redirect to list of movement
              
-              return $this->redirect()->toRoute('Share', array(
+              return $this->redirect()->toRoute('share', array(
                 'action' => 'ishare'
             ));
             
@@ -191,16 +201,24 @@ public function editAction()
           $this->layout()->setTemplate('layout/master');  
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('Share', array(
+            return $this->redirect()->toRoute('share', array(
                 'action' => 'add'
             ));
         }
+      
+      $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+      
         $share = $this->getEntityManager()->find('Share\Entity\Questions', $id);
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-        $userCountryids=$this->getuserCountryids();
+      
         $ValueOptions=array();
         foreach($countries as $country ){
-         if(in_array($country->id,$userCountryids))
         $ValueOptions[$country->id]=$country->name;    
         }
        
@@ -219,7 +237,7 @@ public function editAction()
                 $this->getEntityManager()->flush();
                  $session = new Container('message');
 	    $session->success = 'Data saved successfully';
-                      return $this->redirect()->toRoute('Share', array(
+                      return $this->redirect()->toRoute('share', array(
                 'action' => 'ishare'
             ));
             }
@@ -232,14 +250,14 @@ public function editAction()
 public function deleteAction(){
      $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('Share');
+            return $this->redirect()->toRoute('share');
         }
        $share = $this->getEntityManager()->find('Share\Entity\Questions', $id);    
        $this->getEntityManager()->remove($share);
         $this->getEntityManager()->flush();
         $session = new Container('message');
 	   $session->success = ' Deleted successfully';
-       return $this->redirect()->toRoute('Share', array(
+       return $this->redirect()->toRoute('share', array(
                 'action' => 'ishare'
             ));
 }

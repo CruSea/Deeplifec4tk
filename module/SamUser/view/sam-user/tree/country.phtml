@@ -12,7 +12,7 @@
                                          <i class="fa-disciples"></i>
                             </div>
                             <div class="col-xs-8 text-right">
-                                <span><strong>DISCIPLES TREE </strong></span>
+                                <span><strong><?php echo $this->translate('DISCIPLES TREE')?> </strong></span>
                                 <h2 class="font-bold">
                                 <?php 
                                 if(isset($stage[0]['totaluser'])){
@@ -24,7 +24,7 @@
                                 ?>
                                 
                                 </h2>
-                           <span>Total Disciples</span>
+                           <span><?php echo $this->translate('Total Disciples')?></span>
                             </div>
                         </div>
                 </div>
@@ -37,7 +37,7 @@
                        <i class="fa-win"></i>
                         </div>
                         <div class="col-xs-8 text-right">
-                            <span> <strong>WIN </strong></span>
+                            <span> <strong><?php echo $this->translate('WIN')?> </strong></span>
                             <h2 class="font-bold"> <?php 
                                 if(isset($stage[0]['win'])){
                                     echo sprintf("%02d", $stage[0]['win']);
@@ -46,7 +46,7 @@
                                 }
                                 
                                 ?></h2>
-                         <span>Aggressively evangelize </span>
+                         <span><?php echo $this->translate('Aggressively evangelize')?> </span>
                         </div>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                       
                         </div>
                         <div class="col-xs-8 text-right">
-                            <span> <strong>BUILD </strong></span>
+                            <span> <strong><?php echo $this->translate('BUILD')?> </strong></span>
                             <h2 class="font-bold"> <?php 
                                 if(isset($stage[0]['build'])){
                                     echo sprintf("%02d", $stage[0]['build']);
@@ -68,7 +68,7 @@
                                 }
                                 
                                 ?></h2>
-                         <span> Deeply build </span>
+                         <span><?php echo $this->translate('Deeply build')?>  </span>
                         </div>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
                             <i class="fa-send"></i>
                         </div>
                         <div class="col-xs-8 text-right">
-                            <span><strong> SEND </strong></span>
+                            <span><strong><?php echo $this->translate('SEND')?>  </strong></span>
                             <h2 class="font-bold"><?php 
                                 if(isset($stage[0]['send'])){
                                     echo sprintf("%02d", $stage[0]['send']);
@@ -89,7 +89,7 @@
                                 }
                                 
                                 ?></h2>
-                        <span> Urgently multiply</span> 
+                        <span><?php echo $this->translate('Urgently multiply')?> </span> 
                         </div>
                     </div>
                 </div>

@@ -1,3 +1,16 @@
+<?php echo $this->headLink()->prependStylesheet($this->basePath('/js/plugins/croppie/croppie.css')); ?>
+<script src="<?php echo $this->basePath('/js/plugins/croppie/croppie.min.js')?>" ></script>
+<style>
+    .upload-msg {
+        text-align: center;
+        padding: 50px;
+        font-size: 22px;
+        color: #aaa;
+        width: 260px;
+        margin: 50px auto;
+        border: 1px solid #aaa;
+    }
+</style>
 <div class="row">
 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
@@ -33,14 +46,21 @@ if($element->getLabel()=='Picture'  ){ ?>
 
 <div class="row">
                         <div class="col-sm-8 col-xs-12">
+
+
+
+                         
                             <div class="profile-pic">
-                            <label for="file-upload" class="custom-file-upload">
+
+                                <label for="file-upload" class="custom-file-upload">
                                  Change Picture
                                 </label>
                <input type='file' name="picture"  class="form-control photo" id="inputFile">
                                
                                  
                                 <div class="form-photo">
+                                    <div class="demo"></div>
+
                                  <?php $avatar='/avatar/noavatar.jpg'; 
                                  if(strlen($image)){
                                      $avatar=$image;
@@ -48,9 +68,26 @@ if($element->getLabel()=='Picture'  ){ ?>
                                  
                                  ?> 
                          <?php if(strpos($avatar,'data:image')!==false){ ?>
-                    <img id="image-preview" src="<?php echo $avatar ?>" width="auto" height="100" alt="" />                        <?php }else{ ?>
+                    <img id="image-preview" src="<?php echo $avatar ?>" width="auto" height="100" alt="" />
+                         <?php }else{ ?>
         <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="auto" height="100" alt="" />
-                                <?php  }    ?> 
+
+                             <script>
+                                 $uploadCrop = $('#upload-demo').croppie({
+                                     enableExif: true,
+                                     viewport: {
+                                         width: 200,
+                                         height: 200,
+                                         type: 'circle'
+                                     },
+                                     boundary: {
+                                         width: 300,
+                                         height: 300
+                                     }
+                                 });
+                             </script>
+
+                                <?php  }    ?>
                                 </div>
                              </div>
                              <div class="form-group">
@@ -118,7 +155,9 @@ span.help-inline ul li {
 }
 </style>
 <script type="text/javascript">
-          
+
+
+
            
               $('#country').on('change', function() {
      $("#countrycode").val($(this).val());

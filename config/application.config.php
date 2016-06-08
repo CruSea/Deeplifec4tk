@@ -22,8 +22,7 @@ return array(
         'ZfcUserDoctrineORM',
         'Movement',
         'SamUser',
-        'Learningtools',
-        'DeepLife_API',
+         'Learningtools',
         'Schedules',
     ),
 

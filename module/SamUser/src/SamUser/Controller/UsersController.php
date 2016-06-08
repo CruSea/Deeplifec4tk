@@ -1,4 +1,12 @@
 <?php
+ /**
+ * Created by PhpStorm.
+ * User: Sami
+ * Date: 11/12/15
+ * Time: 12:53 AM
+ */
+
+
 namespace SamUser\Controller;
 use Zend\View\Model\ViewModel;
 use Zend\Validator\ValidatorChain;
@@ -53,7 +61,14 @@ class UsersController extends AbstractActionController
             //get the user_id of the user
             $role_id = $this->zfcUserAuthentication()->getIdentity()->role_id;
         }
-     $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('country'=>$userCountryids ),array('created' => 'DESC'));
+        
+    
+   $whereData=array();
+   if(count($userCountryids)){
+      $whereData= array('country'=>$userCountryids);
+   }
+        
+     $users=$this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy($whereData,array('created' => 'DESC'));
      return new ViewModel(
             array(
                'countries'=>$countriesData,
@@ -78,12 +93,20 @@ class UsersController extends AbstractActionController
         }
        
         $this->layout()->setTemplate('layout/master'); 
-         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+       
+        $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+       
+       
         $countriesData=array();
-         $userCountryids=$this->getuserCountryids();
-        foreach($countries as $country ){
-         if(in_array($country->id,$userCountryids))
-        $countriesData[$country->id]=$country->name;    
+               foreach($countries as $country ){
+            $countriesData[$country->id]=$country->name;    
         } 
         
         $areaGroups=$this->getEntityManager()->getRepository('SamUser\Entity\Areagroups')->findAll( );
@@ -120,7 +143,7 @@ class UsersController extends AbstractActionController
            $user->created =new DateTime();
            $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
-          if(in_array($rolePost,array(2,3,4))){
+          if(in_array($rolePost,array(3,4))){
               
             if($rolePost==4){
                   $roleArea->countryid=$countryPost;

@@ -16,9 +16,20 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
+    
+    
+      
+        $applicaton = $e->getApplication()->getServiceManager();
+        // Just a call to the translator, nothing special!
+        $applicaton->get('translator');
+        $this->initTranslator($e);
+    
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+    
+    
+    
     }
 
     public function getConfig()
@@ -35,5 +46,23 @@ class Module
                 ),
             ),
         );
+    }
+    
+    
+     protected function initTranslator(MvcEvent $event)
+    {
+        
+       
+        $serviceManager = $event->getApplication()->getServiceManager();
+       $auth = $serviceManager->get('zfcuser_auth_service');
+       $language='en_US';
+       if ($auth->hasIdentity()) {
+        $language=$auth->getIdentity()->userlocale;
+        }
+     
+        $translator = $serviceManager->get('translator');
+        $translator->setLocale($language)
+            ->setFallbackLocale('en_US');
+          
     }
 }

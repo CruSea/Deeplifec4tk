@@ -20,9 +20,9 @@
                     <thead>
                     <tr>
                          <th class="nodisplay" ></th>
-                        <th>TITLE</th>
-                        <th>DESCRIPTION </th>
-                        <th>Action</th>
+                        <th><?php echo $this->translate('TITLE')?></th>
+                        <th><?php echo $this->translate('DESCRIPTION')?> </th>
+                        <th><?php echo $this->translate('ACTION')?></th>
                   </tr>
                     </thead>
                     <tbody>
@@ -38,7 +38,7 @@
             array('action'=>'edit', 'id' => $learn->id));?>" class="tips " title="Edit">
            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
              </a><span>&#x7C;</span><a href="<?php echo $this->url('learn',
-            array('action'=>'delete', 'id' => $learn->id));?>" onclick="return confirm('Are you sure you want to delete this item?');" class="tips  " title="Delete"> <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            array('action'=>'delete', 'id' => $learn->id));?>" onclick="return confirm('<?php echo $this->translate('Are you sure you want to delete this item?')?>');" class="tips  " title="Delete"> <i class="fa fa-trash-o" aria-hidden="true"></i></a>
    	
 </td>
                 

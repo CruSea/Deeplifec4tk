@@ -2944,7 +2944,7 @@ Licensed under the MIT license.
         }
 
         // trigger click or hover event (they send the same parameters
-        // so we Share their code)
+        // so we share their code)
         function triggerClickHoverEvent(eventname, event, seriesFilter) {
             var offset = eventHolder.offset(),
                 canvasX = event.pageX - offset.left - plotOffset.left,

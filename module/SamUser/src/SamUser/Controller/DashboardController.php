@@ -384,15 +384,39 @@ Public function profileAction()  {
      
         ));
      
-        $form->get('country')->setValueOptions($ValueOptions)->setValue($user->country) ;
-        $form->get('gender')->setValue($user->gender) ;
-        $form->get('mentor_id')->setValue($user->mentor_id);
-        $form->get('stage')->setValue($user->stage);
-        $form->get('password')->setValue($user->password);
-        $form->get('role_id')->setValue($user->role_id);
-         $form->get('countrycode')->setValueOptions($Countrycode)->setValue($user->country) ;
-        $form->get('submit')->setValue('Save');
-        $request = $this->getRequest();
+    
+     
+     
+     
+      $form->add(array(
+            'name' => 'userlocale',
+            'type' => 'Select',
+            'options' => array(
+                'label' => 'Language',
+                 'empty_option' => 'Select', 
+                   'value_options' => array(
+                             
+                         
+                     ),  
+            ), 'attributes' => array(
+                           'id'       => 'userlocale',
+                           'class'    => 'form-control',
+                                            
+                           
+                            ),
+        ));
+     
+   $config = $this->serviceLocator->get('config');
+    $form->get('userlocale')->setValueOptions($config['locale']['available'])->setValue($user->userlocale) ;
+    $form->get('country')->setValueOptions($ValueOptions)->setValue($user->country) ;
+    $form->get('gender')->setValue($user->gender) ;
+    $form->get('mentor_id')->setValue($user->mentor_id);
+    $form->get('stage')->setValue($user->stage);
+    $form->get('password')->setValue($user->password);
+    $form->get('role_id')->setValue($user->role_id);
+     $form->get('countrycode')->setValueOptions($Countrycode)->setValue($user->country) ;
+     $form->get('submit')->setValue('Save');
+     $request = $this->getRequest();
      
        
 
@@ -401,7 +425,6 @@ Public function profileAction()  {
        
               $form->setInputFilter($user->getInputFilter());
               $files   = $request->getFiles();
-      //         $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
          
               $data =$this->getRequest()->getPost()->toArray();
               $form->setData($this->getRequest()->getPost());
@@ -475,8 +498,8 @@ Public function profileAction()  {
                 
                 $this->getEntityManager()->persist($user);
                 $this->getEntityManager()->flush();
-                 $session = new Container('message');
-	   $session->success = 'Data saved successfully';
+                $session = new Container('message');
+	            $session->success = 'Data saved successfully';
                 // Redirect to list of dashboard
                return $this->redirect()->toRoute('dashboard');
                }

@@ -1,6 +1,11 @@
 <?php
-namespace Learningtools\Controller;
 
+/**
+* Learning Tools 
+* This moduels will be used for creating win build send question for different questi
+*/
+
+namespace Learningtools\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
@@ -71,15 +76,22 @@ array(
 public function addAction()
 {
          $this->layout()->setTemplate('layout/master');  
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+       $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+     if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+      }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+      
+      
          $ValueOptions=array();
-          $userCountryids=$this->getuserCountryids();
         
       
         
          foreach($countries as $country ){
-         if(in_array($country->id,$userCountryids))
-         $ValueOptions[$country->id]=$country->name;    
+            $ValueOptions[$country->id]=$country->name;    
          }
           
         $form = new LearnForm();
@@ -121,12 +133,19 @@ public function editAction()
         
       
         
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+      $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+      
         $ValueOptions=array();
-         $userCountryids=$this->getuserCountryids();
+        
         foreach($countries as $country ){
-         if(in_array($country->id,$userCountryids))
-        $ValueOptions[$country->id]=$country->name;    
+                $ValueOptions[$country->id]=$country->name;    
         }
       
         $form  = new LearnForm();
@@ -182,8 +201,13 @@ public function displayAction()
       
     
 $this->layout()->setTemplate('layout/master');  
-    $userCountryids=$this->getuserCountryids();
-$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy(array('country'=>$userCountryids),array('created' => 'DESC'));
+   $userCountryids=$this->getuserCountryids();
+   $whereData=array();
+   if(count($userCountryids)){
+      $whereData= array('country'=>$userCountryids);
+   }
+
+$learn=$this->getEntityManager()->getRepository('Learningtools\Entity\Learningtools')->findBy($whereData,array('created' => 'DESC'));
 return new ViewModel(
 array(
 'learning'=>$learn,

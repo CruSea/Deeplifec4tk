@@ -45,6 +45,7 @@ protected function getuserCountryids() {
 */
 public function indexAction()
 {
+  
   if ($this->zfcUserAuthentication()->hasIdentity()) {
            $country = $this->zfcUserAuthentication()->getIdentity()->country;
        }
@@ -64,11 +65,17 @@ array(
 public function addAction()
 {
          $this->layout()->setTemplate('layout/master');  
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+       $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+         
          $ValueOptions=array();
-         $userCountryids=$this->getuserCountryids();
          foreach($countries as $country ){
-          if(in_array($country->id,$userCountryids))
          $ValueOptions[$country->id]=$country->name;    
          }
           
@@ -109,13 +116,19 @@ public function editAction()
         }
         $news = $this->getEntityManager()->find('News\Entity\News', $id);
         
-      
+      $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
         
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
+       
         $ValueOptions=array();
-       $userCountryids=$this->getuserCountryids();
+     
         foreach($countries as $country ){
-         if(in_array($country->id,$userCountryids))
+       
         $ValueOptions[$country->id]=$country->name;    
         }
       
@@ -170,8 +183,12 @@ public function deleteAction(){
 public function newstoolAction()
 {
 $this->layout()->setTemplate('layout/master');  
-$userCountryids=$this->getuserCountryids();
-$news=$this->getEntityManager()->getRepository('News\Entity\News')->findBy(array('country'=>$userCountryids),array('created' => 'DESC'));
+ $userCountryids=$this->getuserCountryids();
+   $whereData=array();
+   if(count($userCountryids)){
+      $whereData= array('country'=>$userCountryids);
+   }
+$news=$this->getEntityManager()->getRepository('News\Entity\News')->findBy($whereData,array('created' => 'DESC'));
 return new ViewModel(
 array(
 'news'=>$news,

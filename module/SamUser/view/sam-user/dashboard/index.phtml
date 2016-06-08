@@ -7,14 +7,14 @@
                                          <i class="fa-disciples"></i>
                             </div>
                             <div class="col-xs-8 text-right">
-                                <span><strong>DISCIPLES TREE </strong></span>
+                                <span><strong><?php echo $this->translate('DISCIPLES TREE')?> </strong></span>
                                 <h2 class="font-bold"> 
                                      <?php 
                                  echo sprintf("%02d",$disciples[0]->disciplescount);                                          ?>
                                 
                                 
                                 </h2>
-                           <span>Total Disciples</span>
+                           <span><?php echo $this->translate('Total Disciples')?></span>
                             </div>
                         </div>
                 </div>
@@ -27,11 +27,11 @@
                        <i class="fa-win"></i>
                         </div>
                         <div class="col-xs-8 text-right">
-                            <span> <strong>WIN </strong></span>
+                            <span> <strong> <?php echo $this->translate('WIN')?></strong></span>
                             <h2 class="font-bold">
                             <?php  if(isset($stage[0]['win'])){echo sprintf("%02d",$stage[0]['win']);  }else { echo '00'; }   ?>
                            </h2>
-                         <span> Aggressively evangelize </span>
+                         <span> <?php echo $this->translate('Aggressively evangelize')?> </span>
                         </div>
                     </div>
                 </div>
@@ -44,11 +44,11 @@
                       
                         </div>
                         <div class="col-xs-8 text-right">
-                            <span> <strong>BUILD </strong></span>
+                            <span> <strong><?php echo $this->translate('BUILD')?> </strong></span>
                             <h2 class="font-bold">
                              <?php  if(isset($stage[0]['build'])){echo sprintf("%02d",$stage[0]['build']);  }else { echo '00'; }   ?>                            
                             </h2>
-                         <span> Deeply build </span>
+                         <span><?php echo $this->translate('Deeply build')?>  </span>
                         </div>
                     </div>
                 </div>
@@ -60,12 +60,12 @@
                             <i class="fa-send"></i>
                         </div>
                         <div class="col-xs-8 text-right">
-                            <span><strong> SEND </strong></span>
+                            <span><strong> <?php echo $this->translate('SEND')?> </strong></span>
                             <h2 class="font-bold">
                                       <?php  if(isset($stage[0]['send'])){echo sprintf("%02d",$stage[0]['send']);  }else { echo '00'; }   ?> 
                                 
                             </h2>
-                        <span> Urgently multiply </span> 
+                        <span><?php echo $this->translate('Urgently multiply')?> </span> 
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,8 @@
         <div class="ibox-content">
             <div class="row">
                 <div class="col-sm-1 m-b-xs">
-          <a href="<?php echo $this->url('dashboard', array('action'=>'add'));?>" class="btn  btn-sm btn-secondary">Add Disciple</a>
+          <a href="<?php echo $this->url('dashboard', array('action'=>'add'));?>" class="btn  btn-sm btn-secondary">
+          <?php echo $this->translate('Add Disciple')?></a>
          
 </p>
                 </div>
@@ -96,14 +97,14 @@
                     <thead>
                     <tr>
                     <th class="nodisplay" ></th>
-                         <th>AVATAR</th>
-                        <th>NAME </th>
-                        <th>EMAIL </th>
-                        <th>PHONE </th>
-                        <th>COUNTRY</th>
-                         <th>BUILD STAGE</th>
-                    <th>BUILD PERCENTAGE</th>
-                      <th>ACTION</th>
+                         <th><?php echo $this->translate('AVATAR')?></th>
+                        <th><?php echo $this->translate('NAME')?> </th>
+                        <th><?php echo $this->translate('EMAIL')?> </th>
+                        <th><?php echo $this->translate('PHONE')?> </th>
+                        <th><?php echo $this->translate('COUNTRY')?></th>
+                         <th><?php echo $this->translate('BUILD STAGE')?></th>
+                    <th><?php echo $this->translate('BUILD PERCENTAGE')?></th>
+                      <th><?php echo $this->translate('ACTION')?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -181,7 +182,7 @@ tr td {
                    ?> 
                  
                   <a  href="<?php echo $this->url('movement', array('action'=>'question', 'id' => $user->id));?>" class="fbox tips btn btn-xs <?php echo $class ?> "  >
-                  <?php  echo $this->escapeHtml($user->stage==''?'ADDED':strtoupper($user->stage));  ?></a> 
+                  <?php  echo $this->escapeHtml($user->stage==''?$this->translate('ADDED'):$this->translate(strtoupper($user->stage)));  ?></a> 
               
                </td>
                <td><?php echo $percentage; ?> </td>
@@ -189,7 +190,7 @@ tr td {
               <span class="action" >
 <a href="<?php echo $this->url('dashboard', array('action'=>'edit','id' => $user->id));?>" class="tips" title="Edit"><i class="fa fa-edit"></i> </a>
    <span>&#x7C;</span>
-       <a href="<?php echo $this->url('dashboard', array('action'=>'delete','id' => $user->id));?>" onclick="return confirm('Are you sure you want to delete this item?');" class="tips" title="Delete"> <i class="fa fa-trash-o"></i></a>
+       <a href="<?php echo $this->url('dashboard', array('action'=>'delete','id' => $user->id));?>" onclick="return confirm('<?php echo $this->translate('Are you sure you want to delete this item?')?>');" class="tips" title="Delete"> <i class="fa fa-trash-o"></i></a>
    	</span >
                </td>
             </tr>

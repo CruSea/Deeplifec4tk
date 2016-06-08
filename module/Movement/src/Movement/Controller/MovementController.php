@@ -48,6 +48,11 @@ public function indexAction()
 $this->layout()->setTemplate('layout/master');  
   $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
    $userCountryids=$this->getuserCountryids();
+   $whereData=array();
+   if(count($userCountryids)){
+      $whereData= array('country'=>$userCountryids);
+   }
+  
   
        $countriesData=array();
         foreach($countries as $country ){
@@ -57,17 +62,22 @@ $this->layout()->setTemplate('layout/master');
 return new ViewModel(
 array(
 'countries'=>$countriesData,
-'questions' => $this->getEntityManager()->getRepository('Movement\Entity\Questions')->findBy(array('country'=>$userCountryids),array('created' => 'DESC')) ));
+'questions' => $this->getEntityManager()->getRepository('Movement\Entity\Questions')->findBy($whereData,array('created' => 'DESC')) ));
 
 }
 public function addAction()
 {
          $this->layout()->setTemplate('layout/master');  
-         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+           $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+   if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+   }
+        
+         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
         $ValueOptions=array();
-       $userCountryids=$this->getuserCountryids();
+    
        foreach($countries as $country ){
-        if(in_array($country->id,$userCountryids))
         $ValueOptions[$country->id]=$country->name;    
         }
           
@@ -106,11 +116,19 @@ public function editAction()
             ));
         }
         $movement = $this->getEntityManager()->find('Movement\Entity\Questions', $id);
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
+     
+           $userCountryids=$this->getuserCountryids();
+        $whereData=array();
+    if(count($userCountryids)){
+      $whereData= array('id'=>$userCountryids);
+     }
+        
+     
+        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findBy($whereData,array('name' => 'ASC') );
         $ValueOptions=array();
-        $userCountryids=$this->getuserCountryids();
+     
         foreach($countries as $country ){
-         if(in_array($country->id,$userCountryids))
+     
         $ValueOptions[$country->id]=$country->name;    
         }
        

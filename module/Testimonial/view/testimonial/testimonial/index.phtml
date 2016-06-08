@@ -18,7 +18,7 @@ a.morelink {
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>Testimonial</h5>
+                <h5><?php echo $this->translate('Testimonial')?></h5>
             </div>
                 <div class="ibox-content">
              
@@ -26,13 +26,13 @@ a.morelink {
    <div class="chat-form">
         <div class="row  success" style="display: none"   >
 <div class="thank-msg alert alert-success col-sm-12"   >
- <h3> Thank You!! You have successfully post a testimonial pending for approval.</h3>
+ <h3> <?php echo $this->translate('Thank You!! You have successfully post a testimonial pending for approval.')?></h3>
    </div>
  </div>
 
 <div class="row  error"   style="display: none" >
 <div class="thank-msg alert alert-danger col-sm-12"   >
-<h3> oops something went wrong. try again.</h3>
+<h3> <?php echo $this->translate('oops something went wrong. try again.')?></h3>
  </div>
 </div> 
 
@@ -172,4 +172,3 @@ $('.testimonialid').click(function(){
 
 });
 </script>
-<script src="<?php //echo $this->basePath('/js/custom.js')?>" ></script>

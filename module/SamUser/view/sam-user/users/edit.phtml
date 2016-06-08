@@ -51,7 +51,7 @@
                     </div>
               
                
-                <div class="row jsselect"  id="areagroupsdiv"  <?php if(in_array($showval,array(2,3))) { echo "style=display:block;"; }else {  echo "style=display:none;"; }?> >
+                <div class="row jsselect"  id="areagroupsdiv"  <?php if($showval==3) { echo "style=display:block;"; }else {  echo "style=display:none;"; }?> >
                         <div class="form-group col-sm-4">
                         
                         <?php $roleGroups=json_decode($roleGroups);?>
@@ -91,12 +91,10 @@
     $( "#role" ).change(function() {
       var roleVal=$(this).val();
     $('.jsselect').hide();
-      if(roleVal==2 || roleVal==3 ){
-    
-          $('#areagroupsdiv').show();
+      if(roleVal==3 ){
+         $('#areagroupsdiv').show();
       }else if(roleVal==4){
-    
-          $('#countrydiv').show();
+         $('#countrydiv').show();
       }
 
 

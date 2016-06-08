@@ -19,7 +19,8 @@ use Zend\InputFilter\InputFilterInterface;
  * @property string $displayName
  * @property string $phone_no
  * @property string $picture
- * @property string $stage
+ * @property string $userlocale
+*  * @property string $stage
  *  @property datetime $role_id
  * @property datetime $created
   * @property int $id
@@ -43,7 +44,10 @@ class Users implements InputFilterAwareInterface , UserInterface
     protected $created;
    
   
-   
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $userlocale;
     /**
      * @ORM\Column(type="string")
      */
@@ -163,7 +167,7 @@ class Users implements InputFilterAwareInterface , UserInterface
          $this->password = $data['password'];
         $this->picture =isset($data['picture'])?$data['picture']:'';
         $this->gender = $data['gender'];
-     
+      // $this->userlocale = $data['userlocale'];
 
     }
     
