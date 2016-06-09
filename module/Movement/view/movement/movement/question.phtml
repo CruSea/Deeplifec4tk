@@ -15,7 +15,7 @@
      <img src="<?php echo $this->basePath('/img/'.$stage.'_tag.png')?>" width="130px">
                              </div>
                             <div class="ques-category">
-                                <span><?php echo echo $this->translate(ucwords($stage))?> </span>
+                                <span><?php echo $this->translate(ucwords($stage))?> </span>
                                 <span>
                               
                                 <?php  switch($stage){
@@ -76,7 +76,7 @@
                                   <?php } ?>
               <div class="row" id="result" style="display: none;" >
                <div class="thank-msg alert alert-success col-sm-12"   >
-               <h3><?php echo $this->translate('Thank You!! You have successfully finished this stage.')</h3>
+              <h3><?php echo $this->translate('Thank You!! You have successfully finished this stage.'); ?></h3>
                <div class="button-box">
                 <a href="<?= $this->url('dashboard'); ?>" class="  btn-primary btn">Finish </a>
                 </div>
