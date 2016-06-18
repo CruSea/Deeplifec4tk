@@ -77,6 +77,7 @@ class RepositoryImpl implements RepositoryInterface
                 'role_id'=>$user->getRoleId(),
                 'stage'=>$user->getStage(),
                 'picture'=>$user->getPicture(),
+                'userlocale'=>1,
             ))
             ->into('users');
         $statement = $sql->prepareStatementForSqlObject($insert);;
@@ -535,7 +536,7 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetNew_NewsFeeds(User $user)
     {
-        $row_sql = 'SELECT * FROM news_feeds WHERE news_feeds.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = '.$user->getId().')';
+        $row_sql = 'SELECT * FROM news WHERE news.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = '.$user->getId().')';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
@@ -545,6 +546,7 @@ class RepositoryImpl implements RepositoryInterface
                 $result->next();
             }
         }
+
         $hydrator = new Hydrator();
         return $hydrator->Extract($posts,new NewsFeed());
     }
@@ -582,13 +584,11 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'id'=>$testimony->getId(),
                 'user_id'=>$testimony->getUserId(),
                 'country'=>$testimony->getCountryId(),
-                'title'=>$testimony->getTitle(),
-                'detail'=>$testimony->getDetail(),
+                'description'=>$testimony->getDetail(),
             ))
-            ->into('testimony');
+            ->into('testimonial');
         $statement = $sql->prepareStatementForSqlObject($insert);
         $result = $statement->execute();
         return $result->valid();
