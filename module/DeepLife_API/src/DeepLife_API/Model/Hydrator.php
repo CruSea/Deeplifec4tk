@@ -85,14 +85,22 @@ class Hydrator
                 $Found = null;
                 foreach($Post as $data){
                     $New_Data = new NewsFeed();
+//                    $New_Data->setId(isset($data['id'])? intval($data['id']):null);
+//                    $New_Data->setCategory(isset($data['category'])? ($data['category']):null);
+//                    $New_Data->setUserId(isset($data['user_id'])? $data['user_id']:null);
+//                    $New_Data->setCountryId(isset($data['country_id'])? $data['country_id']:null);
+//                    $New_Data->setTitle(isset($data['title'])? $data['title']:null);
+//                    $New_Data->setContent(isset($data['content'])? $data['content']:null);
+//                    $New_Data->setImageUrl(isset($data['image_url'])? $data['image_url']:null);
+//                    $New_Data->setPublishDate(isset($data['published_date'])? $data['published_date']:null);
+//                    $New_Data->setCreated(isset($data['created'])? $data['created']:null);
                     $New_Data->setId(isset($data['id'])? intval($data['id']):null);
-                    $New_Data->setCategory(isset($data['category'])? ($data['category']):null);
-                    $New_Data->setUserId(isset($data['user_id'])? $data['user_id']:null);
-                    $New_Data->setCountryId(isset($data['country_id'])? $data['country_id']:null);
-                    $New_Data->setTitle(isset($data['title'])? $data['title']:null);
-                    $New_Data->setContent(isset($data['content'])? $data['content']:null);
-                    $New_Data->setImageUrl(isset($data['image_url'])? $data['image_url']:null);
-                    $New_Data->setPublishDate(isset($data['published_date'])? $data['published_date']:null);
+                    $New_Data->setCategory(isset($data['created'])? ($data['created']):null);
+                    $New_Data->setCountryId(isset($data['country'])? $data['country']:null);
+                    $New_Data->setTitle(isset($data['description'])? $data['title']:null);
+                    $New_Data->setContent(isset($data['description'])? $data['description']:null);
+                    $New_Data->setImageUrl(isset($data['description'])? $data['description']:null);
+                    $New_Data->setPublishDate(isset($data['created'])? $data['created']:null);
                     $New_Data->setCreated(isset($data['created'])? $data['created']:null);
                     $Found[] = $New_Data;
                 }
@@ -190,12 +198,12 @@ class Hydrator
                 foreach($Post as $data){
                     $New_Data = new NewsFeed();
                     $New_Data->setId(isset($data['id'])? intval($data['id']):null);
-                    $New_Data->setCategory(isset($data['category'])? ($data['category']):null);
-                    $New_Data->setCountryId(isset($data['country_id'])? $data['country_id']:null);
-                    $New_Data->setTitle(isset($data['title'])? $data['title']:null);
-                    $New_Data->setContent(isset($data['content'])? $data['content']:null);
-                    $New_Data->setImageUrl(isset($data['image_url'])? $data['image_url']:null);
-                    $New_Data->setPublishDate(isset($data['published_date'])? $data['published_date']:null);
+                    $New_Data->setCategory(isset($data['created'])? ($data['created']):null);
+                    $New_Data->setCountryId(isset($data['country'])? $data['country']:null);
+                    $New_Data->setTitle(isset($data['description'])? $data['title']:null);
+                    $New_Data->setContent(isset($data['description'])? $data['description']:null);
+                    $New_Data->setImageUrl(isset($data['description'])? $data['description']:null);
+                    $New_Data->setPublishDate(isset($data['created'])? $data['created']:null);
                     $New_Data->setCreated(isset($data['created'])? $data['created']:null);
                     $Found[] = $New_Data->getArray();
                 }

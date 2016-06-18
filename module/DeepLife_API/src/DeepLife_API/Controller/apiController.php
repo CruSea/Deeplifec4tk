@@ -392,7 +392,7 @@ class apiController extends AbstractRestfulController
             $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
             $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
             //$found['Questions'] = $smsService->Get_Question($this->api_user);
-             //$found['Reports'] = $smsService->Get_Report($this->api_user);
+            //$found['Reports'] = $smsService->Get_Report($this->api_user);
 
             $this->api_Response['Response'] = $found;
         }elseif($service == $this->api_Services[21]){
@@ -415,6 +415,7 @@ class apiController extends AbstractRestfulController
             $this->api_Response['Response'] = array('NewsFeeds',$smsService->GetNew_NewsFeeds($this->api_user));
         }elseif($service == $this->api_Services[23]){
             // Add New Testimony
+            $res['Log_Response'] = array();
             foreach($this->api_Param as $data){
                 $sch = new Testimony();
                 $sch->setUserId($this->api_user->getId());
