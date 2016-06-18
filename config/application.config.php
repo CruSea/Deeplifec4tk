@@ -22,8 +22,9 @@ return array(
         'ZfcUserDoctrineORM',
         'Movement',
         'SamUser',
-         'Learningtools',
+        'Learningtools',
         'Schedules',
+        'DeepLife_API',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
