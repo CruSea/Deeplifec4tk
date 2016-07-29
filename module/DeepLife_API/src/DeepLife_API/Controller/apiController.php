@@ -15,19 +15,21 @@ use DeepLife_API\Model\NewsFeed;
 use DeepLife_API\Model\Schedule;
 use DeepLife_API\Model\Testimony;
 use DeepLife_API\Model\User;
-use DeepLife_API\Model\User_Role;
 use DeepLife_API\Model\UserReport;
 use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\Validator\File\Size;
 use Zend\View\Model\JsonModel;
+use Zend\File\Transfer\Adapter\Http;
 
 class apiController extends AbstractRestfulController
 {
     protected $api_Response;
+    protected  $file_trans;
     protected $api_Services = array(
         'GetAll_Disciples','GetNew_Disciples','AddNew_Disciples','AddNew_Disciples_Log','Delete_All_Disciple_Log',
         'GetAll_Schedules','GetNew_Schedules','AddNew_Schedules','AddNew_Schedule_Log','Delete_All_Schedule_Log',
         'IsValid_User','CreateUser','GetAll_Questions','GetAll_Answers','AddNew_Answers','Send_Log','Log_In','Sign_Up',
-        'Update_Disciples','Update','Meta_Data','Send_Report','GetNew_NewsFeed',"Send_Testimony"
+        'Update_Disciples','Update','Meta_Data','Send_Report','GetNew_NewsFeed',"Send_Testimony","Upload_User_Pic","Upload_Disciple_pic"
     );
     protected $api_Param;
     protected $api_Service;
@@ -38,6 +40,7 @@ class apiController extends AbstractRestfulController
 
     public function getList()
     {
+        print_r(getcwd() . '/public/img');
         return new JsonModel(array('DeepLife'=>'Use POST request to use the api'));
     }
     public function Authenticate($data){
@@ -56,6 +59,22 @@ class apiController extends AbstractRestfulController
         $error['Authentication'] = 'Invalid User';
         $this->api_Response['Request_Error'] = $error;
         return false;
+    }
+    public function UploadFile($Destination){
+        $status = array();
+        $status['Status'] = 0;
+        $status['FileName'] = '';
+        if ($this->getRequest()->isPost()) {
+            $upload = new Http();
+            $upload->setDestination(dirname(__DIR__).'/'.$Destination);
+            if (($dd = $upload->receive())) {
+                $status['Status'] = 1;
+                $status['FileName'] = $upload->getFileInfo()['FileUpload']['name'];
+                $status['FileInfo'] = $upload->getFileInfo()['FileUpload'];
+                print_r($upload->getFileInfo()['FileUpload']);
+            }
+        }
+        return $status;
     }
     public function create($data)
     {
@@ -84,12 +103,12 @@ class apiController extends AbstractRestfulController
                         $found['Country'] = $smsService->GetAll_Country();
                         $this->api_Response['Response'] = $found;
                     }
-
                 }
             }
         }
         return new JsonModel($this->api_Response);
     }
+
     public function CreateNewUser($data){
         /**
          * @var \DeepLife_API\Service\Service $smsService
@@ -228,7 +247,6 @@ class apiController extends AbstractRestfulController
                         $res['Log_Response'][] = $disciple_res;
                     }
                 }
-
             }
             $this->api_Response['Response'] = $res;
         }else if($service == $this->api_Services[3]){
@@ -334,7 +352,7 @@ class apiController extends AbstractRestfulController
                     $res['Log_Response'][] = $disciple_res;
                 }else if($data['Type'] == "NewsFeeds"){
                     $new_newsfeed = new NewsFeed();
-                    $new_newsfeed->setUserID($this->api_user->getId());
+                    $new_newsfeed->setUserId($this->api_user->getId());
                     $new_newsfeed->setId($data['Value']);
                     $state = $smsService->AddNew_NewsFeed_log($new_newsfeed);
                     if($state){
@@ -427,6 +445,17 @@ class apiController extends AbstractRestfulController
                     $disciple_res['Log_ID'] = $data['id'];
                     $res['Log_Response'][] = $disciple_res;
                 }
+            }
+            $this->api_Response['Response'] = $res;
+        }elseif($service == $this->api_Services[24]){
+            // Upload User Picture
+            $res['Upload_Status'] = array();
+            $status = $this->UploadFile('files');
+            if($status['Status'] == 1){
+                $new_user = $this->api_user;
+                $new_user->setPicture($status['FileName']);
+                $state = $smsService->Update_User_Pic($new_user);
+                $res['Upload_Status'][] = $state;
             }
             $this->api_Response['Response'] = $res;
         }

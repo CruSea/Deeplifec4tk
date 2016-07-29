@@ -145,6 +145,17 @@ class ServiceImpl implements Service
         }
     }
 
+    public function Update_User_Pic(User $user)
+    {
+        try{
+            return $this->apiRepository->Update_User_Pic($user);
+        }catch(\Exception $e){
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+
     public function Update_User1(User $user)
     {
         try{

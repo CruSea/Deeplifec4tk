@@ -110,6 +110,20 @@ class RepositoryImpl implements RepositoryInterface
         }
     }
 
+    public function Update_User_Pic(User $user)
+    {
+        $row_sql = 'UPDATE users SET users.picture = \''.$user->getPicture().'\' WHERE users.id = \''.$user->getId().'\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if($result->count()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     public function Update_User1(User $user)
     {
         $row_sql = 'UPDATE users SET users.stage = \''.$user->getStage().'\' WHERE users.id = \''.$user->getId().'\'';

@@ -27,9 +27,9 @@ $detect = new Mobile_Detect;
  
 if($deviceType !== 'computer' && $_SERVER['REQUEST_URI']!='/mobileapp' ){
    $actual_link = "http://$_SERVER[HTTP_HOST]/mobileapp";
-  header("Location:".$actual_link); /* Redirect browser */
+  //header("Location:".$actual_link); /* Redirect browser */
 /* Make sure that code below does not get executed when we redirect. */
-exit;
+//exit;
 }
 
 // Run the application!
