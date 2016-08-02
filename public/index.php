@@ -25,7 +25,7 @@ require 'init_autoloader.php';
 $detect = new Mobile_Detect;
  $deviceType = ($detect->isMobile() ? ($detect->isTablet()? 'computer' :'phone') : 'computer');
  
-if($deviceType !== 'computer' && $_SERVER['REQUEST_URI']!='/mobileapp' ){
+if($deviceType !== 'computer' && $_SERVER['REQUEST_URI']!='/mobileapp' && $_SERVER['REQUEST_URI'] != '/deep_api'){
    $actual_link = "http://$_SERVER[HTTP_HOST]/mobileapp";
   //header("Location:".$actual_link); /* Redirect browser */
 /* Make sure that code below does not get executed when we redirect. */
