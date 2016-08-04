@@ -1,3 +1,9 @@
+<?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?>
+<?php echo $this->headLink()->prependStylesheet($this->basePath('js/plugins/multipleselect/bootstrap-multiselect.css')); ?>
+<script src="<?php echo $this->basePath('js/plugins/multipleselect/bootstrap-multiselect.js')?>"></script>
+<script src="http://jcrop-cdn.tapmodo.com/v2.0.0-RC1/js/Jcrop.js"></script>
+<link rel="stylesheet" href="http://jcrop-cdn.tapmodo.com/v2.0.0-RC1/css/Jcrop.css" type="text/css">
+
 <?php
 $title = 'Edit News';
 $this->headTitle($title);
@@ -18,7 +24,7 @@ $this->headTitle($title);
                             
 $form->setAttribute('method', 'post');
 $form->setAttribute('class', 'form-horizontal');
-
+    $form->setAttribute('enctype', 'multipart/form-data');
 
 $form->setAttribute('action', $this->url(
     'news',
@@ -31,16 +37,57 @@ $form->prepare();
 echo $this->form()->openTag($form);
 foreach ( $form as $element ) :
 ?>
+
+<?php if($element->getLabel()=='Image'){ ?>
+    <div    class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+        <label class=" col-sm-2 control-label"><?php echo $this->translate($element->getLabel()) ?></label>
+        <div class="col-sm-10">
+            <?php echo $this->formElement ( $element );
+            if ($this->formElementErrors ( $element ))
+            ?>
+            <span class="help-inline   "><?php echo $this->formElementErrors($element) ?></span>
+        </div>
+
+
+    </div>
+
+    <div   class="form-group" >
+        <input type="hidden" name="x" id="cropx" value="0" />
+        <input type="hidden" name="y" id="cropy" value="0" />
+        <input type="hidden" name="w" id="cropw" value="0" />
+        <input type="hidden" name="h" id="croph" value="0" />
+        <label class=" col-sm-2 control-label">&nbsp;</label>
+        <div class="col-sm-10">
+            <?php $avatar='/avatar/noavatar.jpg';
+
+
+            if(strlen($image)){
+                $avatar=$image;
+            } ?>
+            <img id="image-preview1" src="<?php echo $this->basePath($avatar)?>" width="300" height="270" alt="" />
+
+            <img id="image-preview"  >
+        </div>
+
+
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+
+<?php }else {?>
 <div    class="form-group <?php if($this->formElementErrors($element)) echo "error" ?>">
-        <label class=" col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
+  <label class=" col-sm-2 control-label"><?php echo $this->translate($element->getLabel()) ?></label>
         <div class="col-sm-10">
                 <?php echo $this->formElement ( $element );
                     if ($this->formElementErrors ( $element ))
-                ?>
+             ?>
             <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
         </div>
     </div>
       <div class="hr-line-dashed"></div>
+
+<?php }?>
 <?php
 endforeach;
 
@@ -49,14 +96,50 @@ echo $this->form()->closeTag();
 ?>
 
                               
-                             
-                         
-                              
-                               
-                             
+
                            
                                
                         </div>
                     </div>
                 </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#multicountry').multiselect({includeSelectAllOption: true});
+
+        $('#image-preview').Jcrop({ boxWidth: 500, boxHeight: 500, onSelect: updateCoords, });
+
+        function readURL(input) {
+            if (input.files) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    $('#image-preview').attr('src', e.target.result);
+                    $('#image-preview1').attr('src','').hide();
+                }
+
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#image").change(function() {
+            readURL(this);
+
+        });
+
+        function updateCoords(c)
+        {
+            $('#cropx').val(c.x);
+            $('#cropy').val(c.y);
+            $('#cropw').val(c.w);
+            $('#croph').val(c.h);
+
+        };
+
+
+
+    });
+</script>

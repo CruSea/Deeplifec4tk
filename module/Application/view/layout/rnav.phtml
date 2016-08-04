@@ -16,11 +16,7 @@
   }
  
 
-    const USER  =1;
-    const SUPERADMIN=2;
-    const AREAADMIN=3;
-    const COUNTRYADMIN=4;
-   
+     
     
 ?>
 
@@ -33,10 +29,10 @@
                             
    <?php $avatar='/avatar/noavatar.jpg';
    if(strlen($this->zfcUserIdentity()->picture)){
-       $avatar=$this->zfcUserIdentity()->picture;
+     $avatar=$this->zfcUserIdentity()->picture;
    }
    
-   ?>    <a  href="<?php echo $this->url('dashboard',array('action'=> 'profile'))?>" >
+   ?>    <a  href="<?php echo $this->url('disciples',array('action'=> 'profile'))?>" >
            
                   <img alt="image" height="48" class="img-circle" src="<?php echo $this->basePath($avatar)?>" />
                                    </span>
@@ -120,7 +116,10 @@
                 
                 <?php } ?>      
                 
-                
+              <li <?php if($url=='disciples'){?> class="active" <?php } ?> >
+        <a href="<?php echo $this->url('disciples') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">
+                <i class="fa fa-user fa-yellow "></i> <span class="nav-label"><?php echo $this->translate('Disciples')?></span></a>
+</li>             
               <li <?php if($url=='tree'){?> class="active" <?php } ?> >
         <a href="<?php echo $this->url('tree') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">
                 <i class="fa fa-users fa-yellow "></i> <span class="nav-label"><?php echo $this->translate('Generation Tree')?></span></a>

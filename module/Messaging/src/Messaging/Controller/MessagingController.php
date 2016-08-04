@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Messaging
+ * This module will be used for Messaging
+ *@package controller
+ *@author Abhinav
+ */
 namespace Messaging\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -7,6 +14,7 @@ use Doctrine\ORM\EntityManager;
 use Messaging\Entity\Messaging;
 use Messaging\Form\MessagingForm;
 use Zend\Session\Container;
+use Zend\View\Model\JsonModel;
 use Zend\Stdlib\DateTime;
 class MessagingController extends AbstractActionController
 {
@@ -49,7 +57,7 @@ if ($this->zfcUserAuthentication()->hasIdentity()) {
         $messagesBuilder = $this->getEntityManager()->createQueryBuilder();
         $messagesBuilder->select("m.id,m.subject,m.description,m.created,u.displayName,m.status ")   
         ->from('Messaging\Entity\Messaging', 'm')
-        ->leftJoin('SamUser\Entity\Users u', 'WITH m.sender_id=u.id')
+        ->leftJoin('SamUser\Entity\Users u', 'WITH m.user_id=u.id')
         ->andWhere('m.sender_id = (:userid)')
         ->addOrderBy('m.created', 'DESC')
         ->setParameter('userid',  $userid);
@@ -144,6 +152,71 @@ public function composeAction()
         return array('form' => $form, );
     }
 
+public function replyAction()
+{
+       $this->layout()->setTemplate('layout/master');  
+     
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('messaging', array(
+                'action' => 'index'
+            ));
+        }
+        
+         $messagesBuilder = $this->getEntityManager()->createQueryBuilder();
+        $messagesBuilder->select("m.subject,m.description,m.created,m.status,m.user_id")   
+        ->from('Messaging\Entity\Messaging', 'm')
+         ->andWhere('m.id = (:id)')
+        ->addOrderBy('m.created', 'DESC')
+        ->setParameter('id',  $id);          
+         $message =array();
+        $message = $messagesBuilder->getQuery()->getOneOrNullResult();
+
+    if (!$message) {
+            return $this->redirect()->toRoute('messaging', array(
+                'action' => 'index'
+            ));
+        } 
+        
+        
+        
+        
+        
+        
+        $form = new MessagingForm();
+        $form->get('user_id')->setValue($this->getMUserId());
+        $form->get('subject')->setValue('RE : '.$message['subject']);
+        $form->get('description')->setValue($message['description']);
+       
+        $request = $this->getRequest();
+        
+       
+        
+        if ($request->isPost()) {
+       
+           
+            $Messaging = new Messaging();
+            $form->setInputFilter($Messaging->getInputFilter());
+            $form->setData($request->getPost());
+               
+            if ($form->isValid()) {
+                          
+                $Messaging->populate($form->getData());
+                $this->getEntityManager()->persist($Messaging);
+                $this->getEntityManager()->flush();
+                $session = new Container('message');
+	            $session->success = 'Data saved successfully';
+                // Redirect to list of Learningtools
+                return $this->redirect()->toRoute('messaging',array(
+                'action' => 'index'     ));
+            }
+        }
+        return array('form' => $form,
+        'userJson'=>json_encode ($this->prePopulatejson($message['user_id'])),
+        
+         );
+    }
+
 public function maildetailAction()
 {
        
@@ -163,7 +236,7 @@ public function maildetailAction()
     $messagesBuilder = $this->getEntityManager()->createQueryBuilder();
         $messagesBuilder->select("m.subject,m.description,m.created,u.displayName,m.status ")   
         ->from('Messaging\Entity\Messaging', 'm')
-        ->leftJoin('SamUser\Entity\Users u', 'WITH m.sender_id=u.id')
+        ->leftJoin('SamUser\Entity\Users u', 'WITH m.user_id=u.id')
         ->andWhere('m.id = (:id)')
         ->addOrderBy('m.created', 'DESC')
         ->setParameter('id',  $id);          
@@ -227,7 +300,47 @@ array(
 
 }
 
+public function prePopulatejson($user_id)
+    {
+        
+         $data = array();
+       if($user_id){
+           
+       
+        $result = $this->getEntityManager()->getRepository("SamUser\Entity\Users")->createQueryBuilder('o')
+            ->where('o.id = (:id)')
+            ->setParameter('id', $user_id)
+            ->getQuery()
+            ->getOneOrNullResult();
+      
 
+        if (isset($_SERVER['HTTPS'])) {
+            $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
+        } else {
+            $protocol = 'http';
+        }
+        $url = $protocol . "://" . parse_url($this->getRequest()->getUri(), PHP_URL_HOST);
+
+
+      
+      
+            $avatar = '/avatar/noavatar.jpg';
+            if (is_file('public' . $result->picture)) {
+                $avatar = $result->picture;
+            }
+            $url .= $avatar;
+            $data['id'] = ucwords($result->id);
+            $data['first_name'] = ucwords($result->displayName);
+            $data['last_name'] = '';
+            $data['url'] = trim($url);
+            $data['email'] = $result->email;
+            $url = '';
+
+        
+      }
+
+        return $data;
+    }
 
 
 }

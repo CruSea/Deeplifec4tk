@@ -31,14 +31,14 @@
                 <?php  foreach ($news as $new) : ?>
                 <tr> 
                  <td class="nodisplay" ></td>
-                <td ><?php echo $this->escapeHtml(ucwords($new->title));?></td>
+                <td ><?php echo $this->escapeHtml(ucwords($new['title']));?></td>
                        
                        <td><?php
                          
                                             
-                         if($new->status==1){
+                         if($new['status']==1){
                              echo '<span class="label label-info pull-left">Approved</span>';
-                         }elseif($new->status==2){
+                         }elseif($new['status']==2){
                           echo '<span class="label label-danger pull-left">Rejected</span>';   
                          }else {
                              echo '<span class="label label-warning pull-left">Waiting</span>'; 
@@ -50,10 +50,10 @@
                     
                          <td>
 <a href="<?php echo $this->url('news',
-            array('action'=>'edit', 'id' => $new->id));?>" class="tips " title="Edit">
+            array('action'=>'edit', 'id' => $new['id']));?>" class="tips " title="Edit">
            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
              </a><span>&#x7C;</span><a href="<?php echo $this->url('news',
-            array('action'=>'delete', 'id' => $new->id));?>" onclick="return confirm('Are you sure you want to delete this item?');" class="tips  " title="Delete"> <i class="fa fa-trash-o" aria-hidden="true"></i></a>
+            array('action'=>'delete', 'id' => $new['id']));?>" onclick="return confirm('Are you sure you want to delete this item?');" class="tips  " title="Delete"> <i class="fa fa-trash-o" aria-hidden="true"></i></a>
    	
 </td>
                 

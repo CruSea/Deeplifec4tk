@@ -42,7 +42,7 @@ class UsersForm extends Form
                 'label' => 'Picture',
                 
             ), 'attributes' => array(
-                           'id'       => 'picture',
+                           'id'       => 'inputFile',
                                'class'    => 'form-control',
                             'required' => 'required',
                             ),

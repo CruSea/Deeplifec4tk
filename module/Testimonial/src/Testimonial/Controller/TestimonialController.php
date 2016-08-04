@@ -1,4 +1,10 @@
 <?php
+/**
+ * Messaging
+ * This module will be used for Messaging
+ *@package controller
+ *@author Abhinav
+ */
 namespace Testimonial\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
@@ -30,6 +36,11 @@ $this->em = $this->getServiceLocator()
 }
 return $this->em;
 }
+    /**
+     * Function to  getuserCountryids
+     * @param NA
+     * @author Abhinav
+     */
  protected function getuserCountryids() {
       $userCountryids=array();
       $session = new Container('userCountryids');
@@ -39,10 +50,14 @@ return $this->em;
       
         return $userCountryids;
      }
+    /**
+     * Function to  getuserCountryids
+     * @param NA
+     * @author Abhinav
+     */
 public function indexAction()
 {
-
-$this->layout()->setTemplate('layout/master');  
+$this->layout()->setTemplate('layout/master');
 if ($this->zfcUserAuthentication()->hasIdentity()) {
            $country = $this->zfcUserAuthentication()->getIdentity()->country;
         }
@@ -66,7 +81,11 @@ array(
 
 }
 
-
+    /**
+     * Function to  add Action
+     * @param NA
+     * @author Abhinav
+     */
 public function addAction()
 {
     
@@ -99,6 +118,11 @@ public function addAction()
 
 }
 
+    /**
+     * Function to  edit Action
+     * @param NA
+     * @author Abhinav
+     */
 public function editAction()
 {
           $this->layout()->setTemplate('layout/master');  
@@ -156,6 +180,11 @@ public function editAction()
         );
     }
 
+    /**
+     * Function to  delete Action
+     * @param NA
+     * @author Abhinav
+     */
 public function deleteAction(){
      $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -174,6 +203,11 @@ public function deleteAction(){
             ));
 }
 
+    /**
+     * Function to  testimonialtool Action
+     * @param NA
+     * @author Abhinav
+     */
 public function testimonialtoolAction()
 {
 $this->layout()->setTemplate('layout/master');  

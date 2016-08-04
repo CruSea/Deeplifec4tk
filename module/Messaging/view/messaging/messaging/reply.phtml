@@ -1,0 +1,96 @@
+<?php 
+echo $this->headScript()->appendFile($this->basePath('js/plugins/tokeninput/jquery.tokeninput.js')) ;
+echo $this->headLink()->prependStylesheet($this->basePath('js/plugins/tokeninput/token-input.css')) ;
+   
+ ?>
+<?php
+$title = 'Reply mail';
+$this->headTitle($title);
+
+?>
+
+
+<div class="row">
+<div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5><?php echo $this->escapeHtml(ucwords($title)); ?> <small></small></h5>
+                            <div class="ibox-tools">
+                              
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-sm-6">
+                           
+                            <?php
+                            
+$form->setAttribute('method', 'post');
+$form->setAttribute('class', 'form-horizontal compose-email');
+$form->setAttribute('action', $this->url('messaging', array('action' => 'reply')));
+$form->prepare();
+echo $this->form()->openTag($form);
+foreach ( $form as $element ) :
+?>
+<div    class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+        <label class=" col-sm-2 control-label"><?php echo $this->translate($element->getLabel()) ?></label>
+        <div class="col-sm-10">
+                <?php echo $this->formElement ( $element );
+                    if ($this->formElementErrors ( $element ))
+                ?>
+            <span class="help-inline   "><?php echo $this->formElementErrors($element) ?></span>
+        </div>
+    </div>
+      
+<?php
+endforeach;
+
+
+echo $this->form()->closeTag();
+?>
+
+       
+                             
+                           
+                               
+                        </div>
+                    </div>
+                      </div>
+                     </div>
+                </div>
+</div>
+
+
+        
+        
+         <script type="text/javascript">
+        $(document).ready(function() {
+            $("#token").tokenInput("<?php echo $this->url('tree', array('action'=>'userjson'));?>", {
+              propertyToSearch: "first_name",
+              tokenLimit: 1,
+               prePopulate: [
+                    <?php echo $userJson ?>
+                    ]
+                ,
+              resultsFormatter: function(item){ return "<li>" + "<img src='" + item.url + "' title='" + item.first_name + " " + item.last_name + "' height='25px' width='25px' />" + "<div style='display: inline-block; padding-left: 10px;'><div class='full_name'>" + item.first_name + " " + item.last_name + "</div><div class='email'>" + item.email + "</div></div></li>" },
+              tokenFormatter: function(item) { return "<li><p><img src='" + item.url + "' title='" + item.first_name + " " + item.last_name + "' height='25px' width='25px' />" + item.first_name + " " + item.last_name + "</p></li>" },
+          });
+       
+       var wdt = $('.token-input-input-token').width();
+    $('.token-input-dropdown').css('width', wdt + 'px');
+       
+       
+        });
+        </script>
+<style>
+    ul.token-input-list {
+     height: auto !important; 
+     width: 100% !important; 
+    
+}
+   ul.token-input-list li {
+     height: auto !important; 
+     width: 100% !important; 
+    
+}
+</style>

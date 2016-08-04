@@ -15,7 +15,8 @@ use Zend\Stdlib\DateTime;
  * @property string $title
  * @property string $description
 *  @property int $user_id
-*  @property int $country
+*  @property string $country
+*  @property string $image
 *   @property int $status
 * @property int $id
 * @property datetime $created
@@ -41,6 +42,12 @@ class News implements InputFilterAwareInterface
      * @ORM\Column(type="string")
      */
       protected $title;
+
+/**
+     * @ORM\Column(type="string")
+     */
+      protected $image;
+
 /**
      * @ORM\Column(type="datetime")
      */
@@ -57,7 +64,7 @@ class News implements InputFilterAwareInterface
     protected $user_id;
   
    /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     protected $country;
     /**
@@ -105,6 +112,7 @@ class News implements InputFilterAwareInterface
         $this->user_id = $data['user_id'];
         $this->title = $data['title'];
         $this->status = $data['status'];
+        $this->image = $data['image'];
         $this->created = new DateTime(); 
     }
 
