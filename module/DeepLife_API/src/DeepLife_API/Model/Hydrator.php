@@ -238,7 +238,7 @@ class Hydrator
                 $Found = null;
                 foreach($Post as $data){
                     $New_Data = new Schedule();
-                    $New_Data->setId(isset($data['id'])? intval($data['id']):null);
+                    $New_Data->setId(isset($data['id'])? $data['id']:null);
                     $New_Data->setUserId(isset($data['user_id'])? ($data['user_id']):null);
                     $New_Data->setName(isset($data['name'])? $data['name']:null);
                     $New_Data->setTime(isset($data['time'])? $data['time']:null);
@@ -261,6 +261,27 @@ class Hydrator
         $New_Data->setGender(isset($data['Gender'])? $data['Gender']:null);
         $New_Data->setStage(isset($data['Build_Phase'])? $data['Build_Phase']:null);
         $New_Data->setPhoneNo(isset($data['Phone'])? $data['Phone']:null);
+        return $New_Data;
+    }
+    public function GetSchedule($data){
+        $New_Data = new Schedule();
+        $New_Data->setId(isset($data['id'])? $data['id']:null);
+        $New_Data->setUserId(isset($data['user_id'])? ($data['user_id']):null);
+        $New_Data->setName(isset($data['name'])? $data['name']:null);
+        $New_Data->setTime(isset($data['time'])? $data['time']:null);
+        $New_Data->setType(isset($data['type'])? $data['type']:null);
+        $New_Data->setDescription(isset($data['description'])? $data['description']:null);
+        $New_Data->setCreated(isset($data['created'])? $data['created']:null);
+        return $New_Data;
+    }
+    public function GetSchedule_($data){
+        $New_Data = new Schedule();
+        $New_Data->setId(isset($data['id'])? $data['id']:null);
+        $New_Data->setUserId(isset($data['user_id'])? ($data['user_id']):null);
+        $New_Data->setName(isset($data['Title'])? $data['Title']:null);
+        $New_Data->setTime(isset($data['Alarm_Time'])? $data['Alarm_Time']:null);
+        $New_Data->setType(isset($data['Alarm_Repeat'])? $data['Alarm_Repeat']:null);
+        $New_Data->setDescription(isset($data['Description'])? $data['Description']:null);
         return $New_Data;
     }
 }

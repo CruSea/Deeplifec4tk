@@ -17,9 +17,7 @@ use DeepLife_API\Model\Testimony;
 use DeepLife_API\Model\User;
 use DeepLife_API\Model\UserReport;
 use Zend\Mvc\Controller\AbstractRestfulController;
-use Zend\Validator\File\Size;
 use Zend\View\Model\JsonModel;
-use Zend\File\Transfer\Adapter\Http;
 
 class apiController extends AbstractRestfulController
 {
@@ -29,7 +27,8 @@ class apiController extends AbstractRestfulController
         'GetAll_Disciples','GetNew_Disciples','AddNew_Disciples','AddNew_Disciples_Log','Delete_All_Disciple_Log',
         'GetAll_Schedules','GetNew_Schedules','AddNew_Schedules','AddNew_Schedule_Log','Delete_All_Schedule_Log',
         'IsValid_User','CreateUser','GetAll_Questions','GetAll_Answers','AddNew_Answers','Send_Log','Log_In','Sign_Up',
-        'Update_Disciples','Update','Meta_Data','Send_Report','GetNew_NewsFeed',"Send_Testimony","Upload_User_Pic","Upload_Disciple_pic"
+        'Update_Disciples','Update','Meta_Data','Send_Report','GetNew_NewsFeed',"Send_Testimony","Upload_User_Pic","Upload_Disciple_pic",
+        'Update_Schedules'
     );
     protected $api_Param;
     protected $api_Service;
@@ -40,7 +39,6 @@ class apiController extends AbstractRestfulController
 
     public function getList()
     {
-        print_r(getcwd() . '/public/img');
         return new JsonModel(array('DeepLife'=>'Use POST request to use the api'));
     }
     public function Authenticate($data){
@@ -60,21 +58,31 @@ class apiController extends AbstractRestfulController
         $this->api_Response['Request_Error'] = $error;
         return false;
     }
-    public function UploadFile($Destination){
+    public function UploadFile($Image,$id){
         $status = array();
         $status['Status'] = 0;
         $status['FileName'] = '';
-        if ($this->getRequest()->isPost()) {
-            $upload = new Http();
-            $upload->setDestination(dirname(__DIR__).'/'.$Destination);
-            if (($dd = $upload->receive())) {
-                $status['Status'] = 1;
-                $status['FileName'] = $upload->getFileInfo()['FileUpload']['name'];
-                $status['FileInfo'] = $upload->getFileInfo()['FileUpload'];
-                print_r($upload->getFileInfo()['FileUpload']);
-            }
-        }
+        $name = $id.$this->randomString();
+        $upload_dest = "public/img/profile/".$name.".jpeg";
+        $Image = str_replace(' ','+',$Image);
+        $binary=base64_decode($Image);
+        header('Content-Type: bitmap; charset=utf-8');
+        $file = fopen($upload_dest, 'wb');
+        fwrite($file, $binary);
+        fclose($file);
+        $status['Status'] = 1;
+        $status['FileName'] = $name.".jpeg";
         return $status;
+    }
+    function randomString() {
+        $length = 20;
+        $chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $str = "";
+
+        for ($i = 0; $i < $length; $i++) {
+            $str .= $chars[mt_rand(0, strlen($chars) - 1)];
+        }
+        return $str;
     }
     public function create($data)
     {
@@ -84,7 +92,6 @@ class apiController extends AbstractRestfulController
             }else{
                 $this->api_Response['Response'] = 0;
             }
-
         }else{
             if($this->isValidRequest($data)){
                 if($this->isValidParam($data['Param'],$data['Service'])){
@@ -231,21 +238,21 @@ class apiController extends AbstractRestfulController
                 $new_user->setRoleId(1);
                 $new_user->setPicture('Default');
                 $state = $smsService->AddNew_Disciple($this->api_user,$new_user);
-                if($state){
-                    /**
-                     * @var \DeepLife_API\Model\User $_user
-                     */
-                    $_user = $smsService->Get_User($new_user);
-                    if( $_user != null){
-                        $_new_disciple = new Disciple();
-                        $_new_disciple->setDiscipleID($_user->getId());
-                        $_new_disciple->setUserID($this->api_user->getId());
-                        $smsService->AddNew_Disciple_log($_new_disciple);
-                    }
-                    if($state){
-                        $disciple_res['Log_ID'] = $data['id'];
-                        $res['Log_Response'][] = $disciple_res;
-                    }
+                /**
+                 * @var \DeepLife_API\Model\User $_user
+                 */
+                $_user = $smsService->Get_User($new_user);
+                if( $_user != null){
+                    $_new_disciple = new Disciple();
+                    $_new_disciple->setDiscipleID($_user->getId());
+                    $_new_disciple->setUserID($this->api_user->getId());
+                    $_user->setMentorId($this->api_user->getId());
+                    $smsService->AddNew_Disciple_log($_new_disciple);
+                    $smsService->Update_User($_user);
+                }
+                if($_user != null){
+                    $disciple_res['Log_ID'] = $data['id'];
+                    $res['Log_Response'][] = $disciple_res;
                 }
             }
             $this->api_Response['Response'] = $res;
@@ -272,7 +279,13 @@ class apiController extends AbstractRestfulController
                 $sch->setDisciplePhone($data['Disciple_Phone']);
                 $sch->setDescription($data['Description']);
                 $state = $smsService->AddNew_Schedule($sch);
-                if($state){
+                if( $state){
+                    /**
+                     * @var \DeepLife_API\Model\Schedule $_new_schedule
+                     */
+                    $_new_schedule = $smsService->Get_Schedule_By_AlarmTime($sch);
+                    $_new_schedule->setUserId($this->api_user->getId());
+                    $smsService->AddNew_Schedule_log($_new_schedule);
                     $disciple_res['Log_ID'] = $data['ID'];
                     $res['Log_Response'][] = $disciple_res;
                 }
@@ -346,7 +359,8 @@ class apiController extends AbstractRestfulController
                     }
                 }else if($data['Type'] == "Remove_Schedule"){
                     $schedule = new Schedule();
-                    $schedule->setDisciplePhone($data['Value']);
+                    $schedule->setTime($data['Value']);
+                    $schedule->setUserId($this->api_user->getId());
                     $state = $smsService->Delete_Schedule($schedule);
                     $disciple_res['Log_ID'] = $data['id'];
                     $res['Log_Response'][] = $disciple_res;
@@ -449,13 +463,43 @@ class apiController extends AbstractRestfulController
             $this->api_Response['Response'] = $res;
         }elseif($service == $this->api_Services[24]){
             // Upload User Picture
-            $res['Upload_Status'] = array();
-            $status = $this->UploadFile('files');
-            if($status['Status'] == 1){
-                $new_user = $this->api_user;
-                $new_user->setPicture($status['FileName']);
-                $state = $smsService->Update_User_Pic($new_user);
-                $res['Upload_Status'][] = $state;
+            $file = fopen("data.txt", 'wb');
+            fwrite($file, $param);
+            fclose($file);
+            $res['Upload_Response'] = array();
+            foreach($this->api_Param as $data){
+                $status = $this->UploadFile($data['Image'],$this->api_user->getId());
+                if($status['Status'] == 1){
+                    $new_user = $this->api_user;
+                    $new_user->setPicture($status['FileName']);
+                    $state = $smsService->Update_User_Pic($new_user);
+                    $upload_status['id'] = $data['id'];
+                    $upload_status['File_Name'] = $status['FileName'];
+                    $res['Upload_Response'][] = $upload_status;
+                }
+            }
+            $this->api_Response['Response'] = $res;
+        }elseif($service == $this->api_Services[26]){
+            /// Update_Schedule
+            $res['Log_Response'] = array();
+            foreach($this->api_Param as $data){
+
+                $hydrator = new Hydrator();
+                $new_Sch = $hydrator->GetSchedule_($data);
+                /**
+                 * @var \DeepLife_API\Model\Schedule $_new_sch
+                 */
+
+                $_new_sch = $smsService->Get_Schedule_By_AlarmName($new_Sch);
+                $_new_sch->setName($_new_sch->getName());
+                $_new_sch->setTime($new_Sch->getTime());
+                $_new_sch->setType($new_Sch->getType());
+                $_new_sch->setDescription($_new_sch->getDescription());
+                $state = $smsService->Update_Schedule($_new_sch);
+                if($state){
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
             }
             $this->api_Response['Response'] = $res;
         }
@@ -546,7 +590,6 @@ class apiController extends AbstractRestfulController
         if($is_valid){
             $this->api_Param = $param;
         }
-
         return $is_valid;
     }
 }

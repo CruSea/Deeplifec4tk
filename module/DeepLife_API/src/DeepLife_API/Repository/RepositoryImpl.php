@@ -245,7 +245,7 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Delete_Schedule(Schedule $schedule)
     {
-        $row_sql = 'DELETE FROM schedule WHERE schedule.disciple_phone = '.$schedule->getDisciplePhone();
+        $row_sql = 'DELETE FROM schedule WHERE schedule.time = \''.$schedule->getTime().'\' AND schedule.user_id = '.$schedule->getUserId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
@@ -307,7 +307,15 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Update_Schedule(Schedule $schedule)
     {
-        // TODO: Implement Update_Schedule() method.
+        $row_sql = 'UPDATE schedule SET schedule.name = \''.$schedule->getName().'\' , schedule.time = \''.$schedule->getTime().'\' , schedule.type = \''.$schedule->getType().'\' , schedule.description = \''.$schedule->getDescription().'\'WHERE schedule.name = \''.$schedule->getName().'\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if($result->count()>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function GetAll_Schedule(User $user)
@@ -341,6 +349,38 @@ class RepositoryImpl implements RepositoryInterface
         $hydrator = new Hydrator();
         return $hydrator->Extract($posts,new Schedule());
     }
+
+    public function Get_Schedule_By_AlarmTime(Schedule $schedule)
+    {
+        $row_sql = 'SELECT * FROM schedule WHERE schedule.time = "'.$schedule->getTime()."\"";
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if($result->count()>0){
+            while($result->valid()){
+                $posts = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->GetSchedule($posts);
+    }
+    public function Get_Schedule_By_AlarmName(Schedule $schedule)
+    {
+        $row_sql = 'SELECT * FROM schedule WHERE schedule.name = "'.$schedule->getName()."\"";
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if($result->count()>0){
+            while($result->valid()){
+                $posts = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->GetSchedule($posts);
+    }
+
 
     public function getAuthenticationAdapter()
     {
@@ -550,7 +590,7 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetNew_NewsFeeds(User $user)
     {
-        $row_sql = 'SELECT * FROM news WHERE news.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = '.$user->getId().')';
+        $row_sql = 'SELECT * FROM news WHERE news.country = '.$user->getCountry().' AND news.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = '.$user->getId().')';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
@@ -560,7 +600,6 @@ class RepositoryImpl implements RepositoryInterface
                 $result->next();
             }
         }
-
         $hydrator = new Hydrator();
         return $hydrator->Extract($posts,new NewsFeed());
     }
