@@ -43,6 +43,9 @@ class ServiceImpl implements Service
         $this->apiRepository = $apiRepository;
     }
     public function LogError($error){
+        $file = fopen("Error Logs.txt", 'a');
+        fwrite($file, $error);
+        fclose($file);
     }
 
     public function isValidUser(User $user)
@@ -154,8 +157,6 @@ class ServiceImpl implements Service
             return null;
         }
     }
-
-
     public function Update_User1(User $user)
     {
         try{
@@ -254,6 +255,26 @@ class ServiceImpl implements Service
     {
         try{
             return $this->apiRepository->GetNew_Schedule($user);
+        }catch(\Exception $e){
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function Get_Schedule_By_AlarmTime(Schedule $schedule)
+    {
+        try{
+            return $this->apiRepository->Get_Schedule_By_AlarmTime($schedule);
+        }catch(\Exception $e){
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function Get_Schedule_By_AlarmName(Schedule $schedule)
+    {
+        try{
+            return $this->apiRepository->Get_Schedule_By_AlarmName($schedule);
         }catch(\Exception $e){
             $this->LogError($e);
             return null;

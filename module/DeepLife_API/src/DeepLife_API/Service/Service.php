@@ -45,6 +45,8 @@ interface Service
     public function Update_Schedule(Schedule $schedule);
     public function GetAll_Schedule(User $user);
     public function GetNew_Schedule(User $user);
+    public function Get_Schedule_By_AlarmTime(Schedule $schedule);
+    public function Get_Schedule_By_AlarmName(Schedule $schedule);
     public function Delete_Schedule_Log(User $user);
 
     // Disciple Service
