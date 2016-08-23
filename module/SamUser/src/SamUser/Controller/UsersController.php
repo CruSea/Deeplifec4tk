@@ -6,6 +6,12 @@
  * Time: 12:53 AM
  */
 
+/**
+ * Users
+ * This module will be used for users Role
+ *@package controller
+ *@author Abhinav
+ */
 
 namespace SamUser\Controller;
 use Zend\View\Model\ViewModel;
@@ -27,7 +33,11 @@ class UsersController extends AbstractActionController
        
 
     }
-    
+    /**
+     * Function to  getuserCountryids
+     * @param NA
+     * @author Abhinav
+     */
      protected function getuserCountryids() {
       $userCountryids=array();
       $session = new Container('userCountryids');
@@ -38,16 +48,21 @@ class UsersController extends AbstractActionController
         return $userCountryids;
      }
 
-
+    /**
+     * Function to  getEntityManager
+     * @param NA
+     * @author Abhinav
+     */
     protected function getEntityManager() {
         if (null === $this->em)
             $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         return $this->em;
     }
 
-    
     /**
-     * User list / default action
+     * Function to  index Action
+     * @param NA
+     * @author Abhinav
      */
     public function indexAction() {
        $this->layout()->setTemplate('layout/master');  
@@ -78,10 +93,14 @@ class UsersController extends AbstractActionController
         );
     
     }
-    
+
+    /**
+     * Function to  edit Action
+     * @param NA
+     * @author Abhinav
+     */
     public function editAction(){
-       
-       
+
         $id = (int) $this->params()->fromRoute('id', 0);
       if (!$id) {
             return $this->redirect()->toRoute('users');

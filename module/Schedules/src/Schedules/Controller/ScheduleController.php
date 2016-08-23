@@ -84,11 +84,13 @@ $jsonArray[$iCount]['title']=ucwords($schedule->description);
 $iCount++;
 $month=(int)date( "m", strtotime($date) );
 $date=date( "Y-m-d H:i:s", strtotime( $date."+1 month" ) );  
+$test_arr  = explode('-', $date);
+if (!checkdate($test_arr[1], $test_arr[2], $test_arr[0])) {
+    break;
+}
 $I++;
 
-//if($month==12){
- //break;
-//}
+
 
 }
 
@@ -134,7 +136,10 @@ public function addAction()
          
             $data=array();
            list($data['disciple_phone'],$data['name'])=explode('#',$Userdetail);
-          $data['time']=$dateVal." ".$timeVal;  
+         
+         $dateTime = date_create($dateVal." ".$timeVal);
+         $data['time']= date_format($dateTime, 'Y-m-d H:i:s');
+         
          $temp=$this->getRequest()->getPost()->toArray();
           unset($temp['userdetail']);
           unset($temp['txtdate']);

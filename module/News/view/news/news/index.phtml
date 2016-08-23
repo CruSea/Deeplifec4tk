@@ -12,6 +12,16 @@ a.morelink {
     background-color: #f0f0f0;
     margin: 10px;
 }
+.video-container {
+    position: relative;
+    height: auto;
+    overflow: hidden;
+    width: auto;
+}
+#image-preview{
+    width: 100%;
+    height: auto;
+}
 </style>
 
 <script>
@@ -22,19 +32,19 @@ a.morelink {
     var lesstext = "less";
     $('.more').each(function() {
         var content = $(this).html();
- 
+
         if(content.length > showChar) {
- 
+
             var c = content.substr(0, showChar);
             var h = content.substr(showChar-1, content.length - showChar);
- 
+
             var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
- 
+
             $(this).html(html);
         }
- 
+
     });
- 
+
     $(".morelink").click(function(){
         if($(this).hasClass("less")) {
             $(this).removeClass("less");
@@ -58,18 +68,7 @@ a.morelink {
                 <h5><?php echo $this->translate('NEWS')?></h5>
             </div>
             <div class="ibox-content">
-                <style>
-                    .video-container {
-                        position:relative;
-                        padding-bottom:56.25%;
-                        padding-top:30px;
-                        height:0;
-                        overflow:hidden;
-                    }
-
-
-
-                </style>
+                
                 <ul class="learning">
 
                     <?php  foreach ($news as $new) : ?>
@@ -78,18 +77,24 @@ a.morelink {
                             <div class="row">
                                 <div class="col-sm-3 col-md-2">
                                     <div class="image-holder">
-                                        <div class="video-container" id="video-contain">
+                                        <div class="video-container" id="video-contain" style="text-align:center">
 
+                                          <?php  if(strlen($new['image'])){ ?>
+                                              <img id="image-preview" src="<?php echo $this->basePath($new['image'])?>" width="300" height="270" alt="" />
 
-                                          </div>
+                                          <?php }else{?>
+                                              <b>No Image</b>
+                                         <?php  }      ?>
+
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-8 learn-content">
                                     <div class="cell">
-                                        <h2><?php echo $this->escapeHtml(ucwords($new->title));?></h2>
-                                        <p><span class="more" ><?php echo $this->escapeHtml(ucwords($new->description));?> </span ></p>
+                         <h2><?php echo $this->escapeHtml(ucwords($new['title']));?></h2>
+                                        <p><span class="more" ><?php echo $this->escapeHtml(ucwords($new['description']));?> </span ></p>
  <span class="vertical-date">
-              <small><?php echo $this->escapeHtml(date_format($new->created, '  l jS F Y'));?>
+              <small><?php echo $this->escapeHtml(date_format($new['created'], '  l jS F Y'));?>
              </small>
                                     </span>
                                     </div>

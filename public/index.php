@@ -8,8 +8,10 @@ error_reporting(1);
 defined('PUBLIC_PATH')|| define('PUBLIC_PATH', realpath(dirname(__FILE__)));
 define('REQUEST_MICROTIME', microtime(true));
 chdir(dirname(__DIR__));
-
-
+define('USER',1);
+define('SUPERADMIN',2);
+define('AREAADMIN',3);
+define('COUNTRYADMIN',4);
 
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
@@ -27,9 +29,9 @@ $detect = new Mobile_Detect;
  
 if($deviceType !== 'computer' && $_SERVER['REQUEST_URI']!='/mobileapp' ){
    $actual_link = "http://$_SERVER[HTTP_HOST]/mobileapp";
-  //header("Location:".$actual_link); /* Redirect browser */
+  header("Location:".$actual_link); /* Redirect browser */
 /* Make sure that code below does not get executed when we redirect. */
-//exit;
+exit;
 }
 
 // Run the application!

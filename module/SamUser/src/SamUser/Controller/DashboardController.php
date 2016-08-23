@@ -5,6 +5,12 @@
  * Date: 10/24/15
  * Time: 10:04 PM
  */
+/**
+ * Dashboard
+ * This module will be used for student dashboard
+ *@package controller
+ *@author Alvin.Abhinav  */
+
 
 namespace SamUser\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -29,8 +35,12 @@ class DashboardController  extends AbstractActionController
    
     protected $em;
     public $userid;
-    public $fileuploaderr=array('size'=>array('The image you tried to upload.it needs to be at min Width 100 and Max Width 300') ,'type'=>array('Please enter a file with a valid extension (jpg, gif, png) in Picture.'),'sizemb'=>array(' Image must be smaller than 4 MB') );
 
+    /**
+     * Function to get UserId
+     * @param NA
+     * @author Alvin.Abhinav
+     */
     public function getMUserId() {
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             //get the user_id of the user
@@ -39,27 +49,29 @@ class DashboardController  extends AbstractActionController
         return $this->userid;
     }
 
+    /**
+     * Function to getEntity Manager
+     * @param NA
+     * @author Alvin.Abhinav
+     */
     public function getEntityManager(){
         if (null === $this->em) {
             $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
         }
         return $this->em;
     }
-    
-   
-    
-    // add disciple
+
+
+
+    /**
+     * Function to index Action
+     * @param NA
+     * @author Alvin.Abhinav
+     */
 Public function indexAction()  {
         
-        
+          $mentorId=$this->getMUserId();
         $this->layout()->setTemplate('layout/master');  
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-        $mentorId=$this->getMUserId();
-        $countriesData=array();
-        foreach($countries as $country ){
-        $countriesData[$country->id]=$country->name;    
-        } 
-        
          $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select("SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")   
          ->from('SamUser\Entity\Users', 'u')
@@ -68,13 +80,15 @@ Public function indexAction()  {
             ->setParameter('mentor_id', $mentorId);
   
         $stageData = $queryBuilder->getQuery()->getScalarResult();
-     
-       
-     
+      
+      
      
         return new ViewModel(array(
-            'users' => $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findBy(array('mentor_id' => $mentorId ),array('created' => 'DESC')),
-            'countries'=>$countriesData,
+          
+            'messagesdata'=>$this->messagingDetail($mentorId),
+            'schedules'=>$this->scheduleDetail($mentorId),
+             'news'=>$this->newsDetail(),
+             'testimonials'=> $this->testimonialsDetail($mentorId),
             'disciples'=>$this->getEntityManager()->getRepository('SamUser\Entity\Disciplescount')->findBy(array('user_id' => $mentorId )),
              'stage'=>$stageData,
             'Url' => '/',
@@ -83,459 +97,120 @@ Public function indexAction()  {
 
 
     }
-//    Add Disiple
-Public function addAction()  {
-       
-        $this->layout()->setTemplate('layout/master');   
-          $picture='';
-        $form = new UsersForm();
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-        
-      
-        $ValueOptions=array();
-        $Countrycode=array();
-        foreach($countries as $country ){
-        $ValueOptions[$country->id]=$country->name;    
-        $Countrycode[$country->id]=$country->phonecode;
-        }
-       
-       
-        $emailValidator = new \DoctrineModule\Validator\ObjectExists(array(
-        'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
-    'fields' => array('email')));
-        $phoneValidator = new \DoctrineModule\Validator\ObjectExists(array(
-        'object_repository' => $this->getEntityManager()->getRepository('SamUser\Entity\Users'),
-    'fields' => array('phone_no')));
-          
-             
-        $form->get('country')->setValueOptions($ValueOptions);
-        $form->get('countrycode')->setValueOptions($Countrycode);
-        
-        $form->get('mentor_id')->setValue($this->getMUserId());
-        $form->get('stage')->setValue('Added');
-        $form->get('password')->setValue('');
-        $form->get('role_id')->setValue(1);
-        
-        $form->get('submit')->setValue('Save');
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-             
-               $Users = new Users();
-               $form->setInputFilter($Users->getInputFilter());
-               $files   = $request->getFiles();
-     
-            
-         
-      // $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
-            
-               $data =$this->getRequest()->getPost()->toArray() ;
-              $form->setData($this->getRequest()->getPost());
-              $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
-              $uploadObj->setDestination(PUBLIC_PATH.'/img');
-               unset($date['submit']);       
-               if ($form->isValid()) {
-                 $emailStatus=$emailValidator->isValid($data['email']);
-                 $phoneStatus=$phoneValidator->isValid($data['phone_no']);
-                 $flag=1;     
-              
-               $newImage =$files['picture']['name'];
-              if(strlen($newImage))  {
-                $validIsImage = new \Zend\Validator\File\IsImage();
-             /* values here minWidth,minHeight,maxWidth,maxHeight   */
-                //$validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
-                $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '4MB'));
-             
-             
-             if(!$validIsImage->isValid($files['picture'])){
-              
-              $form->get('picture')->setMessages($this->fileuploaderr['type']);  
-                  $flag=0;
-            
-            // }elseif(!$validImageSize->isValid($files['picture'])){
-              //    $form->get('picture')->setMessages($this->fileuploaderr['size']);  
-                //  $flag=0;
-            
-            }elseif(!$validSize->isValid($files['picture'])){
-                $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
-                  $flag=0;
-            }
-             
-             
-             }
-              
-                 if($emailStatus){
-       $form->get('email')->setMessages(array('An account with this email already exists'));                   $flag=0;
-                 }
-                 if($phoneStatus){
-         $form->get('phone_no')->setMessages(array('This phone number already exists'));     
-                 $flag=0;
-                 }
-                 
-               if($flag){
-              	  $uploadObj->receive();
-                $temp=$uploadObj->getFileInfo();
-                if(strlen($temp['picture']['name'])){
-				 $data['picture']='/img/'.$temp['picture']['name'];		
-				}else{
-				$data['picture']='';	
-				}
-              
-              
-                $Users->exchangeArray($data);
-                $this->getEntityManager()->persist($Users);
-                $this->getEntityManager()->flush();
-                   $session = new Container('message');
-	             $session->success = 'Data saved successfully';
-                // Redirect to list of dashboard
-                return $this->redirect()->toRoute('dashboard');
-               }
-              }                
-               
-          }
-        
-        $view = new ViewModel(array(
-            'Url' => '/',
-            'form' => $form,
-            'title' => 'Add Disciples',
-             'image' =>$picture,
-        ));
-        return $view;
 
-    }
-Public function editAction()  {
-       
-     $id = (int) $this->params()->fromRoute('id', 0);
-      if (!$id) {
-            return $this->redirect()->toRoute('dashboard/add');
-        } 
-     
-        $user = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
-        
-      if (!$user) {
-            return $this->redirect()->toRoute('dashboard');
-        }
-        
-         $picture=$user->picture;
-         $this->layout()->setTemplate('layout/master');   
-        $form = new UsersForm();
-        $form->bind($user);
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-        $ValueOptions=array();
-        foreach($countries as $country ){
-        $ValueOptions[$country->id]=$country->name;    
-         $Countrycode[$country->id]=$country->phonecode;
-        }
-        
-          
-        $form->get('country')->setValueOptions($ValueOptions)->setValue($user->country) ;
-        $form->get('gender')->setValue($user->gender) ;
-        $form->get('picture')->setValue('') ;  
-        $form->get('mentor_id')->setValue($this->getMUserId());
-        $form->get('stage')->setValue($user->stage);
-        $form->get('password')->setValue($user->password);
-        $form->get('role_id')->setValue($user->role_id);
-        $form->get('countrycode')->setValueOptions($Countrycode)->setValue($user->country) ;
-        
-        $form->get('submit')->setValue('Save');
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-             
-       //        $Users = new Users();
-               $form->setInputFilter($user->getInputFilter());
-                $files   = $request->getFiles();
-               $data =$this->getRequest()->getPost()->toArray();
-          //    $picture = 'data:image/jpeg;base64,'.base64_encode(file_get_contents($files['picture']['tmp_name']));
-         
-                    
-              
-              $form->setData($this->getRequest()->getPost());
-              $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
-              $uploadObj->setDestination(PUBLIC_PATH.'/img');
-                     
-               if ($form->isValid()) {
-                              
-                 $flag=1;     
-              
-               $newImage =$files['picture']['name'];
-              if(strlen($newImage))  {
-                $validIsImage = new \Zend\Validator\File\IsImage();
-             /* values here minWidth,minHeight,maxWidth,maxHeight   */
-            //    $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
-              $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
-             if(!$validIsImage->isValid($files['picture'])){
-              
-              $form->get('picture')->setMessages($this->fileuploaderr['type']);  
-                  $flag=0;
-            
-            // }elseif(!$validImageSize->isValid($files['picture'])){
-           //       $form->get('picture')->setMessages($this->fileuploaderr['size']);  
-              //    $flag=0;
-            
-            }elseif(!$validSize->isValid($files['picture'])){
-                $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
-                  $flag=0;
-            }
-             
-             }
-              
-              
-      $emailStatus=$this->isUserValid('email',$data['email'],$user->id);
-                              
-                 if($emailStatus){
-                  $form->get('email')->setMessages(array('An account with this email already exists'));  
-                  $flag=0;
-                 }
-                
-       		     $phoneStatus=$this->isUserValid('phone_no',$data['phone_no'],$user->id);
-                 if($phoneStatus){
-                  $form->get('phone_no')->setMessages(array('This phone number already exists'));     
-                 $flag=0;
-                 }       
-     
-               if($flag){
-                $uploadObj->receive();
-                $temp=$uploadObj->getFileInfo();
-                if(strlen($temp['picture']['name'])){
-				 $data['picture']='/img/'.$temp['picture']['name'];		
-				}else{
-				$data['picture']=$picture;	
-				}
-                
-              foreach($data as $key=>$val){
-			  	$user->$key=$val;
-			  } 
-              	$user->password=$user->password;
-               $user->created =new DateTime();
-                $this->getEntityManager()->persist($user);
-                $this->getEntityManager()->flush();
-                // Redirect to list of dashboard
-                 $session = new Container('message');
-	           $session->success = 'Data saved successfully';
-                return $this->redirect()->toRoute('dashboard');
-               }
-              }                
-               
-          }
-        
-        $view = new ViewModel(array(
-            'Url' => '/',
-            'form' => $form,
-            'title' => 'Edit Disciples',
-        'id' => $id,
-         'image' =>$picture,
-        ));
-        return $view;
+    /**
+     * Function to get news Detail
+     * @param NA
+     * @author Alvin.Abhinav
+     */
+public function newsDetail(){
+  $country=$this->userCountry();
+$news=array();
+    $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+    $queryBuilder->select("u.id,u.title,u.description,u.country,u.created,u.image")
+        ->from('News\Entity\News', 'u')
+        ->andWhere('u.status=1')
+        ->andWhere('REGEXP(u.country, :regexp) = true')
+        ->orderBy('u.created','DESC')
+        ->setParameter('regexp', '(^|,)('.$country.')(,|$)');
+    $news = $queryBuilder->getQuery()->getResult();
+return($news);
 
-    }
-//edit user info
- public function deleteAction(){
-     $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-                    return $this->redirect()->toRoute('dashboard');
-        }
-        $user = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
-        $user->mentor_id='';
-                $this->getEntityManager()->persist($user);
-                $this->getEntityManager()->flush();
-               $session = new Container('message');
-	   $session->success = 'Data saved successfully';
-                return $this->redirect()->toRoute('dashboard');
-      
+
 }
+
+    /**
+     * Function to get messagingDetail
+     * @param NA
+     * @author Alvin.Abhinav
+     */
+public function messagingDetail($userid){
     
-Public function profileAction()  {
-       
-     $id =$this->getMUserId();
-      if (!$id) {
-            return $this->redirect()->toRoute('dashboard');
-        } 
-     
-        $user = $this->getEntityManager()->find('SamUser\Entity\Users', $id);
-        
-      if (!$user) {
-            return $this->redirect()->toRoute('dashboard');
-        }
-        
-        $picture=$user->picture;
-        $this->layout()->setTemplate('layout/master');   
-        $form = new UsersForm();
-        $form->bind($user);
-        $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
-        $ValueOptions=array();
-        foreach($countries as $country ){
-        $ValueOptions[$country->id]=$country->name;    
-         $Countrycode[$country->id]=$country->phonecode;
-        }
-       
-
-        
-        $form->add(array(
-            'name' => 'newpassword',
-            'type' => 'Text',
-          
-            'options' => array(
-                'label' => 'New Password',
-                
-            ), 'attributes' => array(
-                           'id'       => 'newpassword',
-                            'class'    => 'form-control',
-                          
-                            ),
-     
-        ));
-     
-    
-     
-     
-     
-      $form->add(array(
-            'name' => 'userlocale',
-            'type' => 'Select',
-            'options' => array(
-                'label' => 'Language',
-                 'empty_option' => 'Select', 
-                   'value_options' => array(
-                             
-                         
-                     ),  
-            ), 'attributes' => array(
-                           'id'       => 'userlocale',
-                           'class'    => 'form-control',
-                                            
-                           
-                            ),
-        ));
-     
-   $config = $this->serviceLocator->get('config');
-    $form->get('userlocale')->setValueOptions($config['locale']['available'])->setValue($user->userlocale) ;
-    $form->get('country')->setValueOptions($ValueOptions)->setValue($user->country) ;
-    $form->get('gender')->setValue($user->gender) ;
-    $form->get('mentor_id')->setValue($user->mentor_id);
-    $form->get('stage')->setValue($user->stage);
-    $form->get('password')->setValue($user->password);
-    $form->get('role_id')->setValue($user->role_id);
-     $form->get('countrycode')->setValueOptions($Countrycode)->setValue($user->country) ;
-     $form->get('submit')->setValue('Save');
-     $request = $this->getRequest();
-     
-       
-
-        if ($request->isPost()) {
-
-       
-              $form->setInputFilter($user->getInputFilter());
-              $files   = $request->getFiles();
-         
-              $data =$this->getRequest()->getPost()->toArray();
-              $form->setData($this->getRequest()->getPost());
-              $uploadObj = new \Zend\File\Transfer\Adapter\Http(); 
-              $uploadObj->setDestination(PUBLIC_PATH.'/img');
-              if ($form->isValid()) {
-                  
-              $flag=1;     
-              $newImage =$files['picture']['name'];
-              if(strlen($newImage))  {
-                $validIsImage = new \Zend\Validator\File\IsImage();
-             /* values here minWidth,minHeight,maxWidth,maxHeight   */
-           //     $validImageSize = new \Zend\Validator\File\ImageSize(100, 100, 300,300 );
-              $validSize = new \Zend\Validator\File\Size(array('min' => '1kB', 'max' => '1MB'));
-             if(!$validIsImage->isValid($files['picture'])){
-              
-              $form->get('picture')->setMessages($this->fileuploaderr['type']);  
-                  $flag=0;
-            
-           //  }elseif(!$validImageSize->isValid($files['picture'])){
-               //   $form->get('picture')->setMessages($this->fileuploaderr['size']);  
-               //   $flag=0;
-            
-            }elseif(!$validSize->isValid($files['picture'])){
-                $form->get('picture')->setMessages($this->fileuploaderr['sizemb']);  
-                  $flag=0;
-            }
-             
-             }
-               
-               
-                $emailStatus=$this->isUserValid('email',$data['email'],$user->id);
-                              
-                 if($emailStatus){
-                  $form->get('email')->setMessages(array('An account with this email already exists'));  
-                  $flag=0;
-                 }
-                
-       		     $phoneStatus=$this->isUserValid('phone_no',$data['phone_no'],$user->id);
-                 if($phoneStatus){
-                  $form->get('phone_no')->setMessages(array('This phone number already exists'));     
-                 $flag=0;
-                 }
+    $messagesBuilder = $this->getEntityManager()->createQueryBuilder();
+        $messagesBuilder->select("m.id,m.subject,m.description,m.created,u.displayName,u.picture,m.status ")        ->from('Messaging\Entity\Messaging', 'm')
+        ->leftJoin('SamUser\Entity\Users u', 'WITH m.user_id=u.id')
+        ->andWhere('m.sender_id = (:userid)')
+        ->addOrderBy('m.created', 'DESC')
+        ->setMaxResults( 3 )
+        ->setParameter('userid',  $userid);
                  
-       
-               if($flag){
-                $uploadObj->receive();
-                $temp=$uploadObj->getFileInfo();
-                if(strlen($temp['picture']['name'])){
-				 $data['picture']='/img/'.$temp['picture']['name'];		
-				}else{
-				$data['picture']=$picture;	
-				}
-             
-             
-      
+         $messagesData =array();
+         $messages =array();
+         $messages = $messagesBuilder->getQuery()->getScalarResult();
+         $countBuilder = $this->getEntityManager()->createQueryBuilder();
+         $countBuilder->select("COUNT(m.status) ")   
+        ->from('Messaging\Entity\Messaging', 'm')
+        ->andWhere('m.sender_id = (:userid)')
+        ->andWhere('m.status = 1')
+        ->setParameter('userid',  $userid);
+        $messagesCount = $countBuilder->getQuery()->getSingleScalarResult();
+     $messagesData['messages']=$messages;
+     $messagesData['messagesCount']=$messagesCount;
+return ($messagesData);
+
+
+}
+
+    /**
+     * Function to get scheduleDetail
+     * @param NA
+     * @author Alvin.Abhinav
+     */
+public function  scheduleDetail($userid){
+   
+   $schedulesBuilder = $this->getEntityManager()->createQueryBuilder();
+        $schedulesBuilder->select("s.id,s.description,s.created,s.name,s.time")->from('Schedules\Entity\Schedule', 's') ->andWhere('s.user_Id = (:userid)')
+        ->addOrderBy('s.created', 'DESC')
+        ->setMaxResults( 3 )
+        ->setParameter('userid',  $userid);
+    $schedules = $schedulesBuilder->getQuery()->getScalarResult();
+ 
+   return ($schedules);
+
+
+}
+
+    /**
+     * Function to get testimonialsDetail
+     * @param NA
+     * @author Alvin.Abhinav
+     */
+public function testimonialsDetail(){
+    $country=$this->userCountry();
+   $em = $this->getEntityManager();
+       $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select("t.description,t.created,u.displayName,u.picture")   
+         ->from('Testimonial\Entity\Testimonial', 't')
+        ->leftJoin('SamUser\Entity\Users u', 'WITH t.user_id=u.id')
+           ->andWhere('t.status = 1')
+          ->andWhere('u.country = (:country)')
+          ->addOrderBy('t.created', 'DESC')
+           ->setMaxResults( 3 )
+          ->setParameter('country',  $country)
+          ->setMaxResults(10);
          
-              foreach($data as $key=>$val){
-			  	$user->$key=$val;
-			  } 
-                $user->password=$user->password;  ;
-              if(strlen($data['newpassword'])){
-               $this->bcrypt = new Bcrypt();
-               $this->bcrypt->setCost(14);
-               $cryptPassword = $this->bcrypt->create($data['newpassword']);
-               $user->password=$cryptPassword;  
-              
-              
-                }
-                  
-                
-                $this->getEntityManager()->persist($user);
-                $this->getEntityManager()->flush();
-                $session = new Container('message');
-	            $session->success = 'Data saved successfully';
-                // Redirect to list of dashboard
-               return $this->redirect()->toRoute('dashboard');
-               }
-              }                
-               
-          }
-        
-        $view = new ViewModel(array(
-            'Url' => '/',
-            'form' => $form,
-            'title' => 'Profile',
-             'id' => $id,
-              'image' =>$picture,
-        ));
-        return $view;
+    $testimonials =array();
+        $testimonials = $queryBuilder->getQuery()->getScalarResult(); 
+    
+return ($testimonials);
 
-    }
 
-   public function isUserValid($field='email',$value ,$exclude=0){
-       $qb = $this->getEntityManager()->createQueryBuilder();
-       $qb->select('t')
-            ->from('SamUser\Entity\Users', 't')
-            ->where('t.' . $field . '= :field')
-            ->setParameter('field', $value);
-            if($exclude){
-                $qb->andWhere('t.id <> :id');
-                $qb->setParameter('id', $exclude);
-            }
-           $result = $qb->getQuery()->getScalarResult();
-          
-       
-             if ($result) {
-             return true; 
-             }
-      return false;
-   }
+}
+    /**
+     * Function to get userCountry
+     * @param NA
+     * @author Alvin.Abhinav
+     */
+public function userCountry(){
+    if ($this->zfcUserAuthentication()->hasIdentity()) {
+           $country = $this->zfcUserAuthentication()->getIdentity()->country;
+       }
+       return $country;
+}
+
+
+
+  
 
 
 

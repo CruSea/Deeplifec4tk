@@ -46,8 +46,7 @@ return array(
                 ),
             ),
             
-            
-           
+                         
             'resource' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -161,6 +160,23 @@ return array(
                     ),
                 ),
             ),
+            
+           'disciples' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/disciples[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'SamUser\Controller\Disciples',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            
+            
          
          /*
             'tree' => array(
@@ -233,7 +249,7 @@ return array(
             'SamUser\Controller\Dashboard' => 'SamUser\Controller\DashboardController',
            'SamUser\Controller\Resource' => 'SamUser\Controller\ResourceController',
            'SamUser\Controller\Tree' => 'SamUser\Controller\TreeController',
-
+          'SamUser\Controller\Disciples' => 'SamUser\Controller\DisciplesController', 
         ),
     ),
     'view_manager' => array(

@@ -1,0 +1,47 @@
+<div>
+    <?php echo $this->partial('rnav'); ?>
+    <?php echo $this->partial('headnav'); ?>
+
+    <div id="page-wrapper" class="gray-bg">
+        <!--top navigation-->
+
+        <?php echo $this->partial('headtitle'); ?>
+        <?php echo $this->partial('footer'); ?>
+        <div class="col-lg-12" >
+            <div class="row animated fadeInLeft">
+                <div class="ibox float-e-margins">
+                    <p></p>
+                    <p>
+                        <button type="button" class="btn btn-w-m btn-primary">Add Disciple</button>
+                    </p>
+                    <div class="ibox-content">
+                        <table class="table"style="table-layout: auto">
+
+                            <tr class="ibox-title" >
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Country</th>
+                                <th>&nbsp;</th>
+                            </tr>
+
+                            <?php foreach ($users as $user) : ?>
+                                <tr>
+                                    <td><?php echo $this->escapeHtml($user->getDisplayname());?></td>
+                                    <td><?php echo $this->escapeHtml($user->getEmail());?></td>
+                                    <td><?php echo $this->escapeHtml($user->getPhoneNo());?></td>
+                                    <td><?php echo $this->escapeHtml($user->getCountry());?></td>
+                                    <td>
+                                        <a >Edit</a>
+                                        <a >Delete</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,8 @@ class NewsForm extends Form
                 'type'  => 'hidden',
             ),
         ));
+    
+      
         $this->add(array(
             'name' => 'title',
             'attributes' => array(
@@ -52,8 +54,9 @@ class NewsForm extends Form
                          
                      ),  
             ), 'attributes' => array(
-                           'id'       => 'country',
+                           'id'       => 'multicountry',
                            'class'    => 'form-control',
+                  'multiple' => 'multiple',
                            'required' => 'required',
                         
                            
@@ -82,6 +85,18 @@ class NewsForm extends Form
                             ),
         ));
         
+          $this->add(array(
+            'name' => 'image',
+            'attributes' => array(
+                 'id'       => 'image',
+                'type'  => 'File',
+                 'class'    => 'form-control',
+                 
+            ),
+            'options' => array(
+                'label' => 'Image',
+            ),
+        ));
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(

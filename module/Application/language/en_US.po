@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-06-06 17:00+0530\n"
-"PO-Revision-Date: 2016-06-07 14:21+0530\n"
+"PO-Revision-Date: 2016-06-13 14:42+0530\n"
 "Last-Translator: Evan Coury <me@evancoury.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: en_US\n"
@@ -170,7 +170,7 @@ msgid "Testimonial Tools"
 msgstr ""
 
 msgid "DESCRIPTION"
-msgstr ""
+msgstr "Description"
 
 msgid "STATUS"
 msgstr ""
@@ -200,4 +200,13 @@ msgid "No"
 msgstr ""
 
 msgid "Question &amp; Answer"
+msgstr ""
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Youtube URL"
+msgstr "Youtube URL"
+
+msgid "Default"
 msgstr ""

@@ -1,12 +1,21 @@
 <?php
+
+/**
+ * Share
+ * This module will be used for Share
+ *@package controller
+ *@author Abhinav
+ */
 namespace Share\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use Share\Entity\Answers;
 use Share\Entity\Questions;
+use Schedules\Entity\Schedule;
 use Share\Form\QuestionForm;
 use Zend\Session\Container;
+use Zend\Stdlib\DateTime;
 class ShareController extends AbstractActionController
 {
 /**   
@@ -15,6 +24,11 @@ class ShareController extends AbstractActionController
 */                
 protected $em;
 
+    /**
+     * Function to getuserCountryids
+     * @param NA
+     * @author Abhinav
+     */
 protected function getuserCountryids() {
       $userCountryids=array();
       $session = new Container('userCountryids');
@@ -37,10 +51,11 @@ $this->em = $this->getServiceLocator()
 }
 return $this->em;
 }
-/**
-* Index action displays a list of all the albums
-* @return \Zend\View\Model\ViewModel
-*/
+    /**
+     * Function to ishare Action to display ishare
+     * @param NA
+     * @author Abhinav
+     */
 public function ishareAction()
 {
     
@@ -64,9 +79,15 @@ array(
 'questions' => $this->getEntityManager()->getRepository('Share\Entity\Questions')->findBy($whereData,array('created' => 'DESC')) ));
 
 }
+
+    /**
+     * Function to index Action to display ishare question
+     * @param NA
+     * @author Abhinav
+     */
 public function indexAction()
 {
-     $id = (int) $this->params()->fromRoute('id', 0);
+    $id = (int) $this->params()->fromRoute('id', 0);
      if(!$id) {
            $stageShare=1;    
         }else{
@@ -76,6 +97,9 @@ public function indexAction()
    if ($this->zfcUserAuthentication()->hasIdentity()) {
           $userid = $this->zfcUserAuthentication()->getIdentity()->id;
            $country = $this->zfcUserAuthentication()->getIdentity()->country; 
+           $userPhone=$this->zfcUserAuthentication()->getIdentity()->phone_no;
+
+        
         }
 
     switch($stageShare){
@@ -110,9 +134,7 @@ $userAnswer= $this->getEntityManager()->getRepository('Share\Entity\Answers')->f
        
        $userPostAnswers=$request->getPost('box');
        foreach($userPostAnswers as $key=>$userPostAnswer ){
-            
-      
-            
+              
             $answersupdate= $this->getEntityManager()->getRepository('Share\Entity\Answers')->findOneBy(array('user_id'=>$userid,'report_form_id'=>$key));
              if($answersupdate){
                    $this->getEntityManager()->remove($answersupdate);
@@ -128,7 +150,24 @@ $userAnswer= $this->getEntityManager()->getRepository('Share\Entity\Answers')->f
              $this->getEntityManager()->persist($answersTable);
              $this->getEntityManager()->flush();
        
+       
+       
+       
         }
+        
+        $Schedule=new Schedule();
+          $Schedule->user_Id=$userid;
+          $Schedule->disciple_phone=$userPhone;
+          $Schedule->name='Share Question';
+          $Schedule->type='Normal';
+          $Schedule->description='Update Share Question ';  
+          $currentDate=new DateTime();
+          $Schedule->time =date( "Y-m-d H:i:s", strtotime( "+10 days" ) ); ;
+          $Schedule->recurring =0;
+          $Schedule->created =$currentDate;
+          $this->getEntityManager()->persist($Schedule);
+          $this->getEntityManager()->flush();
+       
            $session = new Container('message');
 	            $session->success = 'Data saved successfully';
                 // Redirect to list of Learningtools
@@ -152,7 +191,11 @@ array(
 
 }
 
-
+    /**
+     * Function to add  Action to add ishare question
+     * @param NA
+     * @author Abhinav
+     */
 public function addAction()
 {
          $this->layout()->setTemplate('layout/master');  
@@ -196,6 +239,12 @@ public function addAction()
         }
         return array('form' => $form, );
     }
+
+    /**
+     * Function to edit Action to edit ishare question
+     * @param NA
+     * @author Abhinav
+     */
 public function editAction()
 {
           $this->layout()->setTemplate('layout/master');  
@@ -247,6 +296,11 @@ public function editAction()
             'form' => $form,
         );
     }
+    /**
+     * Function to deleteAction to Delete ishare question
+     * @param NA
+     * @author Abhinav
+     */
 public function deleteAction(){
      $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {

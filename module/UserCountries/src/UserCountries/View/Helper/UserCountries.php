@@ -12,7 +12,7 @@ class UserCountries extends AbstractHelper   {
   protected $em;
     public function __invoke($role_id,$id) {
   $countryids =array();
-if($role_id!=2){
+if($role_id!=SUPERADMIN){
  
        $roleArea =$this->getEntityManager()
         ->getRepository('SamUser\Entity\Rolearea')

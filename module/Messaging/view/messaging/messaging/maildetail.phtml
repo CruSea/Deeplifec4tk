@@ -56,7 +56,9 @@
                    
                         <div class="mail-body text-right tooltip-demo">
                           
-                               
+         <a class="btn btn-sm btn-white" 
+                               href="<?php echo $this->url('messaging', array('action' => 'reply','id'=>$id))?>"
+                               ><i class="fa fa-reply"></i> Reply</a>
                                 <a href="<?php echo $this->url('messaging', array('action' => 'delete','id'=>$id))?>" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="fa fa-trash-o"></i> Remove</a>
                         </div>
                         <div class="clearfix"></div>
