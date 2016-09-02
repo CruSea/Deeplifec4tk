@@ -25,6 +25,7 @@ return array(
         'Learningtools',
         'Schedules',
         'DeepLife_API',
+        'LandingPage',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
