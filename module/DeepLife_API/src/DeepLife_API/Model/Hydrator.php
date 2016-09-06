@@ -202,7 +202,7 @@ class Hydrator
                     $New_Data->setCountryId(isset($data['country'])? $data['country']:null);
                     $New_Data->setTitle(isset($data['description'])? $data['title']:null);
                     $New_Data->setContent(isset($data['description'])? $data['description']:null);
-                    $New_Data->setImageUrl(isset($data['description'])? $data['description']:null);
+                    $New_Data->setImageUrl(isset($data['image'])? $data['image']:null);
                     $New_Data->setPublishDate(isset($data['created'])? $data['created']:null);
                     $New_Data->setCreated(isset($data['created'])? $data['created']:null);
                     $Found[] = $New_Data->getArray();
