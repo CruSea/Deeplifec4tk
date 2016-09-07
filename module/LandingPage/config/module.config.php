@@ -15,8 +15,12 @@ return array(
                         'controller' => 'Index',
                         'action' => 'index',
                         */
+
                         'controller' => 'zfcuser',
                         'action' => 'login',
+                        //'action' => 'register',
+                        //'action' => 'changepassword',
+
                     ),
                 ),
             ),
@@ -44,6 +48,7 @@ return array(
     ),
     'view_manager' => array(
         'template_map' => array(
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'layout/generic' => __DIR__ . '/../view/layout/generic.phtml',
             'layout/sea' => __DIR__ . '/../view/layout/sea.phtml',
         ),
