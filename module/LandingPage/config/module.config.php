@@ -5,7 +5,7 @@ namespace LandingPage;
 return array(
     'router' => array(
         'routes' => array(
-            'generic' => array(
+            'home' => array(
                 'type' => 'Literal',
                 'options' => array(
                     'route' => '/',
