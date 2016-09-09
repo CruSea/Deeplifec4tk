@@ -1,26 +1,27 @@
 <?php
 
 namespace Testimonial\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface; 
+use Zend\InputFilter\InputFilterInterface;
 use Zend\Stdlib\DateTime;
+
 /**
  * answers.
  *
  * @ORM\Entity
  * @ORM\Table(name="testimonial")
  * @property string $description
-*  @property string $country
-*  @property int $user_id
-*  @property int $status
-*  @property int $id
-*  @property datetime $created
-
-*  */
-class Testimonial implements InputFilterAwareInterface 
+ * @property string $country
+ * @property int $user_id
+ * @property int $status
+ * @property int $id
+ * @property datetime $created
+ *  */
+class Testimonial implements InputFilterAwareInterface
 {
     protected $inputFilter;
 
@@ -29,47 +30,44 @@ class Testimonial implements InputFilterAwareInterface
      * @ORM\Column(type="integer");
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-      protected $id;
-
- 
+    protected $id;
 
 
     /**
      * @ORM\Column(type="integer")
      */
-      protected $user_id;
+    protected $user_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-      protected $status;
+    protected $status;
 
 
-
-  
-/**
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
 
-/**
+    /**
      * @ORM\Column(type="string")
      */
-       protected $description;
- 
-  
-   /**
+    protected $description;
+
+
+    /**
      * @ORM\Column(type="integer")
      */
     protected $country;
+
     /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
      * @return mixed
      */
-    public function __get($property) 
+    public function __get($property)
     {
         return $this->$property;
     }
@@ -80,7 +78,7 @@ class Testimonial implements InputFilterAwareInterface
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) 
+    public function __set($property, $value)
     {
         $this->$property = $value;
     }
@@ -90,7 +88,7 @@ class Testimonial implements InputFilterAwareInterface
      *
      * @return array
      */
-    public function getArrayCopy() 
+    public function getArrayCopy()
     {
         return get_object_vars($this);
     }
@@ -100,17 +98,17 @@ class Testimonial implements InputFilterAwareInterface
      *
      * @param array $data
      */
-    public function populate($data = array()) 
+    public function populate($data = array())
     {
         $this->id = $data['id'];
         $this->country = $data['country'];
         $this->status = $data['status'];
-         $this->description = $data['description'];
-      
-          $this->created = new DateTime(); 
+        $this->description = $data['description'];
+
+        $this->created = new DateTime();
     }
 
-     public function setInputFilter(InputFilterInterface $inputFilter)
+    public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
@@ -123,42 +121,39 @@ class Testimonial implements InputFilterAwareInterface
             $factory = new InputFactory();
 
             $inputFilter->add($factory->createInput(array(
-                'name'       => 'id',
-                'required'   => true,
+                'name' => 'id',
+                'required' => true,
                 'filters' => array(
-                    array('name'    => 'Int'),
+                    array('name' => 'Int'),
                 ),
             )));
 
-        
 
             $inputFilter->add($factory->createInput(array(
-                'name'     => 'description',
+                'name' => 'description',
                 'required' => true,
-                'filters'  => array(
+                'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'StringLength',
+                        'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 1000,
+                            'min' => 1,
+                            'max' => 1000,
                         ),
                     ),
                 ),
             )));
 
 
-
-            $this->inputFilter = $inputFilter;        
+            $this->inputFilter = $inputFilter;
         }
 
 
-
         return $this->inputFilter;
-    } 
-   
+    }
+
 }

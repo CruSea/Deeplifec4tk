@@ -96,7 +96,9 @@ class Testimony
     {
         $this->detail = $detail;
     }
-    public function getArray(){
+
+    public function getArray()
+    {
         return array(
             'id' => $this->getId(),
             'user_id' => $this->getUserId(),

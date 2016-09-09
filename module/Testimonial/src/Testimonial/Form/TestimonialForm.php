@@ -13,83 +13,77 @@ class TestimonialForm extends Form
         $this->add(array(
             'name' => 'id',
             'attributes' => array(
-                'type'  => 'hidden',
+                'type' => 'hidden',
             ),
         ));
-     
-          $this->add(array(
+
+        $this->add(array(
             'name' => 'description',
             'attributes' => array(
-                'type'  => 'textarea',
-                'rows'=>"4", 
-                'cols'=>"50",
-                 'class'    => 'form-control',
-                   'required' => 'required',
+                'type' => 'textarea',
+                'rows' => "4",
+                'cols' => "50",
+                'class' => 'form-control',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Description',
             ),
         ));
 
-       
-        
-          $this->add(array(
+
+        $this->add(array(
             'name' => 'country',
             'type' => 'Select',
             'options' => array(
                 'label' => 'Country',
-                   'value_options' => array(
-                             '1' => 'India',
-                         
-                     ),  
+                'value_options' => array(
+                    '1' => 'India',
+
+                ),
             ), 'attributes' => array(
-                           'id'       => 'country',
-                           'class'    => 'form-control',
-                           'required' => 'required',
-                        
-                           
-                            ),
+                'id' => 'country',
+                'class' => 'form-control',
+                'required' => 'required',
+
+
+            ),
         ));
-        
-      
-        
-  $this->add(array(
+
+
+        $this->add(array(
             'name' => 'status',
             'type' => 'Select',
             'options' => array(
                 'label' => 'Status',
-                
-          'value_options' => array(
-                           0 => 'WAITING',
-                           1 => 'APPROVED',
-                           2 => 'REJECTED'
-                     ),       
-         
-            ), 
-            
-       
+
+                'value_options' => array(
+                    0 => 'WAITING',
+                    1 => 'APPROVED',
+                    2 => 'REJECTED'
+                ),
+
+            ),
+
+
             'attributes' => array(
-                           'id'       => 'status',
-                           'class'    => 'form-control',
-                           'required' => 'required',
-                            ),
+                'id' => 'status',
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
         ));
-        
-        
+
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
-                'type'  => 'submit',
+                'type' => 'submit',
                 'value' => 'Save',
                 'id' => 'submitbutton',
-                 'class'    => 'btn btn-primary pull-right',
+                'class' => 'btn btn-primary pull-right',
             ),
         ));
     }
-
-
-
-
 
 
 }

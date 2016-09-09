@@ -35,12 +35,12 @@ class PostRepositoryImpl implements PostRepository
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $select = $sql->select();
         $select->columns(array(
-                'id',
-                'title',
-                'slug',
-                'content',
-                'created',
-            ))
+            'id',
+            'title',
+            'slug',
+            'content',
+            'created',
+        ))
             ->from(array('p' => 'news'))
             ->join(
                 array('c' => 'category'), // Table name
@@ -74,12 +74,12 @@ class PostRepositoryImpl implements PostRepository
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $select = $sql->select();
         $select->columns(array(
-                'id',
-                'title',
-                'slug',
-                'content',
-                'created',
-            ))
+            'id',
+            'title',
+            'slug',
+            'content',
+            'created',
+        ))
             ->from(array('p' => 'news'))
             ->join(
                 array('c' => 'category'), // Table name

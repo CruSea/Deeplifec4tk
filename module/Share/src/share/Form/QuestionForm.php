@@ -13,78 +13,71 @@ class QuestionForm extends Form
         $this->add(array(
             'name' => 'id',
             'attributes' => array(
-                'type'  => 'hidden',
+                'type' => 'hidden',
             ),
         ));
         $this->add(array(
             'name' => 'question',
             'attributes' => array(
-                'type'  => 'text',
-                 'class'    => 'form-control',
-                   'required' => 'required',
+                'type' => 'text',
+                'class' => 'form-control',
+                'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Question',
             ),
         ));
-   
 
-  
-        
+
         $this->add(array(
             'name' => 'category',
             'type' => 'Select',
             'options' => array(
                 'label' => 'Category',
-                
-          'value_options' => array(
-                           'WIN' => 'WIN',
-                           'BUILD' => 'BUILD',
-                           'SEND' => 'SEND',
-                     ),       
-         
-            ), 
-            
-         
+
+                'value_options' => array(
+                    'WIN' => 'WIN',
+                    'BUILD' => 'BUILD',
+                    'SEND' => 'SEND',
+                ),
+
+            ),
+
+
             'attributes' => array(
-                           'id'       => 'category',
-                           'class'    => 'form-control',
-                           'required' => 'required',
-                            ),
+                'id' => 'category',
+                'class' => 'form-control',
+                'required' => 'required',
+            ),
         ));
-        
-        
-          $this->add(array(
+
+
+        $this->add(array(
             'name' => 'country',
             'type' => 'Select',
             'options' => array(
                 'label' => 'Country',
-                   'value_options' => array(
-                             '1' => 'India',
-                         
-                     ),  
-            ), 'attributes' => array(
-                           'id'       => 'country',
-                           'class'    => 'form-control',
-                           'required' => 'required',
-                        
-                           
-                            ),
-        ));
-        
-        
-        
-        
+                'value_options' => array(
+                    '1' => 'India',
 
-        
-        
+                ),
+            ), 'attributes' => array(
+                'id' => 'country',
+                'class' => 'form-control',
+                'required' => 'required',
+
+
+            ),
+        ));
+
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
-                'type'  => 'submit',
+                'type' => 'submit',
                 'value' => 'Save',
                 'id' => 'submitbutton',
-                 'class'    => 'btn btn-primary',
+                'class' => 'btn btn-primary',
             ),
         ));
     }

@@ -130,7 +130,9 @@ class Questions
     {
         $this->created = $created;
     }
-    public function getArray(){
+
+    public function getArray()
+    {
         return array(
             'id' => $this->getId(),
             'category' => $this->getCategory(),

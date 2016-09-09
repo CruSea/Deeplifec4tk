@@ -27,37 +27,40 @@ use Zend\Db\Adapter\AdapterAwareTrait;
 class RepositoryImpl implements RepositoryInterface
 {
     use AdapterAwareTrait;
+
     public function isValidUser(User $user)
     {
-        $row_sql = 'SELECT * FROM users WHERE users.password = \''.$this->Encrypt($user->getPassword()).'\' AND (users.email = \''.$user->getEmail().'\' OR users.phone_no = \''.$user->getPhoneNo().'\')';
+        $row_sql = 'SELECT * FROM users WHERE users.password = \'' . $this->Encrypt($user->getPassword()) . '\' AND (users.email = \'' . $user->getEmail() . '\' OR users.phone_no = \'' . $user->getPhoneNo() . '\')';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     public function isThere_User(User $user)
     {
-        $row_sql = 'SELECT * FROM users WHERE users.phone_no = \''.$user->getPhoneNo().'\'';
+        $row_sql = 'SELECT * FROM users WHERE users.phone_no = \'' . $user->getPhoneNo() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function Encrypt($password){
+    public function Encrypt($password)
+    {
         $encrypter = new Bcrypt();
         $encrypter->setCost(14);
         return $encrypter->create($password);
     }
+
     public function AddNew_User(User $user)
     {
         /**
@@ -66,18 +69,18 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'email'=>$user->getEmail(),
-                'displayName'=>$user->getDisplayName(),
-                'password'=>$this->Encrypt($user->getPassword()),
-                'firstName'=>$user->getFirstName(),
-                'country'=>$user->getCountry(),
-                'phone_no'=>$user->getPhoneNo(),
-                'mentor_id'=>$user->getMentorId(),
-                'gender'=>$user->getGender(),
-                'role_id'=>$user->getRoleId(),
-                'stage'=>$user->getStage(),
-                'picture'=>$user->getPicture(),
-                'userlocale'=>1,
+                'email' => $user->getEmail(),
+                'displayName' => $user->getDisplayName(),
+                'password' => $this->Encrypt($user->getPassword()),
+                'firstName' => $user->getFirstName(),
+                'country' => $user->getCountry(),
+                'phone_no' => $user->getPhoneNo(),
+                'mentor_id' => $user->getMentorId(),
+                'gender' => $user->getGender(),
+                'role_id' => $user->getRoleId(),
+                'stage' => $user->getStage(),
+                'picture' => $user->getPicture(),
+                'userlocale' => 1,
             ))
             ->into('users');
         $statement = $sql->prepareStatementForSqlObject($insert);;
@@ -87,11 +90,11 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Delete_User(User $user)
     {
-        $row_sql = 'DELETE FROM users WHERE users.phone_no = '.$user->getPhoneNo();
+        $row_sql = 'DELETE FROM users WHERE users.phone_no = ' . $user->getPhoneNo();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
         }
         return false;
@@ -99,26 +102,26 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Update_User(User $user)
     {
-        $row_sql = 'UPDATE users SET users.mentor_id = \''.$user->getMentorId().'\' WHERE users.id = \''.$user->getId().'\'';
+        $row_sql = 'UPDATE users SET users.mentor_id = \'' . $user->getMentorId() . '\' WHERE users.id = \'' . $user->getId() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     public function Update_User_Pic(User $user)
     {
-        $row_sql = 'UPDATE users SET users.picture = \''.$user->getPicture().'\' WHERE users.id = \''.$user->getId().'\'';
+        $row_sql = 'UPDATE users SET users.picture = \'' . $user->getPicture() . '\' WHERE users.id = \'' . $user->getId() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -126,13 +129,13 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Update_User1(User $user)
     {
-        $row_sql = 'UPDATE users SET users.stage = \''.$user->getStage().'\' WHERE users.id = \''.$user->getId().'\'';
+        $row_sql = 'UPDATE users SET users.stage = \'' . $user->getStage() . '\' WHERE users.id = \'' . $user->getId() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -143,28 +146,28 @@ class RepositoryImpl implements RepositoryInterface
      */
     public function Get_User(User $user)
     {
-        $row_sql = 'SELECT * FROM users WHERE users.email = \''.$user->getEmail().'\'';
+        $row_sql = 'SELECT * FROM users WHERE users.email = \'' . $user->getEmail() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
-        }else{
-            $row_sql = 'SELECT * FROM users WHERE users.phone_no = \''.$user->getPhoneNo().'\'';
+        } else {
+            $row_sql = 'SELECT * FROM users WHERE users.phone_no = \'' . $user->getPhoneNo() . '\'';
             $statement = $this->adapter->query($row_sql);
             $result = $statement->execute();
-            if($result->count()>0){
-                while($result->valid()){
+            if ($result->count() > 0) {
+                while ($result->valid()) {
                     $posts[] = $result->current();
                     $result->next();
                 }
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Get_Data($posts,new User());
+        return $hydrator->Get_Data($posts, new User());
     }
 
     public function Add_User_Role($user_id, $role_id)
@@ -175,8 +178,8 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$user_id,
-                'role_id'=>$role_id,
+                'user_id' => $user_id,
+                'role_id' => $role_id,
             ))
             ->into('user_role_linker');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -186,19 +189,20 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetAll_Disciples(User $user)
     {
-        $row_sql = 'SELECT * FROM users WHERE users.mentor_id = \''.$user->getId().'\'';
+        $row_sql = 'SELECT * FROM users WHERE users.mentor_id = \'' . $user->getId() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new User());
+        return $hydrator->Extract($posts, new User());
     }
+
     public function AddNew_Disciple_log(Disciple $schedule)
     {
         /**
@@ -207,37 +211,38 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$schedule->getUserID(),
-                'disciple_id'=>$schedule->getDiscipleID(),
+                'user_id' => $schedule->getUserID(),
+                'disciple_id' => $schedule->getDiscipleID(),
             ))
             ->into('disciple_log');
         $statement = $sql->prepareStatementForSqlObject($insert);
         $result = $statement->execute();
         return $result->valid();
     }
+
     public function GetNew_Disciples(User $user)
     {
-        $row_sql = 'SELECT * FROM users WHERE users.id NOT IN( SELECT disciple_log.disciple_id FROM disciple_log ) AND users.mentor_id = \''.$user->getId().'\'';
+        $row_sql = 'SELECT * FROM users WHERE users.id NOT IN( SELECT disciple_log.disciple_id FROM disciple_log ) AND users.mentor_id = \'' . $user->getId() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new User());
+        return $hydrator->Extract($posts, new User());
     }
 
     public function Delete_Disciple_Log(User $user)
     {
-        $row_sql = 'DELETE FROM disciple_log WHERE disciple_log.user_id = '.$user->getId();
+        $row_sql = 'DELETE FROM disciple_log WHERE disciple_log.user_id = ' . $user->getId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
         }
         return false;
@@ -245,11 +250,11 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Delete_Schedule(Schedule $schedule)
     {
-        $row_sql = 'DELETE FROM schedule WHERE schedule.time = \''.$schedule->getTime().'\' AND schedule.user_id = '.$schedule->getUserId();
+        $row_sql = 'DELETE FROM schedule WHERE schedule.time = \'' . $schedule->getTime() . '\' AND schedule.user_id = ' . $schedule->getUserId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
         }
         return false;
@@ -263,12 +268,12 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$schedule->getUserId(),
-                'disciple_phone'=>$schedule->getDisciplePhone(),
-                'name'=>$schedule->getName(),
-                'time'=>$schedule->getTime(),
-                'type'=>$schedule->getType(),
-                'description'=>$schedule->getDescription(),
+                'user_id' => $schedule->getUserId(),
+                'disciple_phone' => $schedule->getDisciplePhone(),
+                'name' => $schedule->getName(),
+                'time' => $schedule->getTime(),
+                'type' => $schedule->getType(),
+                'description' => $schedule->getDescription(),
             ))
             ->into('schedule');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -278,11 +283,11 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Delete_Schedule_Log(User $user)
     {
-        $row_sql = 'DELETE FROM schedule_logs WHERE schedule_logs.user_id = '.$user->getId();
+        $row_sql = 'DELETE FROM schedule_logs WHERE schedule_logs.user_id = ' . $user->getId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
         }
         return false;
@@ -296,8 +301,8 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$schedule->getUserId(),
-                'schedule_id'=>$schedule->getId(),
+                'user_id' => $schedule->getUserId(),
+                'schedule_id' => $schedule->getId(),
             ))
             ->into('schedule_logs');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -307,57 +312,57 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Update_Schedule(Schedule $schedule)
     {
-        $row_sql = 'UPDATE schedule SET schedule.name = \''.$schedule->getName().'\' , schedule.time = \''.$schedule->getTime().'\' , schedule.type = \''.$schedule->getType().'\' , schedule.description = \''.$schedule->getDescription().'\'WHERE schedule.name = \''.$schedule->getName().'\'';
+        $row_sql = 'UPDATE schedule SET schedule.name = \'' . $schedule->getName() . '\' , schedule.time = \'' . $schedule->getTime() . '\' , schedule.type = \'' . $schedule->getType() . '\' , schedule.description = \'' . $schedule->getDescription() . '\'WHERE schedule.name = \'' . $schedule->getName() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     public function GetAll_Schedule(User $user)
     {
-        $row_sql = 'SELECT * FROM schedule WHERE schedule.user_id = '.$user->getId();
+        $row_sql = 'SELECT * FROM schedule WHERE schedule.user_id = ' . $user->getId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Schedule());
+        return $hydrator->Extract($posts, new Schedule());
     }
 
     public function GetNew_Schedule(User $user)
     {
-        $row_sql = 'SELECT * FROM schedule WHERE schedule.id NOT IN( SELECT schedule_logs.schedule_id FROM schedule_logs ) AND schedule.user_Id = '.$user->getId();
+        $row_sql = 'SELECT * FROM schedule WHERE schedule.id NOT IN( SELECT schedule_logs.schedule_id FROM schedule_logs ) AND schedule.user_Id = ' . $user->getId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Schedule());
+        return $hydrator->Extract($posts, new Schedule());
     }
 
     public function Get_Schedule_By_AlarmTime(Schedule $schedule)
     {
-        $row_sql = 'SELECT * FROM schedule WHERE schedule.time = "'.$schedule->getTime()."\"";
+        $row_sql = 'SELECT * FROM schedule WHERE schedule.time = "' . $schedule->getTime() . "\"";
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts = $result->current();
                 $result->next();
             }
@@ -365,14 +370,15 @@ class RepositoryImpl implements RepositoryInterface
         $hydrator = new Hydrator();
         return $hydrator->GetSchedule($posts);
     }
+
     public function Get_Schedule_By_AlarmName(Schedule $schedule)
     {
-        $row_sql = 'SELECT * FROM schedule WHERE schedule.name = "'.$schedule->getName()."\"";
+        $row_sql = 'SELECT * FROM schedule WHERE schedule.name = "' . $schedule->getName() . "\"";
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts = $result->current();
                 $result->next();
             }
@@ -384,10 +390,10 @@ class RepositoryImpl implements RepositoryInterface
 
     public function getAuthenticationAdapter()
     {
-        $callback = function($encryptedPassword,$clearTextPassword){
+        $callback = function ($encryptedPassword, $clearTextPassword) {
             $encrypter = new Bcrypt();
             $encrypter->setCost(12);
-            return $encrypter->verify($clearTextPassword,$encryptedPassword);
+            return $encrypter->verify($clearTextPassword, $encryptedPassword);
         };
         $authenticationAdapter = new \Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter(
             $this->adapter,
@@ -401,10 +407,10 @@ class RepositoryImpl implements RepositoryInterface
 
     public function getAuthenticationAdapter2()
     {
-        $callback = function($encryptedPassword,$clearTextPassword){
+        $callback = function ($encryptedPassword, $clearTextPassword) {
             $encrypter = new Bcrypt();
             $encrypter->setCost(12);
-            return $encrypter->verify($clearTextPassword,$encryptedPassword);
+            return $encrypter->verify($clearTextPassword, $encryptedPassword);
         };
         $authenticationAdapter = new \Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter(
             $this->adapter,
@@ -424,8 +430,8 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'category'=>$questions->getCategory(),
-                'question'=>$questions->getQuestion(),
+                'category' => $questions->getCategory(),
+                'question' => $questions->getQuestion(),
             ))
             ->into('schedule');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -439,31 +445,31 @@ class RepositoryImpl implements RepositoryInterface
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Questions());
+        return $hydrator->Extract($posts, new Questions());
     }
 
     public function Get_Question(User $user)
     {
-        $row_sql = 'SELECT * FROM questions WHERE questions.country = '.$user->getCountry();
+        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry();
         $statement = $this->adapter->query($row_sql);
 
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Questions());
+        return $hydrator->Extract($posts, new Questions());
     }
 
 
@@ -475,9 +481,9 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$answers->getUserId(),
-                'question_id'=>$answers->getQuestionId(),
-                'answer'=>$answers->getAnswer(),
+                'user_id' => $answers->getUserId(),
+                'question_id' => $answers->getQuestionId(),
+                'answer' => $answers->getAnswer(),
             ))
             ->into('answers');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -487,18 +493,18 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetAll_Answers(User $user)
     {
-        $row_sql = 'SELECT * FROM answers WHERE answers.user_id = '.$user->getId();
+        $row_sql = 'SELECT * FROM answers WHERE answers.user_id = ' . $user->getId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Hydrate($posts,new Answers());
+        return $hydrator->Hydrate($posts, new Answers());
     }
 
     public function AddNew_Report(User $user)
@@ -512,30 +518,30 @@ class RepositoryImpl implements RepositoryInterface
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Report());
+        return $hydrator->Extract($posts, new Report());
     }
 
     public function Get_Report(User $user)
     {
-        $row_sql = 'SELECT * FROM report_forms WHERE report_forms.country = '.$user->getCountry();
+        $row_sql = 'SELECT * FROM report_forms WHERE report_forms.country = ' . $user->getCountry();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Report());
+        return $hydrator->Extract($posts, new Report());
     }
 
     public function GetAll_Country()
@@ -544,14 +550,14 @@ class RepositoryImpl implements RepositoryInterface
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new Country());
+        return $hydrator->Extract($posts, new Country());
     }
 
     public function AddNew_UserReport(UserReport $userReport)
@@ -562,9 +568,9 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$userReport->getUserId(),
-                'report_form_id'=>$userReport->getReportId(),
-                'value'=>$userReport->getValue(),
+                'user_id' => $userReport->getUserId(),
+                'report_form_id' => $userReport->getReportId(),
+                'value' => $userReport->getValue(),
             ))
             ->into('reports');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -578,30 +584,30 @@ class RepositoryImpl implements RepositoryInterface
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new NewsFeed());
+        return $hydrator->Extract($posts, new NewsFeed());
     }
 
     public function GetNew_NewsFeeds(User $user)
     {
-        $row_sql = 'SELECT * FROM news WHERE news.country = '.$user->getCountry().' AND news.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = '.$user->getId().')';
+        $row_sql = 'SELECT * FROM news WHERE news.country = ' . $user->getCountry() . ' AND news.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = ' . $user->getId() . ')';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
-            while($result->valid()){
+        if ($result->count() > 0) {
+            while ($result->valid()) {
                 $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts,new NewsFeed());
+        return $hydrator->Extract($posts, new NewsFeed());
     }
 
     public function AddNew_NewsFeed_log(NewsFeed $news)
@@ -612,8 +618,8 @@ class RepositoryImpl implements RepositoryInterface
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$news->getUserId(),
-                'news_feed_id'=>$news->getId(),
+                'user_id' => $news->getUserId(),
+                'news_feed_id' => $news->getId(),
             ))
             ->into('news_feeds_log');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -623,23 +629,24 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Delete_All_NewsFeed_Log(User $user)
     {
-        $row_sql = 'DELETE FROM news_feeds_log WHERE news_feeds_log.user_id = '.$user->getId();
+        $row_sql = 'DELETE FROM news_feeds_log WHERE news_feeds_log.user_id = ' . $user->getId();
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
-        if($result->count()>0){
+        if ($result->count() > 0) {
             return true;
         }
         return false;
     }
+
     public function AddTestimony(Testimony $testimony)
     {
         $sql = new \Zend\Db\Sql\Sql($this->adapter);
         $insert = $sql->insert()
             ->values(array(
-                'user_id'=>$testimony->getUserId(),
-                'country'=>$testimony->getCountryId(),
-                'description'=>$testimony->getDetail(),
+                'user_id' => $testimony->getUserId(),
+                'country' => $testimony->getCountryId(),
+                'description' => $testimony->getDetail(),
             ))
             ->into('testimonial');
         $statement = $sql->prepareStatementForSqlObject($insert);

@@ -10,9 +10,9 @@ return array(
     'router' => array(
         'routes' => array(
             'sms_api' => array(
-                'type'    => 'segment',
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/deep_api',
+                    'route' => '/deep_api',
                     'defaults' => array(
                         'controller' => 'api_controller\Controller\api',
                     ),

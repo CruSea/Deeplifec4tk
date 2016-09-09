@@ -96,7 +96,9 @@ class Report
     {
         $this->created = $created;
     }
-    public function getArray(){
+
+    public function getArray()
+    {
         return array(
             'id' => $this->getId(),
             'country_id' => $this->getCountryId(),

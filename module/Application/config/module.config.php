@@ -24,7 +24,6 @@ return array(
                 ),
             ),
 
-
             'mobileapp' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -122,6 +121,7 @@ return array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
         ),
     ),
+
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
@@ -138,6 +138,7 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController'
         ),
     ),
+
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions' => true,

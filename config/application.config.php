@@ -15,8 +15,8 @@ return array(
         'Share',
         'Testimonial',
         'Messaging',
-         'News',
-       'UserCountries',
+        'News',
+        'UserCountries',
         'ZfcBase',
         'ZfcUser',
         'ZfcUserDoctrineORM',
@@ -80,7 +80,7 @@ return array(
     //     ),
     // ),
 
-   // Initial configuration with which to seed the ServiceManager.
-   // Should be compatible with Zend\ServiceManager\Config.
-   // 'service_manager' => array(),
+    // Initial configuration with which to seed the ServiceManager.
+    // Should be compatible with Zend\ServiceManager\Config.
+    // 'service_manager' => array(),
 );

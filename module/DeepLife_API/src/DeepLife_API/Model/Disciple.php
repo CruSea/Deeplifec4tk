@@ -11,7 +11,7 @@ namespace DeepLife_API\Model;
 
 class Disciple
 {
-    private $id,$userID,$DiscipleID;
+    private $id, $userID, $DiscipleID;
 
     /**
      * @return mixed

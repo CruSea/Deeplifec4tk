@@ -1,5 +1,6 @@
 <?php
 namespace News;
+
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 
@@ -18,8 +19,7 @@ class Module
             ),
         );
     }
-    
-   
+
 
     public function getConfig()
     {

@@ -1,12 +1,14 @@
 <?php
 
 namespace Share\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface; 
+use Zend\InputFilter\InputFilterInterface;
 use Zend\Stdlib\DateTime;
+
 /**
  * report_forms.
  *
@@ -14,11 +16,11 @@ use Zend\Stdlib\DateTime;
  * @ORM\Table(name="report_forms")
  * @property string $category
  * @property string $question
-  *  @property int $id
-  *  @property int $$country
-  *  @property datetime $created
+ * @property int $id
+ * @property int $$country
+ * @property datetime $created
  */
-class Questions implements InputFilterAwareInterface 
+class Questions implements InputFilterAwareInterface
 {
     protected $inputFilter;
 
@@ -38,28 +40,29 @@ class Questions implements InputFilterAwareInterface
      * @ORM\Column(type="string")
      */
     protected $question;
-/**
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created;
-  
+
     /**
      * @ORM\Column(type="integer")
      */
     protected $country;
-  
-  
-   /**
+
+
+    /**
      * @ORM\Column(type="integer")
      */
     protected $default_question;
+
     /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
      * @return mixed
      */
-    public function __get($property) 
+    public function __get($property)
     {
         return $this->$property;
     }
@@ -70,7 +73,7 @@ class Questions implements InputFilterAwareInterface
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) 
+    public function __set($property, $value)
     {
         $this->$property = $value;
     }
@@ -80,7 +83,7 @@ class Questions implements InputFilterAwareInterface
      *
      * @return array
      */
-    public function getArrayCopy() 
+    public function getArrayCopy()
     {
         return get_object_vars($this);
     }
@@ -90,13 +93,13 @@ class Questions implements InputFilterAwareInterface
      *
      * @param array $data
      */
-    public function populate($data = array()) 
+    public function populate($data = array())
     {
         $this->id = $data['id'];
         $this->category = $data['category'];
         $this->question = $data['question'];
-         $this->country=$data['country'];
-         $this->created = new DateTime(); 
+        $this->country = $data['country'];
+        $this->created = new DateTime();
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter)
@@ -112,37 +115,36 @@ class Questions implements InputFilterAwareInterface
             $factory = new InputFactory();
 
             $inputFilter->add($factory->createInput(array(
-                'name'       => 'id',
-                'required'   => true,
+                'name' => 'id',
+                'required' => true,
                 'filters' => array(
-                    array('name'    => 'Int'),
+                    array('name' => 'Int'),
                 ),
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name'     => 'question',
+                'name' => 'question',
                 'required' => true,
-                'filters'  => array(
+                'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'StringLength',
+                        'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 300,
+                            'min' => 1,
+                            'max' => 300,
                         ),
                     ),
                 ),
             )));
 
-           
 
-            $this->inputFilter = $inputFilter;        
+            $this->inputFilter = $inputFilter;
         }
 
         return $this->inputFilter;
-    } 
+    }
 }

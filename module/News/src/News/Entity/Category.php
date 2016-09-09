@@ -20,7 +20,6 @@ class Category
     protected $slug;
 
 
-
     /**
      * @param int $id
      */

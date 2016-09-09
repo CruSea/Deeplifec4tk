@@ -96,7 +96,9 @@ class Answers
     {
         $this->created = $created;
     }
-    public function getArray(){
+
+    public function getArray()
+    {
         return array(
             'id' => $this->getId(),
             'user_id' => $this->getUserId(),

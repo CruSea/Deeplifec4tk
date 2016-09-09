@@ -1,8 +1,10 @@
 <?php
 
 namespace Share\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 use Zend\Stdlib\DateTime;
+
 /**
  * reports.
  *
@@ -15,8 +17,8 @@ use Zend\Stdlib\DateTime;
  * @property int $user_id
  * @property int $report_form_id
  * @property int $country
-*  */
-class Answers 
+ *  */
+class Answers
 {
     protected $inputFilter;
 
@@ -37,34 +39,35 @@ class Answers
      */
     protected $report_form_id;
 
-  
-   /**
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
-  /**
+    /**
      * @ORM\Column(type="string")
      */
     protected $value;
 
-  /**
+    /**
      * @ORM\Column(type="integer")
      */
     protected $country;
-  
-  
-   /**
+
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $stage;
+
     /**
      * Magic getter to expose protected properties.
      *
      * @param string $property
      * @return mixed
      */
-    public function __get($property) 
+    public function __get($property)
     {
         return $this->$property;
     }
@@ -75,7 +78,7 @@ class Answers
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value) 
+    public function __set($property, $value)
     {
         $this->$property = $value;
     }
@@ -85,7 +88,7 @@ class Answers
      *
      * @return array
      */
-    public function getArrayCopy() 
+    public function getArrayCopy()
     {
         return get_object_vars($this);
     }
@@ -95,7 +98,7 @@ class Answers
      *
      * @param array $data
      */
-    public function populate($data = array()) 
+    public function populate($data = array())
     {
         $this->id = $data['id'];
         $this->category = $data['user_id'];
@@ -103,10 +106,9 @@ class Answers
         $this->country = $data['country'];
         $this->value = $data['value'];
         $this->stage = $data['stage'];
-        $this->created = new DateTime(); 
-    
+        $this->created = new DateTime();
+
     }
 
-   
-   
+
 }

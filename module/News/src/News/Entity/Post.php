@@ -35,7 +35,6 @@ class Post
     protected $category;
 
 
-
     /**
      * @param string $content
      */

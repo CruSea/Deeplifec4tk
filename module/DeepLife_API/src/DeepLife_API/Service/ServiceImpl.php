@@ -23,7 +23,7 @@ use Zend\Authentication\AuthenticationService;
 class ServiceImpl implements Service
 {
     /**
-     * @var \DeePLife_API\Repository\RepositoryInterface  $apiRepository
+     * @var \DeePLife_API\Repository\RepositoryInterface $apiRepository
      */
     protected $apiRepository;
 
@@ -42,7 +42,9 @@ class ServiceImpl implements Service
     {
         $this->apiRepository = $apiRepository;
     }
-    public function LogError($error){
+
+    public function LogError($error)
+    {
         $file = fopen("Error Logs.txt", 'a');
         fwrite($file, $error);
         fclose($file);
@@ -50,9 +52,9 @@ class ServiceImpl implements Service
 
     public function isValidUser(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->isValidUser($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -60,9 +62,9 @@ class ServiceImpl implements Service
 
     public function isThere_User(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->isThere_User($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return true;
         }
@@ -71,16 +73,18 @@ class ServiceImpl implements Service
     public function getAuthenticationService()
     {
         $AuthAdapter = $this->apiRepository->getAuthenticationAdapter();
-        return new AuthenticationService(null,$AuthAdapter);
+        return new AuthenticationService(null, $AuthAdapter);
     }
+
     public function getAuthenticationService2()
     {
         $AuthAdapter = $this->apiRepository->getAuthenticationAdapter2();
-        return new AuthenticationService(null,$AuthAdapter);
+        return new AuthenticationService(null, $AuthAdapter);
     }
+
     public function authenticate($userName, $userPass)
     {
-        try{
+        try {
             $AuthService = $this->getAuthenticationService();
             $AuthService2 = $this->getAuthenticationService2();
             /**
@@ -90,19 +94,19 @@ class ServiceImpl implements Service
             $AuthAdapter->setIdentity($userName);
             $AuthAdapter->setCredential($userPass);
             $Result = $AuthAdapter->authenticate();
-            if($Result->isValid()){
+            if ($Result->isValid()) {
                 return true;
-            }else{
+            } else {
                 $AuthAdapter = $AuthService2->getAdapter();
                 $AuthAdapter->setIdentity($userName);
                 $AuthAdapter->setCredential($userPass);
                 $Result = $AuthAdapter->authenticate();
-                if($Result->isValid()){
+                if ($Result->isValid()) {
                     return true;
                 }
             }
             return false;
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return false;
         }
@@ -110,9 +114,9 @@ class ServiceImpl implements Service
 
     public function AddNew_User(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_User($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -120,9 +124,9 @@ class ServiceImpl implements Service
 
     public function Add_User_Role($user_id, $role_id)
     {
-        try{
-            return $this->apiRepository->Add_User_Role($user_id,$role_id);
-        }catch(\Exception $e){
+        try {
+            return $this->apiRepository->Add_User_Role($user_id, $role_id);
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -130,9 +134,9 @@ class ServiceImpl implements Service
 
     public function Delete_User(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Delete_User($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -140,9 +144,9 @@ class ServiceImpl implements Service
 
     public function Update_User(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Update_User($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -150,18 +154,19 @@ class ServiceImpl implements Service
 
     public function Update_User_Pic(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Update_User_Pic($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
     }
+
     public function Update_User1(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Update_User1($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -173,9 +178,9 @@ class ServiceImpl implements Service
      */
     public function Get_User(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Get_User($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -183,9 +188,9 @@ class ServiceImpl implements Service
 
     public function GetAll_Disciples(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_Disciples($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -193,9 +198,9 @@ class ServiceImpl implements Service
 
     public function GetNew_Disciples(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->GetNew_Disciples($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -203,9 +208,9 @@ class ServiceImpl implements Service
 
     public function AddNew_Schedule(Schedule $schedule)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_Schedule($schedule);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -213,9 +218,9 @@ class ServiceImpl implements Service
 
     public function AddNew_Schedule_log(Schedule $schedule)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_Schedule_log($schedule);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -223,9 +228,9 @@ class ServiceImpl implements Service
 
     public function Delete_Schedule(Schedule $schedule)
     {
-        try{
+        try {
             return $this->apiRepository->Delete_Schedule($schedule);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -233,9 +238,9 @@ class ServiceImpl implements Service
 
     public function Update_Schedule(Schedule $schedule)
     {
-        try{
+        try {
             return $this->apiRepository->Update_Schedule($schedule);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -243,9 +248,9 @@ class ServiceImpl implements Service
 
     public function GetAll_Schedule(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_Schedule($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -253,9 +258,9 @@ class ServiceImpl implements Service
 
     public function GetNew_Schedule(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->GetNew_Schedule($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -263,9 +268,9 @@ class ServiceImpl implements Service
 
     public function Get_Schedule_By_AlarmTime(Schedule $schedule)
     {
-        try{
+        try {
             return $this->apiRepository->Get_Schedule_By_AlarmTime($schedule);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -273,9 +278,9 @@ class ServiceImpl implements Service
 
     public function Get_Schedule_By_AlarmName(Schedule $schedule)
     {
-        try{
+        try {
             return $this->apiRepository->Get_Schedule_By_AlarmName($schedule);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -283,9 +288,9 @@ class ServiceImpl implements Service
 
     public function Delete_Schedule_Log(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Delete_Schedule_Log($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -293,19 +298,19 @@ class ServiceImpl implements Service
 
     public function AddNew_Disciples(User $user, array $users)
     {
-        try{
-            if(is_array($users)){
+        try {
+            if (is_array($users)) {
                 /**
                  * @var \DeepLife_API\Model\User $newUser
                  */
                 $state = null;
-                foreach($users as $newUser){
+                foreach ($users as $newUser) {
                     $newUser->setMentorId($user->getId());
                     $state[] = $this->apiRepository->AddNew_User($newUser);
                 }
                 return $state;
             }
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -314,9 +319,9 @@ class ServiceImpl implements Service
 
     public function AddNewDisciples(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_User($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -324,10 +329,10 @@ class ServiceImpl implements Service
 
     public function AddNew_Disciple(User $user, User $disciple)
     {
-        try{
+        try {
             $disciple->setMentorId($user->getId());
             return $this->apiRepository->AddNew_User($disciple);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -335,9 +340,9 @@ class ServiceImpl implements Service
 
     public function AddNew_Disciple_log(Disciple $disciple)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_Disciple_log($disciple);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -345,9 +350,9 @@ class ServiceImpl implements Service
 
     public function Delete_Disciple_Log(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Delete_Disciple_Log($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -355,9 +360,9 @@ class ServiceImpl implements Service
 
     public function AddNew_Question(Questions $questions)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_Question($questions);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -365,9 +370,9 @@ class ServiceImpl implements Service
 
     public function GetAll_Question()
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_Question();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -375,9 +380,9 @@ class ServiceImpl implements Service
 
     public function Get_Question(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Get_Question($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -385,9 +390,9 @@ class ServiceImpl implements Service
 
     public function AddNew_Answer(Answers $answers)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_Answer($answers);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -395,9 +400,9 @@ class ServiceImpl implements Service
 
     public function GetAll_Answers(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_Answers($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return null;
         }
@@ -410,9 +415,9 @@ class ServiceImpl implements Service
 
     public function GetAll_Report()
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_Report();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -420,9 +425,9 @@ class ServiceImpl implements Service
 
     public function Get_Report(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Get_Report($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -430,9 +435,9 @@ class ServiceImpl implements Service
 
     public function GetAll_Country()
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_Country();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -440,9 +445,9 @@ class ServiceImpl implements Service
 
     public function AddNew_UserReport(UserReport $userReport)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_UserReport($userReport);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -450,9 +455,9 @@ class ServiceImpl implements Service
 
     public function GetAll_NewsFeeds()
     {
-        try{
+        try {
             return $this->apiRepository->GetAll_NewsFeeds();
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -460,9 +465,9 @@ class ServiceImpl implements Service
 
     public function GetNew_NewsFeeds(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->GetNew_NewsFeeds($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -470,9 +475,9 @@ class ServiceImpl implements Service
 
     public function AddNew_NewsFeed_log(NewsFeed $news)
     {
-        try{
+        try {
             return $this->apiRepository->AddNew_NewsFeed_log($news);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -480,9 +485,9 @@ class ServiceImpl implements Service
 
     public function Delete_All_NewsFeed_Log(User $user)
     {
-        try{
+        try {
             return $this->apiRepository->Delete_All_NewsFeed_Log($user);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }
@@ -490,9 +495,9 @@ class ServiceImpl implements Service
 
     public function AddTestimony(Testimony $testimony)
     {
-        try{
+        try {
             return $this->apiRepository->AddTestimony($testimony);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->LogError($e);
             return array();
         }

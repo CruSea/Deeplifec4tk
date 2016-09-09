@@ -1,11 +1,12 @@
 <?php
 namespace ZfcUser\Form;
+
 use Zend\Form\Element\Captcha as Captcha;
 use ZfcUser\Options\RegistrationOptionsInterface;
 
 class Register extends Base
 {
-    protected $captchaElement= null;
+    protected $captchaElement = null;
 
     /**
      * @var RegistrationOptionsInterface
@@ -29,7 +30,7 @@ class Register extends Base
             $this->remove('display_name');
         }
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
-            $this->add($this->captchaElement, array('name'=>'captcha'));
+            $this->add($this->captchaElement, array('name' => 'captcha'));
         }
         $this->get('submit')->setLabel('Register');
         $this->getEventManager()->trigger('init', $this);
@@ -37,7 +38,7 @@ class Register extends Base
 
     public function setCaptchaElement(Captcha $captchaElement)
     {
-        $this->captchaElement= $captchaElement;
+        $this->captchaElement = $captchaElement;
     }
 
     /**

@@ -7,19 +7,19 @@
  */
 namespace DeepLife_API;
 return array(
-    'invokables'=> array(
+    'invokables' => array(
         'DeepLife_API\Repository\RepositoryInterface' => 'DeepLife_API\Repository\RepositoryImpl',
     ),
-    'factories'=>array(
-        'DeepLife_API\Service\Service' => function(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator){
+    'factories' => array(
+        'DeepLife_API\Service\Service' => function (\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
             $apiService = new \DeepLife_API\Service\ServiceImpl();
             $apiService->setApiRepository($serviceLocator->get('DeepLife_API\Repository\RepositoryInterface'));
             return $apiService;
         },
     ),
-    'initializers'=>array(
-        function($instance,\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator){
-            if($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface){
+    'initializers' => array(
+        function ($instance, \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator) {
+            if ($instance instanceof \Zend\Db\Adapter\AdapterAwareInterface) {
                 $instance->setDbAdapter($serviceLocator->get('Zend\Db\Adapter\Adapter'));
             }
         }

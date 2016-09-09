@@ -6,12 +6,15 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
-class Module implements ConfigProviderInterface, AutoloaderProviderInterface, ViewHelperProviderInterface {
-    public function getConfig() {
+class Module implements ConfigProviderInterface, AutoloaderProviderInterface, ViewHelperProviderInterface
+{
+    public function getConfig()
+    {
         return include(__DIR__ . '/config/module.config.php');
     }
 
-    public function getAutoloaderConfig() {
+    public function getAutoloaderConfig()
+    {
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
@@ -21,7 +24,8 @@ class Module implements ConfigProviderInterface, AutoloaderProviderInterface, Vi
         );
     }
 
-    public function getViewHelperConfig() {
+    public function getViewHelperConfig()
+    {
         return include(__DIR__ . '/config/view.helper.config.php');
     }
 }
