@@ -24,4 +24,18 @@ class IndexController extends AbstractActionController
         return new ViewModel();
     }
 
+    public function pactAction() {
+        $this->layout("layout/pact");
+        return new ViewModel();
+    }
+
+    public function eeAction() {
+        $this->layout("layout/ee");
+        return new ViewModel();
+    }
+
+    public function otherAction() {
+        $this->layout("layout/other");
+        return new ViewModel();
+    }
 }
