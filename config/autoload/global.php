@@ -14,7 +14,7 @@
 return array(
     'db' => array(
         'driver' => 'Pdo',
-        'dsn' => 'mysql:dbname=stagingdeeplife;
+        'dsn' => 'mysql:dbname=deeplife;
         host=localhost',
         'username' => 'root',
         'password' => '',
@@ -46,7 +46,7 @@ return array(
             'orm_default' => array(
                 'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => array(
-                    'host' => '127.0.0.1',
+                    'host' => 'localhost',
                     'port' => '3306',
                     'user' => 'root',
                     'password' => '',
