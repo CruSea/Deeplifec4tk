@@ -14,7 +14,10 @@ class Answers
     protected $id;
     protected $user_id;
     protected $question_id;
+    protected $country;
     protected $answer;
+    protected $stage;
+    protected $notes;
     protected $created;
 
     /**
@@ -84,6 +87,54 @@ class Answers
     /**
      * @return mixed
      */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param mixed $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStage()
+    {
+        return $this->stage;
+    }
+
+    /**
+     * @param mixed $stage
+     */
+    public function setStage($stage)
+    {
+        $this->stage = $stage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param mixed $notes
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCreated()
     {
         return $this->created;
@@ -103,7 +154,10 @@ class Answers
             'id' => $this->getId(),
             'user_id' => $this->getUserId(),
             'question_id' => $this->getQuestionId(),
+            'country' => $this->getQuestionId(),
             'answer' => $this->getAnswer(),
+            'stage' => $this->getStage(),
+            'notes' => $this->getNotes(),
             'created' => $this->getCreated(),
         );
     }

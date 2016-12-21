@@ -65,6 +65,10 @@ class Hydrator
                     $New_Data = new Answers();
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
                     $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setAnswer(isset($data['answer']) ? ($data['answer']) : null);
+                    $New_Data->setStage(isset($data['stage']) ? ($data['stage']) : null);
+                    $New_Data->setNotes(isset($data['notes']) ? ($data['notes']) : null);
                     $New_Data->setQuestionId(isset($data['question_id']) ? $data['question_id'] : null);
                     $New_Data->setCreated(isset($data['answer']) ? $data['answer'] : null);
                     $Found[] = $New_Data;
@@ -103,6 +107,19 @@ class Hydrator
                     $New_Data->setImageUrl(isset($data['description']) ? $data['description'] : null);
                     $New_Data->setPublishDate(isset($data['created']) ? $data['created'] : null);
                     $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found[] = $New_Data;
+                }
+                return $Found;
+            } elseif ($DataType instanceof Testimony) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Testimony();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? ($data['description']) : null);
+                    $New_Data->setCountryId(isset($data['country']) ? $data['country'] : null);
+                    $New_Data->setStatus(isset($data['status']) ? $data['status'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+
                     $Found[] = $New_Data;
                 }
                 return $Found;
@@ -168,6 +185,10 @@ class Hydrator
                     $New_Data = new Answers();
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
                     $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setAnswer(isset($data['answer']) ? ($data['answer']) : null);
+                    $New_Data->setStage(isset($data['stage']) ? ($data['stage']) : null);
+                    $New_Data->setNotes(isset($data['notes']) ? ($data['notes']) : null);
                     $New_Data->setQuestionId(isset($data['question_id']) ? $data['question_id'] : null);
                     $New_Data->setCreated(isset($data['answer']) ? $data['answer'] : null);
                     $Found[] = $New_Data->getArray();
@@ -213,6 +234,32 @@ class Hydrator
                     $Found[] = $New_Data->getArray();
                 }
                 return $Found;
+            } elseif ($DataType instanceof Testimony) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Testimony();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? ($data['description']) : null);
+                    $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setCountryId(isset($data['country']) ? $data['country'] : null);
+                    $New_Data->setStatus(isset($data['status']) ? $data['status'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+
+                    $Found[] = $New_Data->getArray();
+                }
+                return $Found;
+            } elseif ($DataType instanceof Category) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Category();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setName(isset($data['name']) ? ($data['name']) : null);
+                    $New_Data->setStatus(isset($data['status']) ? ($data['status']) : null);
+                    $New_Data->setParent(isset($data['parent']) ? $data['parent'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found[] = $New_Data->getArray();
+                }
+                return $Found;
             }
         }
         return null;
@@ -254,6 +301,19 @@ class Hydrator
                     $Found = $New_Data;
                 }
                 return $Found;
+            } elseif ($DataType instanceof Testimony) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Testimony();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setUserId(isset($data['user_id']) ? intval($data['user_id']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? ($data['description']) : null);
+                    $New_Data->setCountryId(isset($data['country']) ? $data['country'] : null);
+                    $New_Data->setStatus(isset($data['status']) ? $data['status'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found = $New_Data;
+                }
+                return $Found;
             }
         }
         return null;
@@ -264,11 +324,11 @@ class Hydrator
         $New_Data = new User();
         $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
         $New_Data->setEmail(isset($data['Email']) ? ($data['Email']) : null);
-        $New_Data->setDisplayName(isset($data['Full_Name']) ? $data['Full_Name'] : null);
-        $New_Data->setFirstName(isset($data['Full_Name']) ? $data['Full_Name'] : null);
+        $New_Data->setDisplayName(isset($data['FullName']) ? $data['FullName'] : null);
+        $New_Data->setFirstName(isset($data['FullName']) ? $data['FullName'] : null);
         $New_Data->setCountry(isset($data['Country']) ? $data['Country'] : null);
         $New_Data->setGender(isset($data['Gender']) ? $data['Gender'] : null);
-        $New_Data->setStage(isset($data['Build_Phase']) ? $data['Build_Phase'] : null);
+        $New_Data->setStage(isset($data['Stage']) ? $data['Stage'] : null);
         $New_Data->setPhoneNo(isset($data['Phone']) ? $data['Phone'] : null);
         return $New_Data;
     }
