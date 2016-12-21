@@ -31,6 +31,7 @@ interface Service
     public function isThere_User(User $user);
 
     public function Get_User(User $user);
+    public function Get_Users(User $user);
     public function GetAll_Disciples(User $user);
     public function GetNew_Disciples(User $user);
     public function AddNew_Disciple_log(Disciple $disciple);
@@ -79,4 +80,14 @@ interface Service
     public function Delete_All_NewsFeed_Log(User $user);
 
     public function AddTestimony(Testimony $testimony);
+    public function GetAll_Testimonies();
+    public function Get_Testimony(Testimony $testimony);
+    public function Get_Testimonies(User $user);
+    public function GetNew_Testimonies(User $user);
+    public function AddNew_Testimony(Testimony $testimony);
+    public function AddNew_TestimonyLog(Testimony $testimony);
+    public function Delete_Testimony(Testimony $testimony);
+    public function Delete_All_TestimonyLog(User $user);
+
+    public function GetAll_Categories();
 }
