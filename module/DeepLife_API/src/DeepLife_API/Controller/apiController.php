@@ -28,7 +28,8 @@ class apiController extends AbstractRestfulController
         'GetAll_Schedules', 'GetNew_Schedules', 'AddNew_Schedules', 'AddNew_Schedule_Log', 'Delete_All_Schedule_Log',
         'IsValid_User', 'CreateUser', 'GetAll_Questions', 'GetAll_Answers', 'AddNew_Answers', 'Send_Log', 'Log_In', 'Sign_Up',
         'Update_Disciples', 'Update', 'Meta_Data', 'Send_Report', 'GetNew_NewsFeed', "Send_Testimony", "Upload_User_Pic", "Upload_Disciple_pic",
-        'Update_Schedules'
+        'Update_Schedules','GetAll_Testimonies','GetNew_Testimonies','AddNew_Testimony','Delete_Testimony','AddNew_Testimony_Log','Delete_All_TestimonyLogs',
+        'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category',''
     );
     protected $api_Param;
     protected $api_Service;
@@ -163,7 +164,7 @@ class apiController extends AbstractRestfulController
                 if (!$smsService->isThere_User($new_user)) {
                     $state = $smsService->AddNew_User($new_user);
                     if ($state) {
-                        $this->api_user = $new_user;
+                        $this->api_user = $smsService->Get_User($new_user);
                         $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
                         $found['Schedules'] = $smsService->GetAll_Schedule($this->api_user);
                         $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
@@ -211,7 +212,7 @@ class apiController extends AbstractRestfulController
                             $this->api_Response['Request_Error'] = $error;
                         }
                     } else {
-                        $error['Parameter Error'] = 'Your are Already Registered. Please Log in';
+                        $error['Parameter Error'] = 'The Phone Number is Already taken';
                         $this->api_Response['Request_Error'] = $error;
                     }
                 }
@@ -362,13 +363,15 @@ class apiController extends AbstractRestfulController
                     /**
                      * @var \DeepLife_API\Model\User $_new_user
                      */
-                    $_new_user = $smsService->Get_User($user1);
-                    if ($_new_user != null) {
-                        $_new_user->setMentorId("NULL");
-                        $state = $smsService->Update_User($_new_user);
-                        $disciple_res['Log_ID'] = $data['id'];
-                        $res['Log_Response'][] = $disciple_res;
-                    }
+                    $_new_user = $smsService->Get_Users($user1);
+                    print_r($_new_user);
+//                    print_r($smsService->Get_Users($user1));
+//                    if ($_new_user != null) {
+//                        $_new_user->setMentorId("NULL");
+//                        $state = $smsService->Update_User($_new_user);
+//                        $disciple_res['Log_ID'] = $data['id'];
+//                        $res['Log_Response'][] = $disciple_res;
+//                    }
                 } else if ($data['Type'] == "Remove_Schedule") {
                     $schedule = new Schedule();
                     $schedule->setTime($data['Value']);
@@ -435,7 +438,10 @@ class apiController extends AbstractRestfulController
             $found['Disciples'] = $smsService->GetNew_Disciples($this->api_user);
             $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
             $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
-            //$found['Questions'] = $smsService->Get_Question($this->api_user);
+            $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
+            $found['Categories'] = $smsService->GetAll_Categories();
+            $found['Questions'] = $smsService->Get_Question($this->api_user);
+            $found['Answers'] = $smsService->GetAll_Answers($this->api_user);
             //$found['Reports'] = $smsService->Get_Report($this->api_user);
 
             $this->api_Response['Response'] = $found;
@@ -514,6 +520,116 @@ class apiController extends AbstractRestfulController
                 }
             }
             $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[27]) {
+            /// GetAll_Testimonies
+            $this->api_Response['Response'] = array('Testimonies', $smsService->GetAll_Testimonies());
+        } elseif ($service == $this->api_Services[28]) {
+            /// GetNew_Testimonies
+            $this->api_Response['Response'] = array('Testimonies', $smsService->GetNew_Testimonies($this->api_user));
+        } elseif ($service == $this->api_Services[29]) {
+            /// AddNew_Testimony
+            $res['Log_Response'] = array();
+            $state = null;
+            foreach ($this->api_Param as $data) {
+                $sch = new Testimony();
+                $sch->setDescription($data['Description']);
+                $sch->setCountryId($this->api_user->getCountry());
+                $sch->setUserId($this->api_user->getId());
+                $sch->setStatus(0);
+                $state = $smsService->AddNew_Testimony($sch);
+                if ($state) {
+                    /**
+                     * @var \DeepLife_API\Model\Testimony $_new_testimony
+                     */
+                    $_new_testimony = $smsService->Get_Testimony($sch);
+                    $_new_testimony->setUserId($this->api_user->getId());
+                    $smsService->AddNew_Testimony($_new_testimony);
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
+
+            }
+            $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[30]) {
+            /// Delete_Testimony
+            $res['Log_Response'] = array();
+            $state = null;
+
+            foreach ($this->api_Param as $data) {
+                $sch = new Testimony();
+                $sch->setDescription($data['Description']);
+                $sch->setCountryId($this->api_user->getCountry());
+                $sch->setUserId($this->api_user->getId());
+                $state = $smsService->Delete_Testimony($sch);
+                if ($state) {
+                    print_r('Deleted:-> ',$sch);
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }else{
+                    print_r('Not Deleted:-> ',$sch);
+                }
+
+            }
+            $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[31]) {
+            // AddNew_Testimony_Log
+            $res['Log_Response'] = array();
+            foreach ($this->api_Param as $data) {
+                $sch = new Testimony();
+                $sch->setUserId($this->api_user->getId());
+                $sch->setId($data['Testimony_ID']);
+                $state = $smsService->AddNew_TestimonyLog($sch);
+                if ($state) {
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
+            }
+            $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[32]) {
+            // Delete_All_TestimonyLog
+            $res['Log_Response'] = array();
+            foreach ($this->api_Param as $data) {
+                $state = $smsService->Delete_All_TestimonyLog($this->api_user);
+                if ($state) {
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
+            }
+            $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[33]) {
+            // GetAll_NewsFeeds
+            $this->api_Response['Response'] = array('NewsFeeds', $smsService->GetAll_NewsFeeds());
+        } elseif ($service == $this->api_Services[34]) {
+            // GetAll_NewsFeeds
+            $this->api_Response['Response'] = array('NewsFeeds', $smsService->GetNew_NewsFeeds($this->api_user));
+        } elseif ($service == $this->api_Services[35]) {
+            // AddNew_NewsFeed_Log
+            $res['Log_Response'] = array();
+            foreach ($this->api_Param as $data) {
+                $sch = new NewsFeed();
+                $sch->setUserId($this->api_user->getId());
+                $sch->setId($data['NewsFeed_ID']);
+                $state = $smsService->AddNew_NewsFeed_log($sch);
+                if ($state) {
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
+            }
+            $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[36]) {
+            // Delete_All_NewsFeed_Logs
+            $res['Log_Response'] = array();
+            foreach ($this->api_Param as $data) {
+                $state = $smsService->Delete_All_NewsFeed_Log($this->api_user);
+                if ($state) {
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
+            }
+            $this->api_Response['Response'] = $res;
+        } elseif ($service == $this->api_Services[37]) {
+            // GetAll_Category
+            $this->api_Response['Response'] = array('Categories', $smsService->GetAll_Categories());
         }
     }
 
