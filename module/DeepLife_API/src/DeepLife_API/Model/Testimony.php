@@ -14,8 +14,9 @@ class Testimony
     protected $id;
     protected $user_id;
     protected $country_id;
-    protected $title;
-    protected $detail;
+    protected $description;
+    protected $status;
+    protected $created;
 
     /**
      * @return mixed
@@ -68,34 +69,51 @@ class Testimony
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getDescription()
     {
-        return $this->title;
+        return $this->description;
     }
 
     /**
-     * @param mixed $title
+     * @param mixed $description
      */
-    public function setTitle($title)
+    public function setDescription($description)
     {
-        $this->title = $title;
+        $this->description = $description;
     }
 
     /**
      * @return mixed
      */
-    public function getDetail()
+    public function getStatus()
     {
-        return $this->detail;
+        return $this->status;
     }
 
     /**
-     * @param mixed $detail
+     * @param mixed $status
      */
-    public function setDetail($detail)
+    public function setStatus($status)
     {
-        $this->detail = $detail;
+        $this->status = $status;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @param mixed $created
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    }
+    
 
     public function getArray()
     {
@@ -103,8 +121,9 @@ class Testimony
             'id' => $this->getId(),
             'user_id' => $this->getUserId(),
             'country' => $this->getCountryId(),
-            'title' => $this->getTitle(),
-            'detail' => $this->getDetail(),
+            'description' => $this->getDescription(),
+            'status' => $this->getStatus(),
+            'created' => $this->getCreated(),
         );
     }
 

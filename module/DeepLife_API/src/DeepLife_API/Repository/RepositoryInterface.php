@@ -73,6 +73,15 @@ interface RepositoryInterface extends Repository
     public function GetNew_NewsFeeds(User $user);
     public function AddNew_NewsFeed_log(NewsFeed $news);
     public function Delete_All_NewsFeed_Log(User $user);
+    
+    public function GetAll_Testimonies();
+    public function Get_Testimonies(User $user);
+    public function Get_Testimony(Testimony $testimony);
+    public function GetNew_Testimonies(User $user);
+    public function AddNew_Testimony(Testimony $testimony);
+    public function AddNew_TestimonyLog(Testimony $testimony);
+    public function Delete_Testimony(Testimony $testimony);
+    public function Delete_All_TestimonyLog(User $user);
 
-    public function AddTestimony(Testimony $testimony);
+    public function GetAll_Categories();
 }

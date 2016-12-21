@@ -10,6 +10,7 @@ namespace DeepLife_API\Repository;
 
 
 use DeepLife_API\Model\Answers;
+use DeepLife_API\Model\Category;
 use DeepLife_API\Model\Country;
 use DeepLife_API\Model\Disciple;
 use DeepLife_API\Model\Hydrator;
@@ -167,7 +168,8 @@ class RepositoryImpl implements RepositoryInterface
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Get_Data($posts, new User());
+        $found = $hydrator->Get_Data($posts, new User());
+        return $found;
     }
 
     public function Add_User_Role($user_id, $role_id)
@@ -432,8 +434,10 @@ class RepositoryImpl implements RepositoryInterface
             ->values(array(
                 'category' => $questions->getCategory(),
                 'question' => $questions->getQuestion(),
+                'description' => $questions->getDescription(),
+                'country' => $questions->getCountryId(),
             ))
-            ->into('schedule');
+            ->into('questions');
         $statement = $sql->prepareStatementForSqlObject($insert);
         $result = $statement->execute();
         return $result->valid();
@@ -484,6 +488,7 @@ class RepositoryImpl implements RepositoryInterface
                 'user_id' => $answers->getUserId(),
                 'question_id' => $answers->getQuestionId(),
                 'answer' => $answers->getAnswer(),
+                'stage' => $answers->getStage(),
             ))
             ->into('answers');
         $statement = $sql->prepareStatementForSqlObject($insert);
@@ -504,7 +509,7 @@ class RepositoryImpl implements RepositoryInterface
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Hydrate($posts, new Answers());
+        return $hydrator->Extract($posts, new Answers());
     }
 
     public function AddNew_Report(User $user)
@@ -654,4 +659,128 @@ class RepositoryImpl implements RepositoryInterface
         return $result->valid();
     }
 
+    public function GetAll_Testimonies()
+    {
+        $row_sql = 'SELECT * FROM testimonial';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new Testimony());
+    }
+
+    public function Get_Testimonies(User $user)
+    {
+        // TODO: Implement Get_Testimonies() method.
+    }
+
+    public function GetNew_Testimonies(User $user)
+    {
+        $row_sql = 'SELECT * FROM testimonial WHERE testimonial.country = ' . $user->getCountry() . ' AND testimonial.id NOT IN( SELECT testimonial_logs.testimonial_id FROM testimonial_logs WHERE testimonial_logs.user_Id = ' . $user->getId() . ')';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new Testimony());
+
+        // TODO: Implement GetNew_Testimonies() method.
+    }
+
+    public function AddNew_Testimony(Testimony $testimony)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->insert()
+            ->values(array(
+                'user_id' => $testimony->getUserId(),
+                'country' => $testimony->getCountryId(),
+                'description' => $testimony->getDescription(),
+                'status' => $testimony->getStatus(),
+            ))
+            ->into('testimonial');
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $result = $statement->execute();
+        return $result->valid();
+    }
+
+    public function Delete_Testimony(Testimony $testimony)
+    {
+        $row_sql = 'DELETE FROM testimonial WHERE testimonial.user_id = ' . $testimony->getUserId().' AND testimonial.description = '.$testimony->getDescription();
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function Delete_All_TestimonyLog(User $user)
+    {
+        $row_sql = 'DELETE FROM testimonial_logs WHERE testimonial_logs.user_id = ' . $user->getId();
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public function AddNew_TestimonyLog(Testimony $testimony)
+    {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        $insert = $sql->insert()
+            ->values(array(
+                'user_id' => $testimony->getUserId(),
+                'testimonial_id' => $testimony->getId(),
+            ))
+            ->into('testimonial_logs');
+        $statement = $sql->prepareStatementForSqlObject($insert);
+        $result = $statement->execute();
+        return $result->valid();
+    }
+
+    public function Get_Testimony(Testimony $testimony)
+    {
+        $row_sql = 'SELECT * FROM testimonial WHERE testimonial.description = '.$testimony->getDescription().' AND testimonial.user_id = '.$testimony->getUserId();
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Get_Data($posts, new Testimony());
+    }
+
+    public function GetAll_Categories()
+    {
+        $row_sql = 'SELECT * FROM categories';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new Category());
+    }
 }

@@ -17,6 +17,8 @@ class Questions
     protected $question;
     protected $description;
     protected $mandatory;
+    protected $type;
+    protected $default_question;
     protected $created;
 
     /**
@@ -118,6 +120,38 @@ class Questions
     /**
      * @return mixed
      */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultQuestion()
+    {
+        return $this->default_question;
+    }
+
+    /**
+     * @param mixed $default_question
+     */
+    public function setDefaultQuestion($default_question)
+    {
+        $this->default_question = $default_question;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCreated()
     {
         return $this->created;
@@ -140,6 +174,8 @@ class Questions
             'question' => $this->getQuestion(),
             'description' => $this->getDescription(),
             'mandatory' => $this->getMandatory(),
+            'type' => $this->getType(),
+            'default_question' => $this->getDefaultQuestion(),
             'created' => $this->getCreated(),
         );
     }

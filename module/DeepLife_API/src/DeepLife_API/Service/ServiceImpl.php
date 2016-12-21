@@ -179,7 +179,18 @@ class ServiceImpl implements Service
     public function Get_User(User $user)
     {
         try {
-            return $this->apiRepository->Get_User($user);
+            $data = $this->apiRepository->Get_User($user);
+            return $data;
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+    public function Get_Users(User $user)
+    {
+        try {
+            $data = $this->apiRepository->Get_User($user);
+            return $user;
         } catch (\Exception $e) {
             $this->LogError($e);
             return null;
@@ -504,4 +515,93 @@ class ServiceImpl implements Service
     }
 
 
+    public function GetAll_Testimonies()
+    {
+        try {
+            return $this->apiRepository->GetAll_Testimonies();
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function Get_Testimonies(User $user)
+    {
+        try {
+            return $this->apiRepository->Get_Testimonies($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function GetNew_Testimonies(User $user)
+    {
+        try {
+            return $this->apiRepository->GetNew_Testimonies($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function AddNew_Testimony(Testimony $testimony)
+    {
+        try {
+            return $this->apiRepository->AddNew_Testimony($testimony);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function AddNew_TestimonyLog(Testimony $testimony)
+    {
+        try {
+            return $this->apiRepository->AddNew_TestimonyLog($testimony);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function Delete_Testimony(Testimony $testimony)
+    {
+        try {
+            return $this->apiRepository->Delete_Testimony($testimony);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function Delete_All_TestimonyLog(User $user)
+    {
+        try {
+            return $this->apiRepository->Delete_All_TestimonyLog($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function Get_Testimony(Testimony $testimony)
+    {
+        try {
+            return $this->apiRepository->Get_Testimony($testimony);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function GetAll_Categories()
+    {
+        try {
+            return $this->apiRepository->GetAll_Categories();
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
 }
