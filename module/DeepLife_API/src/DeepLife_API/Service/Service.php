@@ -58,6 +58,7 @@ interface Service
 
     public function isValidUser(User $user);
     public function authenticate($userName, $userPass);
+    public function authenticate2($userName, $userPass);
 
     public function AddNew_Question(Questions $questions);
     public function GetAll_Question();
