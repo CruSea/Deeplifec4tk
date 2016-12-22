@@ -117,7 +117,7 @@ class IndexController extends AbstractActionController
     public function signupAction()
     {
 
-
+        $this->layout("layout/layout1");
         if ($this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }

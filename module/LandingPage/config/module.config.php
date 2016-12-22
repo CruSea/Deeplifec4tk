@@ -30,11 +30,11 @@ return array(
                 'options' => array(
                     'route'    => '/sea',
                     'defaults' => array(
-                        /*'__NAMESPACE__' => 'LandingPage\Controller',
+                        '__NAMESPACE__' => 'LandingPage\Controller',
                         'controller'    => 'Index',
-                        'action'        => 'sea',*/
-                        'controller' => 'zfcuser',
-                        'action' => 'login',
+                        'action'        => 'sea',
+//                        'controller' => 'zfcuser',
+//                        'action' => 'login',
                         //'action' => 'loginsimple',
                     ),
                 ),
