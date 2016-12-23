@@ -230,7 +230,6 @@ class IndexController extends AbstractActionController
                 $mailSend = 0;
             }
 
-
             $queryBuilder = $this->getEntityManager()->createQueryBuilder();
             $queryBuilder->select("u.id")
                 ->from('SamUser\Entity\Users', 'u')
@@ -245,7 +244,6 @@ class IndexController extends AbstractActionController
             if ($userid) {
                 $keycode = $this->randomKeycode();
                 $Users = $this->getEntityManager()->getRepository('SamUser\Entity\Users')->findOneBy(array('id' => $userid['id']));
-
                 if (isset($_SERVER['HTTPS'])) {
                     $protocol = ($_SERVER['HTTPS'] && $_SERVER['HTTPS'] != "off") ? "https" : "http";
                 } else {
@@ -262,25 +260,18 @@ class IndexController extends AbstractActionController
                     $resetPassword->exchangeArray($dataSave);
                     $this->getEntityManager()->persist($resetPassword);
                     $this->getEntityManager()->flush();
-
                 }
-
 
             } else {
 
                 $mailSend = 0;
             }
-
-
         }
-
         echo $mailSend;
         $viewModel = new ViewModel();
         $viewModel->setTerminal(true);
         return $viewModel;
     }
-
-
     public function resetpasswordAction()
     {
 

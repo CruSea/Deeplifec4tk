@@ -1,36 +1,4 @@
 
-<div class=" middle-box text-center white-bg loginscreen animated fadeInDown">
-
-    <div class="ibox-title white-bg">
-        <img class="middle-box col-md-12" src="<?php echo $this->basePath('img/Splashlogo_xhdpi.png')?>">
-        <h2 style="color: white ">Sign Up</h2>
-
-        <?php echo $this->form()->openTag($form) ?>
-        <div class="white-bg">
-            <?php foreach ($form as $element): ?>
-
-                <div class="text-align:center white-bg row form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
-                    <label style="text-align:right;color: white;" class="white-bg col-sm-6 control-label"><?php echo $element->getLabel() ?></label>
-                    <div class="col-sm-12" >
-                        <?php echo $this->formElement ( $element );
-                        if ($this->formElementErrors ( $element ))
-                        ?>
-                        <span class="help-inline white-bg "><?php echo $this->formElementErrors($element) ?></span>
-                    </div>
-                </div>
-            <?php endforeach ?>
-            <?php if ($this->redirect): ?>
-                <input type="hidden" name="redirect"  value="<?php echo $this->escapeHtml($this->redirect) ?>" />
-            <?php endif ?>
-            <?php echo $this->form()->closeTag() ?>
-            <h6 style="color: white">Already Have an account ? </h6>
-            <a style="color: #f9c123" href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Login</a>
-        </div>
-
-    </div>
-</div>
-</div>
-<!--</section>-->
 
 <!DOCTYPE html>
 <html>
@@ -52,15 +20,47 @@
     ?>
 
 </head>
-
 <body class="white-bg">
+<div class=" middle-box text-center loginscreen animated fadeInDown">
 
+    <div class="ibox-title">
+        <img class=" col-md-12" src="<?php echo $this->basePath('img/Splashlogo_xhdpi.png')?>" href="/" >
+        <h2 style="color: white" class="text-center" ">Sign Up</h2>
 
+        <?php echo $this->form()->openTag($form) ?>
+            <?php foreach ($form as $element): ?>
 
+                <div class="text-align:center  row form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+                    <label style="text-align:right;color: white;" class=" col-sm-6 control-label"><?php echo $element->getLabel() ?></label>
+                    <div class="col-sm-12" >
+                        <?php echo $this->formElement ( $element );
+                        if ($this->formElementErrors ( $element ))
+                        ?>
+                        <span class="help-inline "><?php echo $this->formElementErrors($element) ?></span>
+                    </div>
+                </div>
+            <?php endforeach ?>
+            <?php if ($this->redirect): ?>
+                <input type="hidden" name="redirect"  value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+            <?php endif ?>
+            <?php echo $this->form()->closeTag() ?>
+            <h6 style="color: white">Already Have an account ? </h6>
+            <a style="color: #f9c123" href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Login</a>
+        </div>
 
+    </div>
 </body>
-
 </html>
+
+
+<div class="footer" >
+    <div class="pull-right">
+        <strong><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
+    </div>
+    <div>
+        <strong><?php echo $this->translate('Copyright'); ?></strong> <?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?>
+    </div>
+</div>
 <?php echo $this->inlineScript()
 //    ->prependFile($this->basePath('js/pace.min.js'))
     ->prependFile($this->basePath('js/bootstrap.min.js'))

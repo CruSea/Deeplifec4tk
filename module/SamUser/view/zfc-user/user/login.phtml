@@ -1,9 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Deeplife| Register</title>
+
+    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        ->prependStylesheet($this->basePath('css/style.css'))
+        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('css/animate.min.css'))
+        ->prependStylesheet($this->basePath('css/style.min.css'))
+        ->prependStylesheet($this->basePath('css/login_reg.css'))
+        ->prependStylesheet($this->basePath('font-awesome/css/font-awesome.min.css'))
+    ?>
+</head>
+
 <body class="white-bg">
 <div  class="-align-center middle-box animated fadeInDown ">
 
     <div class=" col-sm-12 " style="vertical-align: 500px;">
 
-        <div style="vertical-align: 50%" class="ibox-content  text-foo white-bg ">
+        <div style="vertical-align: 50%" class="ibox-content  text-foo  ">
       <img class="middle-box col-md-12" src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
             <h2 style="color: white">Sign In</h2>
             <h4 style="color: white">Log in with Email  or phone number </h4>
@@ -30,8 +50,6 @@
                            if ($this->formElementErrors ( $form->get('credential') ))
                            ?>
                             <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('credential')) ?></span>
-
-
                         </div>
                         <button type="submit" class="btn btn-primary block btn btn-info  full-width m-b">Login</button>
 
@@ -39,44 +57,256 @@
                     <a style="color: #f9c123" data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a><h6 style="color: white">Not registered ? </h6>
                     <a style="color: #f9c123" href="<?php echo $this->url('signup') ?>">Sign up!</a>
                 <?php endif; ?>
-
                 <?php echo $this->form()->closeTag() ?>
-
-
         </div>
     </div>
 </body>
+    <div class="footer" >
+        <div class="pull-right">
+            <strong><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
+        </div>
+        <div>
+            <strong><?php echo $this->translate('Copyright'); ?></strong> <?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?>
+        </div>
+    </div>
+<div class="modal fade" id="myajaxforgot" tabindex="-1" role="dialog"
+     aria-labelledby="myajaxforgotLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myajaxforgotLabel">
+                    Forgot password
+                </h4>
+                <p>Enter your email address and your password will be reset and emailed to you.
+                </p>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-success" style="display: none;" >
+                            <strong>Thank you!</strong> Your password has been successfully sent.
+                        </div>
+                        <div class="alert alert-danger" style="display: none;" >
+                            <strong>Oops!</strong> Something went wrong. Please try again later.
+                        </div>
+
+                        <div class="ibox float-e-margins">
+
+                            <div class="ibox-content">
+                                <form method="get" class="form-horizontal">
+                                    <div class="form-group pemail"><label class="col-sm-3 control-label"> Email(required)</label>
+
+                                        <div class="col-sm-8"><input class="form-control" type="email" name="txtname" id="txtpemail" ></div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group phone"><label class="col-sm-3 control-label">Phone(required)</label>
+                                        <div class="col-sm-8"><input class="form-control" name="phone" id="phone" type="text">
+                                        </div>
+                                    </div>
 
 
 
+                                    <div class="hr-line-dashed"></div>
+                                    <button type="button" class="btn btn-primary" id="sendnewpassword" >
+                                        SEND NEW PASSWORD
+                                    </button>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Deeplife| Register</title>
-
-    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-        ->prependStylesheet($this->basePath('css/style.css'))
-        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-        ->prependStylesheet($this->basePath('css/animate.min.css'))
-        ->prependStylesheet($this->basePath('css/style.min.css'))
-        ->prependStylesheet($this->basePath('css/login_reg.css'))
-        ->prependStylesheet($this->basePath('font-awesome/css/font-awesome.min.css'))
-    ?>
-
-</head>
-
-<body class="white-bg">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
+                <script>
+                    $( "#sendnewpassword" ).click(function() {
+                        $( "#sendnewpassword" ).html('SEND NEW PASSWORD <i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i>').attr('disabled','disabled');
+                        $('.form-group').removeClass('has-error');
+                        var flag=1;
+                        var phone =$.trim($('#phone').val());
+                        var email =$.trim($('#txtpemail').val());
+
+                        if(phone==''){
+
+                            flag=0;
+                            $('.phone').addClass('has-error');
+                        }
+                        if(email==''){
+                            flag=0;
+                            $('.pemail').addClass('has-error');
+                        }else {
+                            var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+                            if (!filter.test(email)) {
+                                flag=0;
+                                $('.pemail').addClass('has-error');
+                            }
+                        }
 
 
-</body>
+
+                        if(flag){
+
+                            $.ajax({
+                                url: "<?php echo $this->serverUrl('/ajaxforgot'); ?>",
+                                data: {phone: phone,email: email},
+                                type: 'post',
+                                success: function(output) {
+
+
+                                    if(output==1){
+                                        $('.alert-success').show();
+                                    }else{
+                                        $('.alert-danger').show();
+                                    }
+                                    $( "#sendnewpassword" ).html('SEND NEW PASSWORD').removeAttr('disabled');
+                                }
+                            });
+                        }else{
+                            $( "#sendnewpassword" ).html('SEND NEW PASSWORD').removeAttr('disabled');
+                        }
+
+                    });
+                </script>
+
+            </div>
+
+            <!-- Modal Footer -->
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Contact us
+                </h4>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert consuccess alert-success" style="display: none;" >
+                            <strong>Thank you!</strong> Your message has been successfully sent. We will contact you very soon!.
+                        </div>
+                        <div class="alert condanger alert-danger" style="display: none;" >
+                            <strong>Oops!</strong> Something went wrong. Please try again later.
+                        </div>
+
+                        <div class="ibox float-e-margins">
+
+                            <div class="ibox-content">
+                                <form method="get" class="form-horizontal">
+                                    <div class="form-group name"><label class="col-sm-2 control-label"> Your Name (required)</label>
+
+                                        <div class="col-sm-10"><input class="form-control" type="text" name="txtname" id="txtname" ></div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group email"><label class="col-sm-2 control-label">Your Email (required)</label>
+                                        <div class="col-sm-10"><input class="form-control" name="txtemail" id="txtemail" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    <div class="form-group message"><label class="col-sm-2 control-label">Your Message</label>
+                                        <div class="col-sm-10">
+                                            <textarea id="InputMessage" name="yourmessage" cols="40" rows="10" class="form-control" ></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="hr-line-dashed"></div>
+                                    <button type="button" class="btn btn-primary" id="send" >
+                                        SEND
+                                    </button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <script>
+                    $( "#send" ).click(function() {
+                        $( "#send" ).html('SEND <i class="fa fa-spinner fa-pulse fa-1x fa-fw margin-bottom"></i>').attr('disabled','disabled');
+                        $('.form-group').removeClass('has-error');
+                        var flag=1;
+                        var name =$.trim($('#txtname').val());
+                        var email =$.trim($('#txtemail').val());
+
+
+                        var message =$.trim($('#InputMessage').val());
+                        if(name==''){
+
+                            flag=0;
+                            $('.name').addClass('has-error');
+                        }
+                        if(email==''){
+                            flag=0;
+                            $('.email').addClass('has-error');
+                        }else {
+                            var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{2,4}$/;
+                            if (!filter.test(email)) {
+                                flag=0;
+                                $('.email').addClass('has-error');
+                            }
+                        }
+
+                        if(message==''){
+                            flag=0;
+                            $('.message').addClass('has-error');
+                        }
+
+                        if(flag){
+
+
+                            $.ajax({
+                                url: "<?php echo $this->serverUrl('/contactus'); ?>",
+                                data: {name: name,email: email,message: message},
+                                type: 'post',
+                                success: function(output) {
+
+                                    if(output){
+                                        $('.consuccess').show();
+                                    }else{
+                                        $('.condanger').show();
+                                    }
+                                    $( "#send" ).html('SEND').removeAttr('disabled');
+                                }
+                            });
+                        }else{
+                            $( "#send" ).html('SEND').removeAttr('disabled');
+                        }
+
+                    });
+                </script>
+
+            </div>
+
+            <!-- Modal Footer -->
+
+        </div>
+    </div>
+</div>
+
 
 </html>
 <?php echo $this->inlineScript()
