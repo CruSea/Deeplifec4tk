@@ -82,11 +82,10 @@ class ServiceImpl implements Service
         return new AuthenticationService(null, $AuthAdapter);
     }
 
-    public function authenticate($userName, $userPass)
+    public function authenticate2($userName, $userPass)
     {
         try {
-            $AuthService = $this->getAuthenticationService();
-            $AuthService2 = $this->getAuthenticationService2();
+            $AuthService = $this->getAuthenticationService2();
             /**
              * @var  \Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter $AuthAdapter
              */
@@ -94,18 +93,25 @@ class ServiceImpl implements Service
             $AuthAdapter->setIdentity($userName);
             $AuthAdapter->setCredential($userPass);
             $Result = $AuthAdapter->authenticate();
-            if ($Result->isValid()) {
-                return true;
-            } else {
-                $AuthAdapter = $AuthService2->getAdapter();
-                $AuthAdapter->setIdentity($userName);
-                $AuthAdapter->setCredential($userPass);
-                $Result = $AuthAdapter->authenticate();
-                if ($Result->isValid()) {
-                    return true;
-                }
-            }
+            return $Result->isValid();
+        } catch (\Exception $e) {
+            $this->LogError($e);
             return false;
+        }
+    }
+
+    public function authenticate($userName, $userPass)
+    {
+        try {
+            $AuthService = $this->getAuthenticationService();
+            /**
+             * @var  \Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter $AuthAdapter
+             */
+            $AuthAdapter = $AuthService->getAdapter();
+            $AuthAdapter->setIdentity($userName);
+            $AuthAdapter->setCredential($userPass);
+            $Result = $AuthAdapter->authenticate();
+            return $Result->isValid();
         } catch (\Exception $e) {
             $this->LogError($e);
             return false;

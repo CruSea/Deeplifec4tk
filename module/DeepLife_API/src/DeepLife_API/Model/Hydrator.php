@@ -173,6 +173,7 @@ class Hydrator
                     $New_Data->setCategory(isset($data['category']) ? ($data['category']) : null);
                     $New_Data->setCountryId(isset($data['country']) ? ($data['country']) : null);
                     $New_Data->setQuestion(isset($data['question']) ? $data['question'] : null);
+                    $New_Data->setType(isset($data['type']) ? $data['type'] : null);
                     $New_Data->setDescription(isset($data['description']) ? $data['description'] : null);
                     $New_Data->setMandatory(isset($data['mandatory']) ? $data['mandatory'] : null);
                     $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);

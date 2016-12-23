@@ -49,10 +49,20 @@ class apiController extends AbstractRestfulController
          * @var \DeepLife_API\Service\Service $smsService
          */
         $smsService = $this->getServiceLocator()->get('DeepLife_API\Service\Service');
-        if ($smsService->authenticate($data['User_Name'], $data['User_Pass'])) {
-            $_user = new User();
-            $_user->setPhoneNo($data['User_Name']);
-            $this->api_user = $smsService->Get_User($_user);
+        $userName = $data['User_Name'];
+        $userPass = $data['User_Pass'];
+
+        if ($smsService->authenticate($userName,$userPass)) {
+            $user = new User();
+            $user->setEmail($data['User_Name']);
+            $this->api_user = $smsService->Get_User($user);
+            if ($this->api_user->getCountry() == $data['Country']) {
+                return true;
+            }
+        }else if($smsService->authenticate2($userName,$userPass)){
+            $user = new User();
+            $user->setPhoneNo($data['User_Name']);
+            $this->api_user = $smsService->Get_User($user);
             if ($this->api_user->getCountry() == $data['Country']) {
                 return true;
             }
@@ -95,6 +105,7 @@ class apiController extends AbstractRestfulController
     public function create($data)
     {
         if (isset($data['Service']) && $data['Service'] == 'CreateUser' && (isset($data['UserEmail']) || $data['UserPhone']) && isset($data['UserPass'])) {
+            //Sign Up New User
             if ($this->CreateNewUser($data)) {
                 $this->api_Response['Response'] = 1;
             } else {
@@ -116,6 +127,10 @@ class apiController extends AbstractRestfulController
                          */
                         $smsService = $this->getServiceLocator()->get('DeepLife_API\Service\Service');
                         $found['Country'] = $smsService->GetAll_Country();
+                        $found['Categories'] = $smsService->GetAll_Categories();
+                        $newUser = new User();
+                        $newUser->setCountry($data['Country']);
+                        $found['Questions'] = $smsService->Get_Question($newUser);
                         $this->api_Response['Response'] = $found;
                     }
                 }
@@ -442,6 +457,8 @@ class apiController extends AbstractRestfulController
             $found['Categories'] = $smsService->GetAll_Categories();
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['Answers'] = $smsService->GetAll_Answers($this->api_user);
+            $found['User'] = $smsService->Get_User($this->api_user);
+            
             //$found['Reports'] = $smsService->Get_Report($this->api_user);
 
             $this->api_Response['Response'] = $found;
