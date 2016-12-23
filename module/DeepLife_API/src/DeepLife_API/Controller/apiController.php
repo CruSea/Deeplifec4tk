@@ -127,6 +127,10 @@ class apiController extends AbstractRestfulController
                          */
                         $smsService = $this->getServiceLocator()->get('DeepLife_API\Service\Service');
                         $found['Country'] = $smsService->GetAll_Country();
+                        $found['Categories'] = $smsService->GetAll_Categories();
+                        $newUser = new User();
+                        $newUser->setCountry($data['Country']);
+                        $found['Questions'] = $smsService->Get_Question($newUser);
                         $this->api_Response['Response'] = $found;
                     }
                 }
@@ -453,6 +457,8 @@ class apiController extends AbstractRestfulController
             $found['Categories'] = $smsService->GetAll_Categories();
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['Answers'] = $smsService->GetAll_Answers($this->api_user);
+            $found['User'] = $smsService->Get_User($this->api_user);
+            
             //$found['Reports'] = $smsService->Get_Report($this->api_user);
 
             $this->api_Response['Response'] = $found;
