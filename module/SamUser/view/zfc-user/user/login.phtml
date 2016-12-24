@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html>
 
@@ -27,7 +23,7 @@
 
     <div class=" col-sm-12 " style="vertical-align: 500px;">
 
-        <div style="vertical-align: 50%" class="ibox-content  text-foo white-bg ">
+        <div style="vertical-align: 50%" class="ibox-content  text-foo ">
             <img class="middle-box col-md-12" src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
             <h2 style="color: white">Sign In</h2>
             <h4 style="color: white">Log in with Email  or phone number </h4>
@@ -70,7 +66,14 @@
         </div>
     </div>
 </body>
-
+<div class="footer" >
+    <div class="pull-right">
+        <strong><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
+    </div>
+    <div>
+        <strong><?php echo $this->translate('Copyright'); ?></strong> <?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?>
+    </div>
+</div>
 
 </html>
 <?php echo $this->inlineScript()
