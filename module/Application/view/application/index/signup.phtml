@@ -24,14 +24,14 @@
 <body class="white-bg">
 
 
-<div class=" middle-box text-center white-bg loginscreen animated fadeInDown">
+<div class=" middle-box text-center loginscreen animated fadeInDown">
 
     <div class="ibox-title ">
         <img class="middle-box col-md-12" src="<?php echo $this->basePath('img/Splashlogo_xhdpi.png')?>">
         <h2 style="color: white ">Sign Up</h2>
 
         <?php echo $this->form()->openTag($form) ?>
-        <div class="white-bg">
+
             <?php foreach ($form as $element): ?>
 
                 <div class="text-align:center  row form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
@@ -52,11 +52,7 @@
             <a style="color: #f9c123" href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Login</a>
         </div>
 
-    </div>
 </body>
-</html>
-
-
 <div class="footer" >
     <div class="pull-right">
         <strong><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
@@ -65,6 +61,7 @@
         <strong><?php echo $this->translate('Copyright'); ?></strong> <?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?>
     </div>
 </div>
+</html>
 <?php echo $this->inlineScript()
 //    ->prependFile($this->basePath('js/pace.min.js'))
     ->prependFile($this->basePath('js/bootstrap.min.js'))
