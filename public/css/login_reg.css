@@ -3423,16 +3423,9 @@ table.table-mail tr td {
     background-color: #f9c123;
 }
 .white-bg {
-    /*background-image: url("../img/Splashlogo_xxdpi.png");*/
-    background-size: auto;
-    background-color:#03a5c5;
-    /*!*background: #f9c123;*!*/
-    /*!*background: linear-gradient(to right, #03a5c5,#f6f1d3, #f9ec0e);*!*/
-    /*background:radial-gradient(#f9c123,#03a5c5,#f9c123)f9c123*/
-    background:no-repeat;
-    background:linear-gradient(rgba(23, 158, 179, 0.23),
-    rgba(23, 158, 179, 0.45)),
-    url("../img/background.JPG")
+
+    background:linear-gradient(rgba(23, 158, 179, 0.6), rgba(23, 158, 179, 0.6)),url("../img/background.JPG");
+    background-size: cover;
 
 }
 .navy-bg {
