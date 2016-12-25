@@ -3424,7 +3424,7 @@ table.table-mail tr td {
 }
 .white-bg {
 
-    background:linear-gradient(rgba(23, 158, 179, 0.6), rgba(23, 158, 179, 0.6)),url("../img/background.JPG");
+    background:linear-gradient(rgba(23, 158, 179, 0.8), rgba(23, 158, 179, 0.8)),url("../img/background.JPG");
     background-size: cover;
 
 }
@@ -9283,8 +9283,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     -webkit-animation-name: rollOut;
     animation-name: rollOut;
 }
-/* Sticky footer styles
--------------------------------------------------- */
+
 html {
     position: relative;
     min-height: 100%;
@@ -9299,13 +9298,10 @@ body {
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 40px;
-    background-color:#f9c123;
+    background-color: #ffffff;
 }
 
 
-/* Custom page CSS
--------------------------------------------------- */
-/* Not required for template or sticky footer method. */
 
 body > .container {
     padding: 60px 15px 0;
@@ -9314,11 +9310,11 @@ body > .container {
     margin: 20px 0;
 }
 
-.footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-    color: #f9c123;
-}
+/*.footer > .container {*/
+    /*padding-right: 15px;*/
+    /*padding-left: 15px;*/
+    /*color: #ffffff;*/
+/*}*/
 
 code {
     font-size: 80%;
