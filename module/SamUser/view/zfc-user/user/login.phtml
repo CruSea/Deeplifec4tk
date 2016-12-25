@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html>
 
@@ -16,37 +12,61 @@
         ->prependStylesheet($this->basePath('css/style.css'))
         ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
         ->prependStylesheet($this->basePath('css/animate.min.css'))
-        ->prependStylesheet($this->basePath('css/style.min.css'))
+//        ->prependStylesheet($this->basePath('css/style.min.css'))
         ->prependStylesheet($this->basePath('css/login_reg.css'))
         ->prependStylesheet($this->basePath('font-awesome/css/font-awesome.min.css'))
     ?>
 
 </head>
 <body class="white-bg">
-<div  class="-align-center middle-box animated fadeInDown ">
+<div class="loginColumns animated fadeInUp">
+    <div class="row">
 
-    <div class=" col-sm-12 " style="vertical-align: 500px;">
+        <div class="col-md-6" style="align-content:right">
+<!--            <h2 class="font-bold middle-box">Welcome to IN+</h2>-->
+            <img class="middle-box col-md-12"  src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
+            <p>
+                Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+            </p>
 
-        <div style="vertical-align: 50%" class="ibox-content  text-foo  ">
-            <img class="middle-box col-md-12" src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
-            <h2 style="color: white">Sign In</h2>
-            <h4 style="color: white">Log in with Email  or phone number </h4>
-            <?php if(strlen($flashMessages)):  ?>
-            <span class="help-inline " ><ul>    <li><?php echo $flashMessages; ?></li> </ul>
-                <?php endif; ?>
-                <?php
-                $form = $this->loginForm;
-                $form->prepare();
-                $form->setAttribute('action', $this->url('zfcuser/login'));
-                $form->setAttribute('method', 'post');
-                $form->setAttribute('class', ' ');
-                ?>
-                <?php echo $this->form()->openTag($form) ?>
-                <div class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+            </p>
+
+            <p>
+                When an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            </p>
+
+            <p>
+                <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>
+            </p>
+
+        </div>
+        <div class="col-md-6">
+            <div  class="- middle-box animated fadeInUp ">
+
+                <div class=" col-sm-12 " style="vertical-align: 500px;">
+
+                    <div style="vertical-align: 50%" class="ibox-content  text-foo  ">
+
+                        <h2 style="color: white">Sign In</h2>
+                        <h4 style="color: white">Log in with Email  or phone number </h4>
+                        <?php if(strlen($flashMessages)):  ?>
+                        <span class="help-inline " ><ul>    <li><?php echo $flashMessages; ?></li> </ul>
+                            <?php endif; ?>
+                            <?php
+                            $form = $this->loginForm;
+                            $form->prepare();
+                            $form->setAttribute('action', $this->url('zfcuser/login'));
+                            $form->setAttribute('method', 'post');
+                            $form->setAttribute('class', ' ');
+                            ?>
+                            <?php echo $this->form()->openTag($form) ?>
+                            <div class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
                          <?php echo $this->formElement ( $form->get('identity')->setAttribute('class', 'form-control') );
                          if ($this->formElementErrors ( $form->get('identity') ))
                          ?>
-                    <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('identity')) ?></span>
+                                <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('identity')) ?></span>
 
                         </div>
                         <div  class=" form-group">
@@ -59,27 +79,34 @@
                         </div>
                         <button type="submit" class="btn btn-primary block btn btn-info  full-width m-b">Login</button>
 
-                <?php if ($this->enableRegistration) : ?>
-                    <a style="color: #f9c123" data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a><h6 style="color: white">Not registered ? </h6>
-                    <a style="color: #f9c123" href="<?php echo $this->url('signup') ?>">Sign up!</a>
-                <?php endif; ?>
+                            <?php if ($this->enableRegistration) : ?>
+                                <a style="color: #f9c123" data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a><h6 style="color: white">Not registered ? </h6>
+                                <a style="color: #f9c123" href="<?php echo $this->url('signup') ?>">Sign up!</a>
+                            <?php endif; ?>
 
-                <?php echo $this->form()->closeTag() ?>
+                            <?php echo $this->form()->closeTag() ?>
 
 
+                    </div>
+                </div>
         </div>
     </div>
-</body>
-<div class="footer" >
-    <div class="pull-right">
-        <strong><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
-    </div>
-    <div>
-        <strong><?php echo $this->translate('Copyright'); ?></strong> <?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?>
-    </div>
+    <hr/>
+
 </div>
 
+
+</body>
+<div class="footer">
+    <div class="pull-right" style="color: #000000">
+        <strong style="color: #000000"><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
+    </div>
+    <div>
+        <strong style="color: #000000"><?php echo $this->translate('Copyright'); ?></strong> <strong style="color: rgba(0, 0, 0, 0.58)"><?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?></strong>
+    </div>
+</div>
 </html>
+
 <?php echo $this->inlineScript()
     ->prependFile($this->basePath('js/pace.min.js'))
     ->prependFile($this->basePath('js/bootstrap.min.js'))
