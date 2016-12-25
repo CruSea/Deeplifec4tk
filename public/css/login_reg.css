@@ -3086,7 +3086,8 @@ ol.unstyled {
     z-index: 1000;
     padding: 10px 20px;
     background: white;
-    border-top: 1px solid #e7eaec;
+    border-top: 1px solid #000000;
+    text-decoration-color:#000000 ;
 }
 .footer.fixed {
     position: fixed;
@@ -3096,7 +3097,7 @@ ol.unstyled {
     z-index: 1000;
     padding: 10px 20px;
     background: white;
-    border-top: 1px solid #e7eaec;
+    border-top: 1px solid #fafdff;
     margin-left: 220px;
 }
 body.mini-navbar .footer.fixed,
@@ -3934,7 +3935,8 @@ body.modal-open {
 .loginColumns {
     max-width: 800px;
     margin: 0 auto;
-    padding: 100px 20px 20px 20px;
+    padding: 150px 20px 20px 30px;
+    color: #e6e6e6;
 }
 .passwordBox {
     max-width: 460px;
@@ -6167,7 +6169,7 @@ body.skin-2 #wrapper {
     margin-bottom: 1px;
 }
 .skin-2 .ibox-content {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 1);
     border: none !important;
 }
 .skin-2 #page-wrapper {
@@ -9287,13 +9289,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 html {
     position: relative;
     min-height: 100%;
+    height: 100%
 }
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
 }
 .footer {
-    position: absolute;
+    position:absolute;
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
@@ -9301,21 +9304,28 @@ body {
     background-color: #ffffff;
 }
 
-
+html, body {
+    height:100%;
+    margin:0;
+    padding:0;
+}
 
 body > .container {
     padding: 60px 15px 0;
+    height: 100%
+
 }
 .container .text-muted {
     margin: 20px 0;
 }
 
-/*.footer > .container {*/
-    /*padding-right: 15px;*/
-    /*padding-left: 15px;*/
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
     /*color: #ffffff;*/
-/*}*/
+}
 
 code {
     font-size: 80%;
+    color: #f9c123;
 }
