@@ -62,30 +62,34 @@ class RepositoryImpl implements RepositoryInterface
         return $encrypter->create($password);
     }
 
+
     public function AddNew_User(User $user)
     {
         /**
          * @var \Zend\Db\Sql\Sql $ sql
          */
-        $sql = new \Zend\Db\Sql\Sql($this->adapter);
-        $insert = $sql->insert()
-            ->values(array(
-                'email' => $user->getEmail(),
-                'displayName' => $user->getDisplayName(),
-                'password' => $this->Encrypt($user->getPassword()),
-                'firstName' => $user->getFirstName(),
-                'country' => $user->getCountry(),
-                'phone_no' => $user->getPhoneNo(),
-                'mentor_id' => $user->getMentorId(),
-                'gender' => $user->getGender(),
-                'role_id' => $user->getRoleId(),
-                'stage' => $user->getStage(),
-                'picture' => $user->getPicture(),
-                'userlocale' => 1,
-            ))
-            ->into('users');
-        $statement = $sql->prepareStatementForSqlObject($insert);;
+        $sql1 = "INSERT INTO users( email, displayName, password, firstName, country, phone_no, mentor_id, picture, stage, role_id, gender, userlocale) VALUES ('".$user->getEmail()."','".$user->getDisplayName()."','".$this->Encrypt($user->getPassword())."','".$user->getFirstName()."','".$user->getCountry()."','".$user->getPhoneNo()."','".$user->getMentorId()."','".$user->getPicture()."','".$user->getStage()."','".$user->getRoleId()."','".$user->getGender()."','".$user->getUserlocale()."')";
+        $statement = $this->adapter->query($sql1);
         $result = $statement->execute();
+//        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+//        $insert = $sql->insert()
+//            ->values(array(
+//                'email' => $user->getEmail(),
+//                'displayName' => $user->getDisplayName(),
+//                'password' => $this->Encrypt($user->getPassword()),
+//                'firstName' => $user->getFirstName(),
+//                'country' => $user->getCountry(),
+//                'phone_no' => $user->getPhoneNo(),
+//                'mentor_id' => $user->getMentorId(),
+//                'gender' => $user->getGender(),
+//                'role_id' => $user->getRoleId(),
+//                'stage' => $user->getStage(),
+//                'picture' => $user->getPicture(),
+//                'userlocale' => $user->getUserlocale(),
+//            ))
+//            ->into('users');
+//        $statement = $sql->prepareStatementForSqlObject($insert);
+//        $result = $statement->execute();
         return $result->valid();
     }
 
@@ -168,10 +172,26 @@ class RepositoryImpl implements RepositoryInterface
             }
         }
         $hydrator = new Hydrator();
+        
         $found = $hydrator->Get_Data($posts, new User());
         return $found;
     }
-
+    public function Get_UserByID(User $user)
+    {
+        $row_sql = 'SELECT * FROM users WHERE users.id = \'' . $user->getId() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        $found = $hydrator->Get_Data($posts, new User());
+        return $found;
+    }
     public function Add_User_Role($user_id, $role_id)
     {
         /**
@@ -487,13 +507,39 @@ class RepositoryImpl implements RepositoryInterface
             ->values(array(
                 'user_id' => $answers->getUserId(),
                 'question_id' => $answers->getQuestionId(),
+                'country' => $answers->getCountry(),
                 'answer' => $answers->getAnswer(),
                 'stage' => $answers->getStage(),
+                'notes' => $answers->getNotes(),
             ))
             ->into('answers');
         $statement = $sql->prepareStatementForSqlObject($insert);
         $result = $statement->execute();
         return $result->valid();
+    }
+
+    public function Update_Answer(Answers $answers)
+    {
+        $row_sql = 'UPDATE answers SET answers.answer = \'' . $answers->getAnswer() . '\' , answers.stage = \'' . $answers->getStage() . '\' , answers.notes = \'' . $answers->getNotes() . '\' , answers.country = \'' . $answers->getCountry() . '\' WHERE answers.user_id = \'' . $answers->getUserId() . '\' AND answers.question_id = \''. $answers->getQuestionId().'\'' ;
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        return $result->count();
+    }
+
+    public function Get_Answer(Answers $answers)
+    {
+        $row_sql = 'SELECT * FROM answers WHERE answers.question_id = \'' . $answers->getQuestionId() . '\' AND answers.user_id = ' . $answers->getUserId();
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Get_Data($posts, new Answers());
     }
 
     public function GetAll_Answers(User $user)
@@ -505,6 +551,32 @@ class RepositoryImpl implements RepositoryInterface
         if ($result->count() > 0) {
             while ($result->valid()) {
                 $posts[] = $result->current();
+                $result->next();
+            }
+        }
+
+
+
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new Answers());
+    }
+
+    public function GetAll_Disciple_Answers(User $user)
+    {
+        $row_sql = 'SELECT * FROM answers WHERE answers.user_id IN (SELECT id FROM users WHERE users.mentor_id = \'' . $user->getId() . '\')';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $data = $result->current();
+                $user = new User();
+                $user->setId($data['user_id']);
+                $dis = $this->Get_UserByID($user);
+                if($dis != null){
+                    $data['phone'] = $dis->getPhoneNo();
+                }
+                $posts[] = $data;
                 $result->next();
             }
         }
@@ -693,9 +765,8 @@ class RepositoryImpl implements RepositoryInterface
             }
         }
         $hydrator = new Hydrator();
-        return $hydrator->Extract($posts, new Testimony());
 
-        // TODO: Implement GetNew_Testimonies() method.
+        return $hydrator->Extract($posts, new Testimony());
     }
 
     public function AddNew_Testimony(Testimony $testimony)

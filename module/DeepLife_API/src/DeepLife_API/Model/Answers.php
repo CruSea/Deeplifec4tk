@@ -13,6 +13,7 @@ class Answers
 {
     protected $id;
     protected $user_id;
+    protected $disciple_phone;
     protected $question_id;
     protected $country;
     protected $answer;
@@ -50,6 +51,22 @@ class Answers
     public function setUserId($user_id)
     {
         $this->user_id = $user_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDisciplePhone()
+    {
+        return $this->disciple_phone;
+    }
+
+    /**
+     * @param mixed $disciple_phone
+     */
+    public function setDisciplePhone($disciple_phone)
+    {
+        $this->disciple_phone = $disciple_phone;
     }
 
     /**
@@ -154,6 +171,7 @@ class Answers
             'id' => $this->getId(),
             'user_id' => $this->getUserId(),
             'question_id' => $this->getQuestionId(),
+            'disciple_phone' => $this->getDisciplePhone(),
             'country' => $this->getQuestionId(),
             'answer' => $this->getAnswer(),
             'stage' => $this->getStage(),

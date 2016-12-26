@@ -196,7 +196,7 @@ class ServiceImpl implements Service
     {
         try {
             $data = $this->apiRepository->Get_User($user);
-            return $user;
+            return $data;
         } catch (\Exception $e) {
             $this->LogError($e);
             return null;
@@ -415,10 +415,40 @@ class ServiceImpl implements Service
         }
     }
 
+    public function Get_Answer(Answers $answers)
+    {
+        try {
+            return $this->apiRepository->Get_Answer($answers);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
     public function GetAll_Answers(User $user)
     {
         try {
             return $this->apiRepository->GetAll_Answers($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function GetAll_Disciple_Answers(User $user)
+    {
+        try {
+            return $this->apiRepository->GetAll_Disciple_Answers($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function Update_Answer(Answers $answers)
+    {
+        try {
+            return $this->apiRepository->Update_Answer($answers);
         } catch (\Exception $e) {
             $this->LogError($e);
             return null;

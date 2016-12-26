@@ -65,7 +65,10 @@ interface Service
     public function Get_Question(User $user);
 
     public function AddNew_Answer(Answers $answers);
+    public function Get_Answer(Answers $answers);
+    public function Update_Answer(Answers $answers);
     public function GetAll_Answers(User $user);
+    public function GetAll_Disciple_Answers(User $user);
 
     public function AddNew_Report(User $user);
     public function GetAll_Report();
