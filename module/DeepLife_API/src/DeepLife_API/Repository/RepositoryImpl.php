@@ -660,6 +660,7 @@ class RepositoryImpl implements RepositoryInterface
             }
         }
         $hydrator = new Hydrator();
+
         return $hydrator->Extract($posts, new Country());
     }
 

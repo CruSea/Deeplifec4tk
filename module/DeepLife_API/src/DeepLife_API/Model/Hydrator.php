@@ -346,7 +346,6 @@ class Hydrator
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
                     $New_Data->setEmail(isset($data['email']) ? ($data['email']) : null);
                     $New_Data->setDisplayName(isset($data['displayName']) ? $data['displayName'] : null);
-                    $New_Data->setPassword(isset($data['password']) ? $data['password'] : null);
                     $New_Data->setFirstName(isset($data['firstName']) ? $data['firstName'] : null);
                     $New_Data->setCountry(isset($data['country']) ? $data['country'] : null);
                     $New_Data->setPhoneNo(isset($data['phone_no']) ? $data['phone_no'] : null);
