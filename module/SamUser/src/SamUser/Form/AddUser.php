@@ -32,14 +32,14 @@ class AddUser extends Base
             ),
             'options' => array(),));
         $this->add(array(
-            'name' => 'phonen',
-            'attributes' => array('type' => 'number',
-                'id' => 'phoneno'
-            ),
-            'options' => array(
-                'id' => 'name',
-                'label' => 'Phone NO:',
-            )));
+        'name' => 'phonen',
+        'attributes' => array('type' => 'number',
+            'id' => 'phoneno'
+        ),
+        'options' => array(
+            'id' => 'name',
+            'label' => 'Phone NO:',
+        )));
         $this->add(array(
             'name' => 'submit',
             'attributes' => array('type' => 'submit',

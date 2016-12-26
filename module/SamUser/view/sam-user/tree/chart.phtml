@@ -1,35 +1,35 @@
  <div class="row" >
-                                         <div class="col-md-4">
+                                         <div class="col-xs-12">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <h5>Win</h5>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <div id="win" style="height: 250px;">
+                                                    <div id="win" style="height: 350px;" class="row">
                                                         No Data Found
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>  
-                                        <div class="col-md-4">
+                                        <div class="col-xs-12">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <h5>Build</h5>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <div id="build" style="height: 250px;">
+                                                    <div id="build" style="height: 350px;">
                                                         No Data Found
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                          <div class="col-md-4">
+                                          <div class="col-xs-12">
                                             <div class="ibox float-e-margins">
                                                 <div class="ibox-title">
                                                     <h5>Send</h5>
                                                 </div>
                                                 <div class="ibox-content">
-                                                    <div id="send" style="height: 250px;">
+                                                    <div id="send" style="height: 350px;">
                                                         No Data Found
                                                     </div>
                                                 </div>
@@ -60,22 +60,34 @@
        
        
  ?>
+
  <script>
+ 	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec','Jan'];
+
    <?php    foreach ($chart as $key=>$valus){ ?>
-   
+  
    $('#<?php echo $key ?>').html('');
      new Morris.Line({
           // ID of the element in which to draw the chart.
           element: <?php echo $key ?>,
-          resize: true,
+          resize: false,
           lineColors:<?php echo json_encode($colors[$key]);?> ,
           // Chart data records -- each entry in this array corresponds to a point on
-          data:<?php echo json_encode($valus);?> ,
-         // The name of the data record attribute that contains x-values.
-          xkey: 'year',
-          // A list of names of data record attributes that contain y-values.
-          ykeys: <?php echo $ykeysData ?>,
-          labels: <?php echo $labelsData ?>
+         data:<?php echo json_encode($valus);?> ,
+         
+        xkey: 'm',
+  ykeys: <?php echo $ykeysData ?>,
+  labels: <?php echo $labelsData ?>,
+  xLabels: "month",
+  hideHover :'auto',
+  xLabelAngle:30,
+  resize: true,
+  xLabelFormat: function(x) { // <--- x.getMonth() returns valid index
+    var month = months[x.getMonth()];
+   var year = new Date(x).getFullYear(); return year + ' ' + month;
+  },
+        
+       
 });
 <?php  } ?>
  </script>

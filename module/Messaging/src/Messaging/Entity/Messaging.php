@@ -1,14 +1,12 @@
 <?php
 
 namespace Messaging\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
+use Zend\InputFilter\InputFilterInterface; 
 use Zend\Stdlib\DateTime;
-
 /**
  * answers.
  *
@@ -16,14 +14,15 @@ use Zend\Stdlib\DateTime;
  * @ORM\Table(name="messaging")
  * @property string $subject
  * @property string $description
- * @property int $user_id
- * @property int $sender_id
- * @property int $id
- * @property int $status
- *
- * @property datetime $created
- *  */
-class Messaging implements InputFilterAwareInterface
+*  @property int $user_id
+*  @property int $sender_id
+*   @property int $id
+*   @property int $status 
+* 
+* @property datetime $created
+
+*  */
+class Messaging implements InputFilterAwareInterface 
 {
     protected $inputFilter;
 
@@ -32,35 +31,36 @@ class Messaging implements InputFilterAwareInterface
      * @ORM\Column(type="integer");
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+      protected $id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected $user_id;
+      protected $user_id;
 
-    /**
+  /**
      * @ORM\Column(type="integer")
      */
-    protected $status;
-    /**
+      protected $status;
+       /**
      * @ORM\Column(type="integer")
      */
-    protected $sender_id;
+      protected $sender_id;
 
 
-    /**
+/**
      * @ORM\Column(type="string")
      */
-    protected $subject;
-    /**
+      protected $subject;
+  /**
      * @ORM\Column(type="string")
      */
-    protected $description;
-    /**
+      protected $description;
+/**
      * @ORM\Column(type="datetime")
      */
     protected $created;
+
 
 
     /**
@@ -69,7 +69,7 @@ class Messaging implements InputFilterAwareInterface
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get($property) 
     {
         return $this->$property;
     }
@@ -80,7 +80,7 @@ class Messaging implements InputFilterAwareInterface
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value)
+    public function __set($property, $value) 
     {
         $this->$property = $value;
     }
@@ -90,7 +90,7 @@ class Messaging implements InputFilterAwareInterface
      *
      * @return array
      */
-    public function getArrayCopy()
+    public function getArrayCopy() 
     {
         return get_object_vars($this);
     }
@@ -100,7 +100,7 @@ class Messaging implements InputFilterAwareInterface
      *
      * @param array $data
      */
-    public function populate($data = array())
+    public function populate($data = array()) 
     {
         $this->id = $data['id'];
         $this->subject = $data['subject'];
@@ -108,10 +108,10 @@ class Messaging implements InputFilterAwareInterface
         $this->status = 1;
         $this->user_id = $data['user_id'];
         $this->sender_id = $data['sender_id'];
-        $this->created = new DateTime();
+        $this->created = new DateTime(); 
     }
 
-    public function setInputFilter(InputFilterInterface $inputFilter)
+     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
@@ -124,64 +124,66 @@ class Messaging implements InputFilterAwareInterface
             $factory = new InputFactory();
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'id',
-                'required' => true,
+                'name'       => 'id',
+                'required'   => true,
                 'filters' => array(
-                    array('name' => 'Int'),
+                    array('name'    => 'Int'),
                 ),
             )));
 
-            $inputFilter->add($factory->createInput(array(
-                'name' => 'user_id',
-                'required' => true,
+   $inputFilter->add($factory->createInput(array(
+                'name'       => 'user_id',
+                'required'   => true,
                 'filters' => array(
-                    array('name' => 'Int'),
+                    array('name'    => 'Int'),
                 ),
             )));
             $inputFilter->add($factory->createInput(array(
-                'name' => 'subject',
+                'name'     => 'subject',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 300,
+                            'min'      => 1,
+                            'max'      => 300,
                         ),
                     ),
                 ),
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'description',
+                'name'     => 'description',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 1000,
+                            'min'      => 1,
+                            'max'      => 1000,
                         ),
                     ),
                 ),
             )));
 
 
-            $this->inputFilter = $inputFilter;
+
+            $this->inputFilter = $inputFilter;        
         }
 
 
-        return $this->inputFilter;
-    }
 
+        return $this->inputFilter;
+    } 
+   
 }

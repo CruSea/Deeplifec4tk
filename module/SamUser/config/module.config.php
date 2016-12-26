@@ -4,56 +4,57 @@ return array(
     'router' => array(
         'routes' => array(
             'users' => array(
-                'type' => 'Literal',
+                'type'    => 'Literal',
                 'options' => array(
-                    'route' => '/users',
+                    'route'    => '/users',
                     'defaults' => array(
                         '__NAMESPACE__' => 'SamUser\Controller',
-                        'controller' => 'Users',
-                        'action' => 'index',
+                        'controller'    => 'Users',
+                        'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => '/[:action[/:id]]',
+                            'route'    => '/[:action[/:id]]',
                             'constraints' => array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]+',
+                                'id'     => '[0-9]+',
                             ),
-                            'defaults' => array(),
+                            'defaults' => array(
+                            ),
                         ),
                     ),
                 ),
             ),
-
-
-            'dashboard' => array(
-                'type' => 'segment',
+            
+            
+              'dashboard' => array(
+                'type'    => 'segment',
                 'options' => array(
-                    'route' => '/dashboard[/:action][/:id]',
+                    'route'    => '/dashboard[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
+                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'SamUser\Controller\dashboard',
-                        'action' => 'index',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-
-
+            
+                         
             'resource' => array(
-                'type' => 'Literal',
+                'type'    => 'Literal',
                 'options' => array(
-                    'route' => '/resource',
+                    'route'    => '/resource',
                     'defaults' => array(
                         '__NAMESPACE__' => 'SamUser\Controller',
-                        'controller' => 'Resource',
-                        'action' => 'index',
+                        'controller'    => 'Resource',
+                        'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
@@ -64,7 +65,7 @@ return array(
                             'route' => '/download1',
                             'defaults' => array(
                                 'controller' => 'resource',
-                                'action' => 'download1',
+                                'action'     => 'download1',
                             ),
                         ),
                     ),
@@ -74,7 +75,7 @@ return array(
                             'route' => '/download2',
                             'defaults' => array(
                                 'controller' => 'resource',
-                                'action' => 'download2',
+                                'action'     => 'download2',
                             ),
                         ),
                     ),
@@ -84,7 +85,7 @@ return array(
                             'route' => '/download3',
                             'defaults' => array(
                                 'controller' => 'resource',
-                                'action' => 'download3',
+                                'action'     => 'download3',
                             ),
                         ),
                     ),
@@ -94,7 +95,7 @@ return array(
                             'route' => '/download4',
                             'defaults' => array(
                                 'controller' => 'resource',
-                                'action' => 'download4',
+                                'action'     => 'download4',
                             ),
                         ),
                     ),
@@ -104,7 +105,7 @@ return array(
                             'route' => '/download5',
                             'defaults' => array(
                                 'controller' => 'resource',
-                                'action' => 'download5',
+                                'action'     => 'download5',
                             ),
                         ),
                     ),
@@ -114,7 +115,7 @@ return array(
                             'route' => '/download6',
                             'defaults' => array(
                                 'controller' => 'resource',
-                                'action' => 'download6',
+                                'action'     => 'download6',
                             ),
                         ),
                     ),
@@ -124,133 +125,139 @@ return array(
                             'route' => '/listdisciple   ',
                             'defaults' => array(
                                 'controller' => 'dashboard',
-                                'action' => 'listdisciple',
+                                'action'     => 'listdisciple',
                             ),
                         ),
                     ),
-
+                   
 
                     'default' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => '/[:action[/:id]]',
+                            'route'    => '/[:action[/:id]]',
                             'constraints' => array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]+',
+                                'id'     => '[0-9]+',
                             ),
-                            'defaults' => array(),
+                            'defaults' => array(
+                            ),
                         ),
                     ),
                 ),
             ),
-
-            'tree' => array(
-                'type' => 'segment',
+         
+           'tree' => array(
+                'type'    => 'segment',
                 'options' => array(
-                    'route' => '/tree[/:action][/:id]',
+                    'route'    => '/tree[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
+                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'SamUser\Controller\Tree',
-                        'action' => 'index',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-
-            'disciples' => array(
-                'type' => 'segment',
+            
+           'disciples' => array(
+                'type'    => 'segment',
                 'options' => array(
-                    'route' => '/disciples[/:action][/:id]',
+                    'route'    => '/disciples[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
+                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'SamUser\Controller\Disciples',
-                        'action' => 'index',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-
-
-            /*
-               'tree' => array(
-                   'type'    => 'Literal',
-                   'options' => array(
-                       'route'    => '/tree',
-                       'defaults' => array(
-                           '__NAMESPACE__' => 'SamUser\Controller',
-                           'controller'    => 'Tree',
-                           'action'        => 'index',
-                       ),
-                   ),
-                   'may_terminate' => true,
-                   'child_routes' => array(
-
-                       'default' => array(
-                           'type'    => 'Segment',
-                           'options' => array(
-                               'route'    => '/[:action[/:id]]',
-                               'constraints' => array(
-                                   'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                   'id'     => '[0-9]+',
-                               ),
-                               'defaults' => array(
-                               ),
-                           ),
-                       ),
-                   ),
-               ), */
-
-
-            'roles' => array(
-                'type' => 'Literal',
+            
+            
+         
+         /*
+            'tree' => array(
+                'type'    => 'Literal',
                 'options' => array(
-                    'route' => '/roles',
+                    'route'    => '/tree',
                     'defaults' => array(
                         '__NAMESPACE__' => 'SamUser\Controller',
-                        'controller' => 'Roles',
-                        'action' => 'index',
+                        'controller'    => 'Tree',
+                        'action'        => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+
                     'default' => array(
-                        'type' => 'Segment',
+                        'type'    => 'Segment',
                         'options' => array(
-                            'route' => '/[:action[/:id]]',
+                            'route'    => '/[:action[/:id]]',
                             'constraints' => array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]+',
+                                'id'     => '[0-9]+',
                             ),
-                            'defaults' => array(),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ), */
+            
+            
+            
+            
+            'roles' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/roles',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'SamUser\Controller',
+                        'controller'    => 'Roles',
+                        'action'        => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                    'child_routes' => array(
+                    'default' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:action[/:id]]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id'     => '[0-9]+',
+                            ),
+                            'defaults' => array(
+                            ),
                         ),
                     ),
                 ),
             ),
         ),
-
-
-    ),
+      
+    
+      
+        ),
 
     'controllers' => array(
         'invokables' => array(
             'SamUser\Controller\Users' => 'SamUser\Controller\UsersController',
             'SamUser\Controller\Roles' => 'SamUser\Controller\RolesController',
             'SamUser\Controller\Dashboard' => 'SamUser\Controller\DashboardController',
-            'SamUser\Controller\Resource' => 'SamUser\Controller\ResourceController',
-            'SamUser\Controller\Tree' => 'SamUser\Controller\TreeController',
-            'SamUser\Controller\Disciples' => 'SamUser\Controller\DisciplesController',
+           'SamUser\Controller\Resource' => 'SamUser\Controller\ResourceController',
+           'SamUser\Controller\Tree' => 'SamUser\Controller\TreeController',
+          'SamUser\Controller\Disciples' => 'SamUser\Controller\DisciplesController', 
         ),
     ),
     'view_manager' => array(
-
-        'template_map' => array(
-            'chart' => __DIR__ . '/../view/sam-user/tree/chart.phtml',
-
-        ),
+    
+    'template_map' => array(
+     'chart'           => __DIR__ . '/../view/sam-user/tree/chart.phtml',
+    
+    ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
@@ -276,12 +283,13 @@ return array(
 
     'zfcuser' => array(
         // telling ZfcUser to use our own class
-        'user_entity_class' => 'SamUser\Entity\User',
+        'user_entity_class'       => 'SamUser\Entity\User',
         // telling ZfcUserDoctrineORM to skip the entities it defines
         'enable_default_entities' => false,
     ),
 
-
+   
+    
     /*
     
     'doctrine'=>array(

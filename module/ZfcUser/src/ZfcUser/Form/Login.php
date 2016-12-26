@@ -28,8 +28,21 @@ class Login extends ProvidesEventsForm
             ),
             'attributes' => array(
                 'type' => 'text',
-                   'required' => 'required',
-                   'placeholder'=>"Email or Phone number",
+                'id' => 'identity',
+                   'placeholder'=>"Email",
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'phone',
+            'options' => array(
+                'label' => '',
+                  
+            ),
+            'attributes' => array(
+                'id' => 'phone',
+                'type' => 'tel',
+                'placeholder'=>"Phone Number",
             ),
         ));
 

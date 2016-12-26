@@ -1,5 +1,5 @@
  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css">
-  <div class="row">
+<div class="row">
             <div class="col-md-3 col-sm-6">
                 <div class="widget style1 grey-bg">
                         <div class="row">
@@ -157,24 +157,23 @@ tr td {
                    $class='';
                   switch($stage){
                       
-                       case 'build':
+                    case 'build':
                       $class='blue-bg ';
-                      $percentage='<div class=" font-bold text-blue">60% <i class="fa fa-level-up"></i></div>';
-                      break;
-                       case 'win':
-                      $class='yellow-bg';
                       $percentage='<div class=" font-bold text-yellow">25%<i class="fa fa-level-up"></i></div>';
                       break;
-                   case 'send':
+                    case 'send':
                       $class='green-bg';
-                      $percentage='<div class=" font-bold text-green">100%<i class="fa fa-level-up"></i></div>';
+                      $percentage='<div class=" font-bold text-blue">60% <i class="fa fa-level-up"></i></div>';
                       break;
-                  
-                  case 'added':
-                  default:    
-                      $class='btn-danger';
-                      $percentage='<div class=" font-bold text-danger">0%<i class="fa fa-level-up"></i></div>';
-                      break;
+                    case 'complete':
+                        $class='green-bg';
+                        $percentage='<div class=" font-bold text-green">100%<i class="fa fa-level-up"></i></div>';
+                        break;
+                    case 'win':
+                    default:
+                        $class='yellow-bg';    
+                        $percentage='<div class=" font-bold text-danger">0%<i class="fa fa-level-up"></i></div>';
+                        break;
                      
                   
                   }

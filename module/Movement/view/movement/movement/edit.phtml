@@ -3,6 +3,52 @@ $title = 'Edit Question';
 $this->headTitle($title);
 ?>
 
+
+ <script>
+        $(document).ready(function() { 
+
+            var data = [];
+            function format(item) { return item.text; }
+            
+
+            function getSubCategories() {
+                $.ajax({
+                  method: "GET",
+                  url: "/movement/subcategories/" + $('#category').val()
+                })
+                  .done(function( response ) {
+                    data.length = 0;
+                    data = response;
+                    initSubCategory ();
+                  });
+            }
+            function initSubCategory () {
+                $("#subcategory").select2({
+                    placeholder : "Select Folder (Optional)",
+                    allowClear : true,
+                    createSearchChoice: function (term, data) {
+                        if ($(data).filter(function () {
+                            return this.text.localeCompare(term) === 0;
+                        }).length === 0) {
+                            return {
+                                id: '::' + term,
+                                text: term
+                            };
+                        }
+                    },
+                    multiple: false,
+                    data:{ results: data, text: 'text' },
+                    formatSelection: format,
+                    formatResult: format
+                });
+            }
+
+            $("#category").select2();
+            $("#category").on("change", function(e) { getSubCategories()});
+            getSubCategories();
+        });
+</script>
+
 <div class="row">
 <div class="col-lg-12">
                     <div class="ibox float-e-margins">

@@ -1,14 +1,14 @@
 <?php
-
+ 
 namespace SamUser\Entity;
-
+ 
 use Doctrine\ORM\Mapping as ORM;
 use ZfcUser\Entity\UserInterface;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilterAwareInterface;
-use Zend\InputFilter\InputFilterInterface;
-
+use Zend\InputFilter\InputFilterInterface; 
+ 
 /**
  * users.
  *
@@ -20,30 +20,30 @@ use Zend\InputFilter\InputFilterInterface;
  * @property string $phone_no
  * @property string $picture
  * @property string $userlocale
- *  * @property string $stage
- * @property datetime $role_id
+*  * @property string $stage
+ *  @property datetime $role_id
  * @property datetime $created
- * @property int $id
+  * @property int $id
  */
-class Users implements InputFilterAwareInterface, UserInterface
+class Users implements InputFilterAwareInterface , UserInterface
 {
-
-
+   
+   
     protected $inputFilter;
-
+ 
     /**
      * @ORM\Id
      * @ORM\Column(type="integer");
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
+  
+   /**
      * @ORM\Column(type="datetime")
      */
     protected $created;
-
-
+   
+  
     /**
      * @ORM\Column(type="string")
      */
@@ -52,57 +52,63 @@ class Users implements InputFilterAwareInterface, UserInterface
      * @ORM\Column(type="string")
      */
     protected $email;
+    
+    
 
-
-    /**
+ /**
      * @ORM\Column(type="string")
      */
     protected $displayName;
-
-    /**
+    
+     /**
      * @ORM\Column(type="string")
      */
     protected $firstName;
-
-    /**
+ 
+ /**
      * @ORM\Column(type="string")
      */
     protected $phone_no;
+ 
 
-
-    /**
-     * @ORM\Column(type="string");
+ 
+     /**
+        * @ORM\Column(type="string");
      * */
     protected $country;
-
+    
     /** * @ORM\Column(type="string")
+       
      */
     protected $password;
 
-
-    /**
+   
+      /**
      * @ORM\Column(type="string")
      */
     protected $picture;
-
-
-    /**
+   
+  
+ 
+ /**
      * @ORM\Column(type="integer")
      */
     protected $role_id;
-
-
-    /**
+ 
+  
+  
+  
+      /**
      * @ORM\Column(type="string")
      */
     protected $stage;
-
-    /**
+ 
+ /**
      * @ORM\Column(type="integer")
      */
     protected $mentor_id;
-
-    /**
+ 
+  /**
      * @ORM\Column(type="string")
      */
     protected $gender;
@@ -113,39 +119,41 @@ class Users implements InputFilterAwareInterface, UserInterface
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get($property) 
     {
         return $this->$property;
     }
-
+ 
     /**
      * Magic setter to save protected properties.
      *
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value)
+    public function __set($property, $value) 
     {
         $this->$property = $value;
     }
-
+ 
     /**
      * Convert the object to an array.
      *
      * @return array
      */
-    public function getArrayCopy()
+    public function getArrayCopy() 
     {
         return get_object_vars($this);
     }
+ 
+ 
 
-
+ 
     /**
      * Populate from an array.
      *
      * @param array $data
      */
-    public function exchangeArray($data = array())
+    public function exchangeArray ($data = array()) 
     {
         $this->id = $data['id'];
         $this->email = $data['email'];
@@ -156,15 +164,15 @@ class Users implements InputFilterAwareInterface, UserInterface
         $this->mentor_id = $data['mentor_id'];
         $this->stage = $data['stage'];
         $this->role_id = $data['role_id'];
-        $this->password = $data['password'];
-        $this->picture = isset($data['picture']) ? $data['picture'] : '';
+         $this->password = $data['password'];
+        $this->picture =isset($data['picture'])?$data['picture']:'';
         $this->gender = $data['gender'];
-        // $this->userlocale = $data['userlocale'];
+      // $this->userlocale = $data['userlocale'];
 
     }
-
-
-    /**
+    
+    
+     /**
      * Get id.
      *
      * @return int
@@ -183,12 +191,13 @@ class Users implements InputFilterAwareInterface, UserInterface
      */
     public function setId($id)
     {
-        $this->id = (int)$id;
+        $this->id = (int) $id;
         return $this;
     }
+  
 
 
-    /**
+ /**
      * Get username.
      *
      * @return string
@@ -234,7 +243,7 @@ class Users implements InputFilterAwareInterface, UserInterface
         return $this;
     }
 
-    /**
+  /**
      * Get displayName.
      *
      * @return string
@@ -303,122 +312,133 @@ class Users implements InputFilterAwareInterface, UserInterface
         return $this;
     }
 
-
+    
+ 
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
     }
-
-
+ 
+  
+ 
     public function getInputFilter()
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
             $inputFilter->add(array(
-                'name' => 'id',
+                'name'     => 'id',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+ 
+ 
+  $inputFilter->add(array(
+                'name'     => 'firstName',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 100,
+                        ),
+                    ),
+                ),
+            ));
+ 
+            $inputFilter->add(array(
+                'name'     => 'email',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'EmailAddress',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                           
+                        ),
+                    ),
+                ),
+            ));
+           
+             $inputFilter->add(array(
+                'name'     => 'country',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                
+            ));
+
+  
+
+ 
+
+  $inputFilter->add(array(
+                'name'     => 'phone_no',
+                'required' => true,
+                'filters'  => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min'      => 1,
+                            'max'      => 15,
+                        ),
+                    ),
+                ),
+            ));
+ 
+  
+   $inputFilter->add(array(
+                'name'     => 'mentor_id',
+                'required' => true,
+                'filters'  => array(
                     array('name' => 'Int'),
                 ),
             ));
 
 
+
+
+         
             $inputFilter->add(array(
-                'name' => 'firstName',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'email',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'EmailAddress',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'country',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-
-            ));
-
-
-            $inputFilter->add(array(
-                'name' => 'phone_no',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 15,
-                        ),
-                    ),
-                ),
-            ));
-
-
-            $inputFilter->add(array(
-                'name' => 'mentor_id',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-
-            $inputFilter->add(array(
-                'name' => 'picture',
+                'name'     => 'picture',
                 'required' => FALSE,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
-
+               
             ));
+            
 
 
-            $inputFilter->add(array(
-                'name' => 'gender',
+
+$inputFilter->add(array(
+                'name'     => 'gender',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'StripTags'),
+                'filters'  => array(
+                   array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
             ));
+
 
 
             $this->inputFilter = $inputFilter;
@@ -426,6 +446,8 @@ class Users implements InputFilterAwareInterface, UserInterface
 
         return $this->inputFilter;
     }
+
+
 
 
 }
