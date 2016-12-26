@@ -23,6 +23,7 @@ class User
     protected $gender;
     protected $stage;
     protected $role_id;
+    protected $userlocale;
     protected $created;
 
     /**
@@ -226,6 +227,22 @@ class User
     }
 
     /**
+     * @return mixed
+     */
+    public function getUserlocale()
+    {
+        return $this->userlocale;
+    }
+
+    /**
+     * @param mixed $userlocale
+     */
+    public function setUserlocale($userlocale)
+    {
+        $this->userlocale = $userlocale;
+    }
+
+    /**
      * @param mixed $stage
      */
     public function setStage($stage)
@@ -248,6 +265,7 @@ class User
             'role_id' => $this->getRoleId(),
             'gender' => $this->getGender(),
             'picture' => $this->getPicture(),
+            'userlocale' => $this->getUserlocale(),
             'created' => $this->getCreated(),
         );
     }

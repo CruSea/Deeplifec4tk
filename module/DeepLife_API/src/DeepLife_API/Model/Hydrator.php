@@ -186,6 +186,7 @@ class Hydrator
                     $New_Data = new Answers();
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
                     $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setDisciplePhone(isset($data['phone']) ? ($data['phone']) : null);
                     $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
                     $New_Data->setAnswer(isset($data['answer']) ? ($data['answer']) : null);
                     $New_Data->setStage(isset($data['stage']) ? ($data['stage']) : null);
@@ -311,6 +312,22 @@ class Hydrator
                     $New_Data->setDescription(isset($data['description']) ? ($data['description']) : null);
                     $New_Data->setCountryId(isset($data['country']) ? $data['country'] : null);
                     $New_Data->setStatus(isset($data['status']) ? $data['status'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found = $New_Data;
+                }
+                return $Found;
+            } elseif ($DataType instanceof Answers) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Answers();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setDisciplePhone(isset($data['phone']) ? ($data['phone']) : null);
+                    $New_Data->setAnswer(isset($data['answer']) ? ($data['answer']) : null);
+                    $New_Data->setStage(isset($data['stage']) ? ($data['stage']) : null);
+                    $New_Data->setNotes(isset($data['notes']) ? ($data['notes']) : null);
+                    $New_Data->setQuestionId(isset($data['question_id']) ? $data['question_id'] : null);
                     $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
                     $Found = $New_Data;
                 }
