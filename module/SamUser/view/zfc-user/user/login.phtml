@@ -1,297 +1,128 @@
-<?php echo $this->headLink()->prependStylesheet($this->basePath('/css/intlTelInput.css')); ?> 
-<script src="<?php echo $this->basePath('js/intlTelInput.js')?>"></script>
-<div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-target="#inSlider" data-slide-to="0" class="active"></li>
-        <li data-target="#inSlider" data-slide-to="1"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <div class="container">
-                <div class="carousel-caption">
-                    <h1>Everyone<br/>
-                        desciple 5.<br/>
-                        <br/>
-                    </h1>
-                    <p>Aggressively evangelize, deeply build, urgently multiply</p>
-                    <p>
-                        <a class="btn btn-lg btn-primary" href="#pricing" role="button" style="background-color:#03b2d4 ;">Learn More</a>
-                        <!--<a class="caption-link" href="#" role="button">Inspinia Theme</a>-->
-                    </p>
-                </div>
-                <!--<div class="carousel-image wow zoomIn">-->
-                <!--<img src="img/laptop.png" alt="laptop"/>-->
-                <!--</div>-->
-            </div>
-            <!-- Set background for slide in css -->
-            <div class="header-back one"></div>
+<!DOCTYPE html>
+<html>
 
-        </div>
-        <div class="item">
-            <div class="container">
-                <div class="carousel-caption blank">
-                    <h1>“Don’t be afraid; <br/> from now on you will be catching men”</h1>
+<head>
 
-                    <p>Launch deep in the see. </p>
-                    <p><a class="btn btn-lg btn-primary" href="#pricing" role="button">Learn more</a></p>
-                </div>
-            </div>
-            <!-- Set background for slide in css -->
-            <div class="header-back two"></div>
-        </div>
-    </div>
-    <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-<section id="sign-in" class="container services">
-    <div class="row">
-        <div class="col-sm-6">
-            <br/><br/><br/>
-            <div class="col-sm-8 col-sm-offset-2">
-                <img  src="<?php echo $this->basePath('/img/logooo.png');?>"/>
-            </div>
-            <div class="col-sm-8 col-sm-offset-2" style="text-align: center;">
-                <h5>Everyone disciple five. </h5>
-            </div>
-        </div>
-        <div class="col-sm-6">
-    
-           <div class="ibox-content">
-            <h2 style="text-align: left;">Signin</h2>
-            <h4>Log in with <span style="text-decoration: underline;cursor:pointer;" id="email_span">Email</span>  or <span style="text-decoration: underline;cursor:pointer;" id="phone_span">phone number</span> </h4>
-         
-        <?php if(strlen($flashMessages)):  ?>
-<span class="help-inline " ><ul>    <li><?php echo $flashMessages; ?></li> </ul>
-<?php endif; ?>
-         
-            <?php
-$form = $this->loginForm;
-$form->prepare();
-$form->setAttribute('action', $this->url('zfcuser/login'));
-$form->setAttribute('method', 'post');
-$form->setAttribute('class', 'm-t');
-?>
-              <?php echo $this->form()->openTag($form) ?>
-                        <div class="identity_div form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
-                         <?php echo $this->formElement ( $form->get('identity')->setAttribute('class', 'form-control') );
-                    if ($this->formElementErrors ( $form->get('identity') ))
-                ?>
-    <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('identity')) ?></span>
-                            
-                        </div>
-                        <div class="phone_div form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
-                         <?php echo $this->formElement ( $form->get('phone')->setAttribute('class', 'form-control') );
-                    if ($this->formElementErrors ( $form->get('phone') ))
-                ?>
-                <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('identity')) ?></span>
-                            
-                        </div>
-                        <div class="form-group">
-                           <?php echo $this->formElement ( $form->get('credential')->setAttribute('class', 'form-control') );
-                    if ($this->formElementErrors ( $form->get('credential') ))
-                ?>
-    <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('credential')) ?></span>
-                          
-                           
-                        </div>
-                        <button type="submit" class="btn btn-primary block btn btn-info col-md-12 full-width m-b">Login</button>
-                      
-                <?php if ($this->enableRegistration) : ?>
-                   Not registered? <a href="<?php echo $this->url('signup') ?>">Sign up!</a>
-                       <?php
-                            if (stristr($_SERVER['HTTP_USER_AGENT'],'mobi')!==FALSE) {
-                                ?>
-                                Forgot password? <a href="<?php echo $this->url('forgot') ?>">Forgot password!</a>
-                                <?php
-                            } else {
-                                ?>
-                                Forgot password? <a data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a>
-                                <?php
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-                            }
-                       ?>
-                <?php endif; ?>
-                
-                   <?php echo $this->form()->closeTag() ?>
-            
-                      
-           </div>
-        </div>
-    </div>
+    <title>Deeplife| Register</title>
 
-</section>
-<section  id="features" class="container features">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <div class="navy-line"></div>
-            <h1>Ultimate growth<br/> <span class="navy"> with high class features</span> </h1>
-            <p>Reach the globe with the spirit of God's Word. </p>
-        </div>
-    </div>
-    <section id="about">
-        <div class="row">
-            <div class="col-md-3 text-center wow fadeInLeft">
-                <div>
-                    <span class="glyphicon glyphicon-user" style="font-size: 250%; Color:deepskyblue;"></span>
-                    <h2>Win</h2>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-                </div>
-                <div class="m-t-lg">
-                    <span class="glyphicon glyphicon-road" style="font-size: 250%; Color:deepskyblue;"></span>
-                    <h2>Build</h2>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-offset-1 text-center  wow zoomIn">
-                <img src="<?php echo $this->basePath('/img/logooo.png');?>" alt="dashboard" class="img-responsive">
-            </div>
-            <div class="col-md-3 text-center wow fadeInRight">
-                <div>
-                    <span class="glyphicon glyphicon-send" style="font-size: 250%; Color:deepskyblue;"></span>
-                    <h2>Send</h2>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-                </div>
-                <div class="m-t-lg">
-                    <span class="glyphicon glyphicon-cloud" style="font-size: 250%; Color:deepskyblue;"></span>
-                    <h2>Track</h2>
-                    <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus.</p>
-                </div>
-            </div>
-        </div>
-        <section id="pricing"></section>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="navy-line"></div>
-                <h1>About Deep life</h1>
-                <!--<p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. </p>-->
-            </div>
-            <div class="row features-block">
-                <div class="col-lg-6 features-text wow fadeInLeft">
-                    <!--<small>INSPINIA</small>-->
-                    <h2>Launch out to the deep. </h2>
-                    <p>It is not a strange thing to hear the statement, “African
-                        Christianity is a mile wide but an inch deep.” This is to say that
-                        African church growth focuses mostly on quantity than quality.
-                        There could be lots of energy, time and resources put into
-                        expansion, coverage, and exposure through evangelism when
-                        compared to helping someone to truly follow Christ, get grounded in
-                        the faith and take deep root in the word of God and lead a transformed,
-                        authentic and Christ-like life style in private and public arenas.
-                        As an organization, Campus Crusade for Christ seeks to produce true followers of
-                        Jesus. It received its mandate from our Lord and savior Jesus Christ to “go…and
-                        make disciples of all nations” (Matthew 28:19). In collaboration with the body of Christ,
-                        the ministry desires to contribute meaningfully in becoming a “salt and light” to the
-                        problem for the glory of God. It is out of such genuine desire that the vision of “Deep
-                        Life” has been born. Our goal is to train and equip 100, 000 leaders who shall be
-                        planting and building 100,000 churches on cities, villages, campuses,
-                        student population centers, market places, and online networks.
-                        This vision has 3 phases of implementation. Feb 10 – 31 Dec 2014 shall
-                        be a time of prayer and preparation. Jan 1 – 31 Dec 2015 will be a
-                        year of mobilization and training. Jan 1- Oct 10/2016 shall be a
-                        time of full implementation and accelerated actions across
-                        the 24 countries of the Southern and Eastern Africa in 240
-                        locations.</p>
-                    <!--<a href="" class="btn btn-primary">Learn more</a>-->
-                </div>
-                <div class="col-lg-6 text-right wow fadeInRight">
-                    <img src="<?php echo $this->basePath('/img/dash.jpg');?>" alt="dashboard" class="img-responsive pull-right">
-                </div>
-            </div>
-           <p class="m-t" style="align-content: center"> <small>Deep-Life &copy; 2014</small> </p>
-        </div>
+    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+        ->prependStylesheet($this->basePath('css/style.css'))
+        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ->prependStylesheet($this->basePath('css/animate.min.css'))
+//        ->prependStylesheet($this->basePath('css/style.min.css'))
+        ->prependStylesheet($this->basePath('css/login_reg.css'))
+        ->prependStylesheet($this->basePath('font-awesome/css/font-awesome.min.css'))
+    ?>
 
-    </section>
-</section>
-<div class="loginColumns animated fadeInDown">
+</head>
+<body class="white-bg">
+<div class="loginColumns animated fadeInUp">
     <div class="row">
 
         <div class="col-md-6">
-            <div class="ibox-content">
-<!--                <form class="m-t" role="form" action="index.html">-->
-<!--            --><?php //echo $this->form()->openTag($form) ?>
-<!--            <dl class="zend_form">-->
-<!--                <div class="form-group">-->
-<!--                    --><?php //echo $this->formElementErrors($form->get('identity')) ?>
-<!--                    <input type="email" class="form-control" placeholder="email" required="" --><?php //echo $this->formInput($form->get('identity')) ?>
-<!--                </div>-->
-<!---->
-<!---->
-<!--                <dt>--><?php //echo $this->formLabel($form->get('identity')) ?><!--</dt>-->
-<!--                <dd>--><?php //echo $this->formInput($form->get('identity')) ?><!--</dd>-->
-<!--                <div class="form-group">-->
-<!--                    <input type="password" class="form-control" placeholder="Password" required="" --><?php //echo $this->formInput($form->get('credential')) ?>
-<!--                </div>-->
-<!--                <dt><label>--><?php //echo 'Password'; ?><!--</label></dt>-->
-<!--                <dd>--><?php //echo $this->formInput($form->get('credential')) ?><!--</dd>-->
-<!---->
-<!--                --><?php //if ($this->redirect): ?>
-<!--                    <input type="hidden" name="redirect" value="--><?php //echo 'Sign In'; ?><!--" />-->
-<!--                --><?php //endif ?>
-<!---->
-<!--                <dd>--><?php //echo $this->formButton($form->get('submit')) ?><!--</dd>-->
-<!--            </dl>-->
-<!---->
-<!--            --><?php //echo $this->form()->closeTag() ?>
-<!---->
-<!---->
-<!---->
-<!--                    <button type="submit" class="btn btn-primary block full-width m-b">Login</button>-->
-<!---->
-<!--                    <a href="--><?php //echo $this->url('zfcuser/changepassword') ?><!--">-->
-<!--                        <small>Forgot password?</small>-->
-<!--                    </a>-->
-<!---->
-<!--                    <p class="text-muted text-center">-->
-<!--                        <small>Do not have an account?</small>-->
-<!--                    </p>-->
-<!--                    <a class="btn btn-sm btn-white btn-block" href="--><?php //echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?><!--" --><?php //if ($this->enableRegistration) : ?>
-<!--                        <a href="--><?php //echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?><!--">Create an account</a>-->
-<!--                --><?php //endif; ?>
-<!--                </form>-->
-<!--                --><?php //if ($this->enableRegistration) : ?>
-<!--                    Not registered? <a href="--><?php //echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?><!--">Sign up!</a>-->
-<!--                --><?php //endif; ?>
-                
+            <!--            <h2 class="font-bold middle-box">Welcome to IN+</h2>-->
+            <img class="middle-box col-md-12"  src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
+            <p>
+                Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
+            </p>
+
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+            </p>
+
+            <p>
+                When an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            </p>
+
+            <p>
+                <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>
+            </p>
+
+        </div>
+        <div class="col-md-6">
+            <div  class="- middle-box animated fadeInUp ">
+
+                <div class=" col-sm-12 " style="vertical-align: 500px;">
+
+                    <div style="vertical-align: 50%" class="ibox-content  text-foo  ">
+
+                        <h2 style="color: white">Sign In</h2>
+                        <h4 style="color: white">Log in with Email  or phone number </h4>
+                        <?php if(strlen($flashMessages)):  ?>
+                        <span class="help-inline " ><ul>    <li><?php echo $flashMessages; ?></li> </ul>
+                            <?php endif; ?>
+                            <?php
+                            $form = $this->loginForm;
+                            $form->prepare();
+                            $form->setAttribute('action', $this->url('zfcuser/login'));
+                            $form->setAttribute('method', 'post');
+                            $form->setAttribute('class', ' ');
+                            ?>
+                            <?php echo $this->form()->openTag($form) ?>
+                            <div class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+                         <?php echo $this->formElement ( $form->get('identity')->setAttribute('class', 'form-control') );
+                         if ($this->formElementErrors ( $form->get('identity') ))
+                         ?>
+                                <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('identity')) ?></span>
+
+                        </div>
+                        <div  class=" form-group">
+                           <?php echo $this->formElement ( $form->get('credential')->setAttribute('class', 'form-control') );
+                           if ($this->formElementErrors ( $form->get('credential') ))
+                           ?>
+                            <span class="help-inline  error "><?php echo $this->formElementErrors($form->get('credential')) ?></span>
+
+
+                        </div>
+                        <button type="submit" class="btn btn-primary block btn btn-info  full-width m-b">Login</button>
+
+                            <?php if ($this->enableRegistration) : ?>
+                                <a style="color: #f9c123" data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a><h6 style="color: white">Not registered ? </h6>
+                                <a style="color: #f9c123" href="<?php echo $this->url('signup') ?>">Sign up!</a>
+                            <?php endif; ?>
+
+                            <?php echo $this->form()->closeTag() ?>
+
+
+                    </div>
+                </div>
             </div>
         </div>
+        <hr/>
+
     </div>
-    <hr/>
 
+
+</body>
+<div class="footer">
+    <div class="pull-right" style="color: #000000">
+        <strong style="color: #000000"><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
+    </div>
+    <div>
+        <strong style="color: #000000"><?php echo $this->translate('Copyright'); ?></strong> <strong style="color: rgba(0, 0, 0, 0.58)"><?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?></strong>
+    </div>
 </div>
-<style>
-span.help-inline ul li {
-  color: red;
-  list-style: none;
-  
-}
-.intl-tel-input {
-    width: 100%;
-}
-</style>
+</html>
+
+<?php echo $this->inlineScript()
+    ->prependFile($this->basePath('js/pace.min.js'))
+    ->prependFile($this->basePath('js/bootstrap.min.js'))
+    ->prependFile($this->basePath('js/classie.js'))
+    ->prependFile($this->basePath('js/jquery-2.1.1.js'))
+    ->prependFile($this->basePath('js/plugins/iCheck/icheck.min.js'))
+    ->prependFile($this->basePath('js/cbpAnimatedHeader.js'))
+    ->prependFile($this->basePath('js/wow.min.js'))
+    ->prependFile($this->basePath('js/inspinia.js'));
+
+?>
 <script>
-$(document).ready(function() {
-    $("#phone").intlTelInput();
-
-    $('#phone_span').click(function() {
-        $('.phone_div').show();
-        $('.identity_div').hide();
-        $('#identity').removeAttr('required','required');
+    $(document).ready(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
     });
-
-    $('#email_span').click(function() {
-        $('.phone_div').hide();
-        $('#identity').attr('required','required');
-        $('.identity_div').show();
-    });
-    
-    $('.phone_div').hide();
-    
-});
-    
 </script>
