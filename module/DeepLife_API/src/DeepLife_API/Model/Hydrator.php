@@ -336,7 +336,48 @@ class Hydrator
         }
         return null;
     }
-
+    
+    public function Get_Json($Post, $DataType){
+        if (is_array($Post)) {
+            if ($DataType instanceof User) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new User();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setEmail(isset($data['email']) ? ($data['email']) : null);
+                    $New_Data->setDisplayName(isset($data['displayName']) ? $data['displayName'] : null);
+                    $New_Data->setPassword(isset($data['password']) ? $data['password'] : null);
+                    $New_Data->setFirstName(isset($data['firstName']) ? $data['firstName'] : null);
+                    $New_Data->setCountry(isset($data['country']) ? $data['country'] : null);
+                    $New_Data->setPhoneNo(isset($data['phone_no']) ? $data['phone_no'] : null);
+                    $New_Data->setMentorId(isset($data['mentor_id']) ? $data['mentor_id'] : null);
+                    $New_Data->setPicture(isset($data['picture']) ? $data['picture'] : null);
+                    $New_Data->setStage(isset($data['stage']) ? $data['stage'] : null);
+                    $New_Data->setRoleId(isset($data['role_id']) ? $data['role_id'] : null);
+                    $New_Data->setGender(isset($data['gender']) ? $data['gender'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found = $New_Data->getArray();
+                }
+                return $Found;
+            } elseif ($DataType instanceof Answers) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Answers();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setDisciplePhone(isset($data['phone']) ? ($data['phone']) : null);
+                    $New_Data->setAnswer(isset($data['answer']) ? ($data['answer']) : null);
+                    $New_Data->setStage(isset($data['stage']) ? ($data['stage']) : null);
+                    $New_Data->setNotes(isset($data['notes']) ? ($data['notes']) : null);
+                    $New_Data->setQuestionId(isset($data['question_id']) ? $data['question_id'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found = $New_Data->getArray();
+                }
+                return $Found;
+            }
+        }
+    }
     public function GetDisciple($data)
     {
         $New_Data = new User();

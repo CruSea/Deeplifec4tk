@@ -32,6 +32,7 @@ interface Service
 
     public function Get_User(User $user);
     public function Get_Users(User $user);
+    public function Get_User_Profile(User $user);
     public function GetAll_Disciples(User $user);
     public function GetNew_Disciples(User $user);
     public function AddNew_Disciple_log(Disciple $disciple);

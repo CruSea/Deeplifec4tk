@@ -213,10 +213,14 @@ class apiController extends AbstractRestfulController
                                     $smsService->Add_User_Role($added_user->getId(), 2);
                                 }
                                 $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
-                                $found['Schedules'] = $smsService->GetAll_Schedule($this->api_user);
+                                $found['Disciples'] = $smsService->GetNew_Disciples($this->api_user);
+                                $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
                                 $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
-                                $found['Questions'] = $smsService->GetAll_Question();
-                                $found['Reports'] = $smsService->Get_Report($this->api_user);
+                                $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
+                                $found['Categories'] = $smsService->GetAll_Categories();
+                                $found['Questions'] = $smsService->Get_Question($this->api_user);
+                                $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
+                                $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
                                 $this->api_Response['Response'] = $found;
                             } else {
                                 $error['Parameter Error'] = 'Something went wrong try again!';
@@ -432,6 +436,7 @@ class apiController extends AbstractRestfulController
             $smsService->Delete_Disciple_Log($this->api_user);
             $smsService->Delete_Schedule_Log($this->api_user);
             $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
+            $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
             $found['Schedules'] = $smsService->GetAll_Schedule($this->api_user);
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
@@ -479,7 +484,7 @@ class apiController extends AbstractRestfulController
             $found['Categories'] = $smsService->GetAll_Categories();
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
-            $found['User'] = $smsService->Get_User($this->api_user);
+            $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
             
             //$found['Reports'] = $smsService->Get_Report($this->api_user);
 

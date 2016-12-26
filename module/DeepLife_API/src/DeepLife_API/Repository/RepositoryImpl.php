@@ -176,6 +176,32 @@ class RepositoryImpl implements RepositoryInterface
         $found = $hydrator->Get_Data($posts, new User());
         return $found;
     }
+    public function Get_User_Profile(User $user)
+    {
+        $row_sql = 'SELECT * FROM users WHERE users.email = \'' . $user->getEmail() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        } else {
+            $row_sql = 'SELECT * FROM users WHERE users.phone_no = \'' . $user->getPhoneNo() . '\'';
+            $statement = $this->adapter->query($row_sql);
+            $result = $statement->execute();
+            if ($result->count() > 0) {
+                while ($result->valid()) {
+                    $posts[] = $result->current();
+                    $result->next();
+                }
+            }
+        }
+        $hydrator = new Hydrator();
+        $found = $hydrator->Get_Json($posts, new User());
+        return $found;
+    }
     public function Get_UserByID(User $user)
     {
         $row_sql = 'SELECT * FROM users WHERE users.id = \'' . $user->getId() . '\'';

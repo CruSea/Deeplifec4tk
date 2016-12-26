@@ -138,6 +138,16 @@ class ServiceImpl implements Service
         }
     }
 
+    public function Get_User_Profile(User $user)
+    {
+        try {
+            return $this->apiRepository->Get_User_Profile($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
     public function Delete_User(User $user)
     {
         try {
