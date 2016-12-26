@@ -12,7 +12,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 
-class ResourceController extends AbstractActionController
+class ResourceController  extends AbstractActionController
 {
     Public function indexAction()
     {
@@ -44,7 +44,6 @@ class ResourceController extends AbstractActionController
         $this->_helper->viewRenderer->setNoRender(true);
 
     }
-
     Public function download2Action()
     {
 //        if (userHasNoPermissions) {
@@ -62,7 +61,6 @@ class ResourceController extends AbstractActionController
         $this->_helper->viewRenderer->setNoRender(true);
 
     }
-
     Public function download3Action()
     {
 //        if (userHasNoPermissions) {
@@ -80,7 +78,6 @@ class ResourceController extends AbstractActionController
         $this->_helper->viewRenderer->setNoRender(true);
 
     }
-
     Public function download4Action()
     {
 //        if (userHasNoPermissions) {
@@ -98,7 +95,6 @@ class ResourceController extends AbstractActionController
         $this->_helper->viewRenderer->setNoRender(true);
 
     }
-
     Public function download5Action()
     {
 //        if (userHasNoPermissions) {
@@ -116,7 +112,6 @@ class ResourceController extends AbstractActionController
         $this->_helper->viewRenderer->setNoRender(true);
 
     }
-
     Public function download6Action()
     {
 //        if (userHasNoPermissions) {

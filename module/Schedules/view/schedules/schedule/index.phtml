@@ -1,66 +1,74 @@
-<?php echo $this->headLink()->appendStylesheet($this->basePath('css/plugins/fullcalendar/fullcalendar.css')); ?>
+<?php echo $this->headLink()->appendStylesheet($this->basePath('css/plugins/fullcalendar/fullcalendar.css'))
+; ?> 
 
 
-<div class="row">
-    <div class="col-sm-12">
+
+
+
+  
+  <div class="row">
+        <div class="col-sm-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Schedule and to-do</h5>
-            </div>
-            <div class="ibox-content">
+        <div class="ibox-title">
+            <h5>Schedule and to-do</h5>
+       </div>
+        <div class="ibox-content">
+          <div class="row">
+             <div class="col-sm-9">
                 <div class="row">
-                    <div class="col-sm-9">
-                        <div class="row">
-                            <div class="col-sm-1 m-b-xs">
-                                <a href="<?php echo $this->url('schedule',
-                                    array('action' => 'add')); ?>" class="btn  btn-sm btn-secondary">Add Schedule</a>
-                            </div>
-                            <div class="col-offset-sm-8">
-
-                            </div>
-                        </div>
-                        <div id='calendar'></div>
+                    <div class="col-sm-1 m-b-xs">
+              <a href="<?php echo $this->url('schedule',
+                array('action'=>'add'));?>" class="btn  btn-sm btn-secondary">Add Schedule</a>
+                    </div>
+                    <div class="col-offset-sm-8">
+                     
                     </div>
                 </div>
+               <div  id='calendar' ></div>
+               </div>
             </div>
-
+            </div>
+          
         </div>
-    </div>
-</div>
+        </div>
+        </div>
 
 
 <?php echo $this->headScript()
-    ->prependFile($this->basePath('js/plugins/fullcalendar/moment.min.js'))
-    ->prependFile($this->basePath('js/plugins/fullcalendar/fullcalendar.min.js')); ?>
-
+  ->prependFile($this->basePath('js/plugins/fullcalendar/moment.min.js'))
+ ->prependFile($this->basePath('js/plugins/fullcalendar/fullcalendar.min.js'))
+  ;  ?>
+ 
 <script>
-    $(document).ready(function () {
-        var date = new Date();
-        var d = date.getDate();
-        var m = date.getMonth();
-        var y = date.getFullYear();
+	$(document).ready(function() {
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
 
-        $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,basicWeek,basicDay'
-            },
-            editable: true,
-            eventClick: function (event) {
-                var url = "<?php echo $this->url('schedule');?>/edit/" + event.id;
-                //Redirects
-                window.location.href = url;
-                return false;
-
-
-            },
-            eventLimit: true, // allow "more" link when too many events
-            events: "<?php echo $this->url('schedule', array('action' => 'eventjson'));?>",
-            eventColor: '#49ce3f'
-        });
-
-    });
+		$('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,basicWeek,basicDay'
+			},
+		    editable: true,
+           eventClick: function(event) {
+    var url = "<?php echo $this->url('schedule');?>/edit/"+event.id;
+   //Redirects
+    window.location.href = url  ;
+    return false;
+    
+  
+   
+ 
+  },
+		  eventLimit: true, // allow "more" link when too many events
+		 events:"<?php echo $this->url('schedule', array('action'=>'eventjson'));?>" ,
+		  eventColor: '#49ce3f'
+		});
+		
+	});
 
 </script>
 

@@ -17,22 +17,7 @@ echo $this->form()->openTag($form); ?>
 <?php foreach ( $form as $element ) :
 
 if($element->getLabel()=='Picture'){ ?>
-
-    <div    class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
-        <label class=" col-sm-2 col-md-1 control-label"><?php echo $element->getLabel() ?></label>
-        <div class="col-sm-4 col-md-4">
-            <?php echo $this->formElement ( $element );
-            if ($this->formElementErrors ( $element ))
-            ?>
-            <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
-        </div>
-        <input type="hidden" name="x" id="cropx" value="0" />
-        <input type="hidden" name="y" id="cropy" value="0" />
-        <input type="hidden" name="w" id="cropw" value="0" />
-        <input type="hidden" name="h" id="croph" value="0" />
-        <img id="image-preview1"   style="display: none;" />
-    </div>
-
+    
     <div class="row" id="profile_hide" >
         <div class="col-sm-8 col-xs-12">
             <div class="profile-pic">
@@ -46,16 +31,26 @@ if($element->getLabel()=='Picture'){ ?>
                     ?>
 
                     <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="100" height="100" alt="" />
+                    <img id="image-preview1" class="dl-image-preview" style="display: none;" />
 
                 </div>
             </div>
 
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <h4>Personal Information</h4>
+
+    <div    class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+        <label class=" col-sm-2 col-md-2 control-label"><?php echo $element->getLabel() ?></label>
+        <div class="col-sm-4 col-md-4">
+            <?php echo $this->formElement ( $element );
+            if ($this->formElementErrors ( $element ))
+            ?>
+            <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
         </div>
+        <input type="hidden" name="x" id="cropx" value="0" />
+        <input type="hidden" name="y" id="cropy" value="0" />
+        <input type="hidden" name="w" id="cropw" value="0" />
+        <input type="hidden" name="h" id="croph" value="0" />
     </div>
 
 

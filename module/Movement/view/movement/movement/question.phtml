@@ -1,101 +1,212 @@
- <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?> 
-<script src="<?php echo $this->basePath('/js/custom.js')?>" ></script>
-<div class="row">
-    <div class="col-lg-12">
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?>
+<?php
+
+$title = $stage . ' Questions';
+$this->headTitle($title);
+?>
+
+  <div class="row">
+        <div class="col-lg-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5><?php echo $this->translate('Question &amp; Answer')?></h5>
-            </div>
-            <div class="ibox-content">
-                <div class="question-block">
-                    <div class="row">
-                        <div class="col-sm-8 col-xs-12">
-                            <div class="ques-category">
-                            <?php $stage=strtolower($stage); ?>
-     <img src="<?php echo $this->basePath('/img/'.$stage.'_tag.png')?>" width="130px">
-                             </div>
-                            <div class="ques-category">
-                                <span><?php echo $this->translate(ucwords($stage))?> </span>
-                                <span>
-                              
-                                <?php  switch($stage){
-                                    case 'win':
-                                     case 'WIN':
-                                    echo $this->translate('Aggressively evangelize');
-                                    break;
-                                    case 'build':
-                                    case 'BUILD':
-                                    echo $this->translate('Deeply bulid');
-                                    break;
-                                    case 'send':
-                                    case 'SEND':
-                                     echo $this->translate('Urgently send');
-                                    break;
-                                } ?>
-                                
-                                </span>
+        <div class="ibox-title">
+            <h5><?php echo $title; ?> </h5>
+       </div>
+          <div class="ibox-content">
+
+                            <div class="row">
+                              <div class="col-sm-12">
+                                 <a href="#">
+                                  <div class="share-widget style1 <?php if($stage=="WIN"){ echo 'yellow-bg'; } else { echo 'inactive';  } ?> ">
+                                    <i class="fa-win"></i>
+                                    Win
+                                 </div>
+                                 </a>
+                                 <a href="#" >
+                                 <div class="share-widget style1 <?php if($stage=="BUILD"){ echo 'blue-bg'; } else { echo 'inactive';  } ?> ">
+                                    <i class="fa-build"></i>
+                                    Build
+                                 </div>
+                                </a>
+                                 <a href="#" >
+                                 <div class="share-widget style1 <?php if($stage=="SEND"){ echo 'green-bg'; } else { echo 'inactive';  } ?>">
+                                    <i class="fa-send"></i>
+                                    Send
+                                 </div>
+                                <a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4 col-xs-12">
-                            <span class="counter"> <span id="counter" >1</span> of <?php echo count($questions); ?></span>
-                        </div>
-                    </div>
-                
-                 <?php $Qcount=1; foreach($questions as  $question ) { ?>
-                    <div class="row">
-                        <div class="questions col-sm-12 col-xs-12" style="display:none;"  >
-                            <h4> <span> Q<?php echo $Qcount++; ?>:</span><?php echo $question->question ?></h4>
-                            <form role="" action="" class="ques-form">
-                                <div class="radio radio-info radio-inline">
-            <input name="question" type="hidden" value="<?php echo $question->id ?>" />
-            <input name="mandatory" type="hidden" value="<?php echo $question->mandatory ?>" />
-<input name="country" type="hidden" value="<?php echo $country ?>" />
-<input name="stage" type="hidden" value="<?php echo $stage ?>" />
-<input name="userid" type="hidden" value="<?php echo $userid ?>" />
+             <form method="post" name="fshare"  action="" id="fshare">
+                  <div class="form-group ">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover nowrap share-table ">
+                                    <thead>
+                                    <tr>
+                                    <th> Sno.</th>
+                                    <th> Question </th>
+                                    <th> Answers </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                            <?php $snCounter=1;
+                            foreach ($questions as $q) {
+                                if($q['parent'] > 0 ) {
+                                  ?>
+                                  <tr>
+                                    <td><?php  echo $snCounter++; ?></td>
+                                    <td colspan="1">
+                                      <a data-toggle="collapse" data-target="#ques<?php echo $q['category'];?>">
+                                        <i class="fa dl-folder-icon fa-folder" aria-hidden="true"></i>&nbsp;&nbsp;
+                                        <?php echo $q['foldername'];?>
+                                      </a>
 
 
-                                    <input type="radio" id="inlineRadio1" value="1" name="radioInline" checked="">
-                                    <label for="inlineRadio1"> Yes </label>
-                                </div>
-                                <div class="radio radio-info radio-inline">
-                                    <input type="radio" id="inlineRadio1" value="0" name="radioInline" checked="">
-                                    <label for="inlineRadio1"> No </label>
-                                </div>
-                            </form>
-                            <div class="button-box">
-                                <button type="button"  value="Next" onlick="sum_values()" class="btn-primary btn next">Next <i class="fa fa-angle-right" aria-hidden="true"></i></button>
-                            </div>
-                            <div class="help-box">
-                                
-                           <?php if($question->description){ ?>
-                                <button type="button" class="btn btn-default" data-toggle="popover"  data-content="<?php echo $question->description ?>">Help</button>
-                           <?php } ?>
-                            </div>
-                        </div>
-                    </div>
-                                  <?php } ?>
-              <div class="row" id="result" style="display: none;" >
-               <div class="thank-msg alert alert-success col-sm-12"   >
-              <h3><?php echo $this->translate('Thank You!! You have successfully finished this stage.'); ?></h3>
-               <div class="button-box">
-                <a href="<?= $this->url('disciples'); ?>" class="  btn-primary btn">Finish </a>
+                                    </td>
+                                    <?php
+                                    $answered = 0;
+                                    foreach($q['questions'] as $question) {
+                                      if($question['answer'] != '') {
+                                        $answered++;
+                                      }
+                                    }
+                                    ?>
+                                    <td>
+                                      <h4><?php echo $answered . '/'. count($q['questions']);?></h4>
+                                      <?php
+                                        if($answered == count($q['questions'])) {
+                                      ?>
+                                          <span class="dl-complete-bar">Complete</span>
+                                      <?php
+                                        } else {
+                                      ?>
+                                          <span class="dl-progress-bar">InProgress</span>
+                                      <?php
+                                        }
+                                      ?>
+
+                                    </td>
+
+                                  </tr>
+                                  <tr id="ques<?php echo $q['category'];?>" class="collapse dl-folder-questions">
+                                   <td colspan="3">
+                                   <table class="table table-striped table-hover table-bordered">
+                                <?php
+                                }
+
+                              foreach($q['questions'] as $question) {
+                                ?>
+                                <tr>
+                                <?php
+                                if($q['parent'] > 0 ) {
+                                ?>
+                                    <td>
+                                      <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                    </td> <!-- if needed these number, otherwise remove -->
+                                    <td class="dl-table-question">
+                                      <a href="/movement/questiondetail/<?php echo $userid . '/' .$question['id'];?>">
+                                          <?php echo $this->escapeHtml(ucwords($question['question']));?>
+                                        </a>
+                                    </td>
+                                    <?php
+                                  } else {
+                                  ?>
+
+                                      <td><?php  echo $snCounter++; ?></td>
+                                      <td>
+                                        <a href="/movement/questiondetail/<?php echo $userid . '/' .$question['id'];?>">
+                                          <?php echo $this->escapeHtml(ucwords($question['question']));?>
+                                        </a>
+                                      </td>
+
+                                  <?php
+                                  } //end if($q['parent'] > 0 ) {
+                                  ?>
+                                      <td>
+                                      <?php
+                                      if($question['type'] == "YESNO") {
+                                      ?>
+
+                                          <div class="col-sm-10" style="display: inline-flex;">
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio<?php echo $question['id'] ?>" value="yes" name="answer<?php echo $question['id'] ?>" <?php if($question['answer'] == 'yes') echo 'checked="checked"';?>>
+                                                <label for="inlineRadio1"> Yes </label>
+                                            </div>
+                                            <div class="radio radio-info radio-inline">
+                                                <input type="radio" id="inlineRadio<?php echo $question['id'] ?>" value="no" name="answer<?php echo $question['id'] ?>" <?php if($question['answer'] == 'no') echo 'checked="checked"';?>>
+                                                <label for="inlineRadio1"> No </label>
+                                            </div>
+                                          </div>
+
+                                      <?php
+                                      } else {
+                                      ?>
+                                      <div class="col-sm-10" style="display: inline-flex;">
+                                      <span class="arrow-left addButton" attrid="<?php echo $question['id'] ?>"  ></span> <span class="increament-box">
+                                          <input type="text"  oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" size="3"  name="answer<?php echo $question['id'] ?>" id="<?php echo $question['id'] ?>" value="<?php echo $question['answer']; ?>" >
+                                      </span>
+                                      <span class="arrow-right subButton" attrid="<?php echo $question['id'] ?>"  ></span>
+                                      </div>
+                                      <?php
+                                      }
+                                      ?>
+                                      </td>
+
+
+                                      </tr>
+
+                              <?php
+                              }//end inner foreach
+
+                                if($q['parent'] > 0 ) {
+                                  ?>
+                                  </table>
+                                  </td>
+                                </tr>
+                                  <?php
+                                }
+                              }//end main foreach
+                            ?>
+
+                        <tr>
+                        <td colspan="3">
+                        <input name="submit" type="submit" id="submitbutton" class="btn btn-primary pull-right" value="Save">
+                        </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
                 </div>
+                </form>
                 </div>
-                   </div>
-               <div class="row" id="stageresult" style="display: none;" >
-               <div class="thank-msg alert alert-danger col-sm-12"   >
-               <h3> Thank You!! You have not finished this stage.</h3>
-               <div class="button-box">
-                <a href="<?= $this->url('disciples'); ?>" class="  btn-primary btn">Finish </a>
-                </div>
-                </div>
-                   </div>
-                
-                
-                
-                </div>
-            </div>
+
         </div>
-    </div>
-</div>
+        </div>
 
+        </div>
+
+
+ <script>
+
+ $(document).ready(function(){
+
+        $('.subButton').click( function() {
+          var id=$(this).attr('attrid');
+             var counter = $('#'+id).val();
+            counter++ ;
+            $('#'+id).val(counter);
+    });
+ $('.addButton').click( function() {
+          var id=$(this).attr('attrid');
+             var counter = $('#'+id).val();
+         if(counter>0){
+          counter-- ;
+         }
+            $('#'+id).val(counter);
+
+    });
+
+
+
+
+});
+
+ </script>

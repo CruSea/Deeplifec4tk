@@ -3086,7 +3086,8 @@ ol.unstyled {
     z-index: 1000;
     padding: 10px 20px;
     background: white;
-    border-top: 1px solid #e7eaec;
+    border-top: 1px solid #000000;
+    text-decoration-color:#000000 ;
 }
 .footer.fixed {
     position: fixed;
@@ -3096,7 +3097,7 @@ ol.unstyled {
     z-index: 1000;
     padding: 10px 20px;
     background: white;
-    border-top: 1px solid #e7eaec;
+    border-top: 1px solid #fafdff;
     margin-left: 220px;
 }
 body.mini-navbar .footer.fixed,
@@ -3423,10 +3424,10 @@ table.table-mail tr td {
     background-color: #f9c123;
 }
 .white-bg {
-    background-color:#03a5c5;
-    /*background: #f9c123;*/
-    /*background: linear-gradient(to right, #03a5c5,#f6f1d3, #f9ec0e);*/
-    background:radial-gradient(#f9c123,#03a5c5,#f9c123)f9c123
+
+    background:linear-gradient(rgba(23, 158, 179, 0.8), rgba(23, 158, 179, 0.8)),url("../img/background.JPG");
+    background-size: cover;
+
 }
 .navy-bg {
     background-color: #179eb3;
@@ -3763,6 +3764,8 @@ a.close-canvas-menu:hover {
 .m-r-none {
     margin-right: 0;
 }
+.login-bg{ background:linear-gradient(rgb(255, 255, 255), rgba(23, 158, 179, 0.5)), url("https://scontent.xx.fbcdn.net/v/t31.0-8/10842172_578863542214646_6535147740870142034_o.jpg?oh=dc886e1bb0f01ce76cf858c441975e3d&oe=58FC01D9") }
+
 .m-r-xxs {
     margin-right: 1px;
 }
@@ -3932,7 +3935,8 @@ body.modal-open {
 .loginColumns {
     max-width: 800px;
     margin: 0 auto;
-    padding: 100px 20px 20px 20px;
+    padding: 150px 20px 20px 30px;
+    color: #e6e6e6;
 }
 .passwordBox {
     max-width: 460px;
@@ -6165,7 +6169,7 @@ body.skin-2 #wrapper {
     margin-bottom: 1px;
 }
 .skin-2 .ibox-content {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 1);
     border: none !important;
 }
 .skin-2 #page-wrapper {
@@ -9280,4 +9284,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 .rollOut {
     -webkit-animation-name: rollOut;
     animation-name: rollOut;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    height: 100%
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+.footer {
+    position:absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 40px;
+    background-color: #ffffff;
+}
+
+html, body {
+    height:100%;
+    margin:0;
+    padding:0;
+}
+
+body > .container {
+    padding: 60px 15px 0;
+    height: 100%
+
+}
+.container .text-muted {
+    margin: 20px 0;
+}
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+    /*color: #ffffff;*/
+}
+
+code {
+    font-size: 80%;
+    color: #f9c123;
 }

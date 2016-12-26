@@ -109,7 +109,7 @@ class Role implements HierarchicalRoleInterface
      */
     public function setRoleId($roleId)
     {
-        $this->roleId = (string)$roleId;
+        $this->roleId = (string) $roleId;
     }
 
     /**

@@ -40,6 +40,7 @@ class Schedule implements UserInterface, ProviderInterface
     protected $sid = null;
 
 
+
     /**
      * @var string
      * @ORM\Column(type="string", length=100, nullable=true)
@@ -63,7 +64,8 @@ class Schedule implements UserInterface, ProviderInterface
      * @ZFA\Attributes({"type":"text", "placeholder":"Win"})
      * @ZFA\Options({"label":"catagory"})
      */
-    protected $catagory = null;
+    protected $catagory =null;
+
 
 
     /**
@@ -94,12 +96,13 @@ class Schedule implements UserInterface, ProviderInterface
         return array(
             'sid' => $this->getSId(),
             'scheduleName' => $this->getScheduleName(),
-            'catagory' => $this->getCatagory(),
+            'catagory' => $this ->getCatagory(),
             'user_id' => $this->getId(),
             'disc_id' => $this->getId(),
 
         );
     }
+
 
 
     /**
@@ -118,8 +121,7 @@ class Schedule implements UserInterface, ProviderInterface
         $this->country = $catagory;
     }
 
-    public function __toString()
-    {
+    public function __toString() {
         return "{$this->getCatagory()}>";
     }
 
@@ -142,7 +144,7 @@ class Schedule implements UserInterface, ProviderInterface
      */
     public function setId($user_id)
     {
-        $this->id = (int)$user_id;
+        $this->id = (int) $user_id;
         return $this;
     }
 

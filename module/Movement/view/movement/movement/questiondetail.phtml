@@ -1,0 +1,205 @@
+ <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?>
+ <script type="text/javascript">
+   
+   var currentQuestion = <?php echo ($questionid) ? $questionid : 0;?>;
+
+ </script>
+<script src="<?php echo $this->basePath('/js/custom.js')?>" ></script>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><?php echo $this->translate('Question &amp; Answer')?></h5>
+                <a  href="<?php echo $this->url('movement', array('action'=>'question', 'id' => $disciple_id));?>">
+                <button type="button" class="btn btn-default dl-back-ques" ><i class="fa fa-list" aria-hidden="true"></i> &nbsp;&nbsp; Back to Quesiton list </button></a>
+            </div>
+            <div class="ibox-content">
+                <div class="question-block">
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-12">
+                            <div class="ques-category">
+                            <?php $stage=strtolower($stage); ?>
+     <img src="<?php echo $this->basePath('/img/'.$stage.'_tag.png')?>" width="130px">
+                             </div>
+                            <div class="ques-category">
+                                <span><?php echo $this->translate(ucwords($stage))?> </span>
+                                <span>
+
+                                <?php  switch($stage){
+                                    case 'win':
+                                     case 'WIN':
+                                    echo $this->translate('Aggressively evangelize');
+                                    break;
+                                    case 'build':
+                                    case 'BUILD':
+                                    echo $this->translate('Deeply bulid');
+                                    break;
+                                    case 'send':
+                                    case 'SEND':
+                                     echo $this->translate('Urgently send');
+                                    break;
+                                } ?>
+
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-xs-12">
+                            <span class="counter"> <span id="counter" ><?php echo $questionid+1;?></span> of <?php echo count($questions); ?></span>
+                        </div>
+                    </div>
+
+                 <?php $Qcount=1; foreach($questions as  $question ) { ?>
+                    <div class="row">
+                        <div class="questions col-sm-12 col-xs-12" style="display:none;"  >
+                            <h4> <span> Q<?php echo $Qcount++; ?>:</span><?php echo $question->question ?></h4>
+                            <h5 class="dl-description"><?php echo $question->description ?></h5 class="dl-description">
+                            <form role="" action="" class="ques-form">
+                            <input name="question" type="hidden" value="<?php echo $question->id ?>" />
+                            <input name="mandatory" type="hidden" value="<?php echo $question->mandatory ?>" />
+                            <input name="country" type="hidden" value="<?php echo $country ?>" />
+                            <input name="stage" type="hidden" value="<?php echo $stage ?>" />
+                            <input name="userid" type="hidden" value="<?php echo $userid ?>" />
+                            <?php if($question->type == 'YESNO') { ?>
+                            <div class="col-sm-10 dl-response">
+                              <div class="radio radio-info radio-inline">
+                                  <input type="radio" id="inlineRadio1" value="1" class="dl-radio yes" name="radioInline" checked="">
+                                  <label for="inlineRadio1" class="dl-radio-label yes"> Yes </label>
+                              </div>
+                              <div class="radio radio-info radio-inline">
+                                  <input type="radio" id="inlineRadio1" value="0" class="dl-radio no" name="radioInline" checked="">
+                                  <label for="inlineRadio1" class="dl-radio-label no"> No </label>
+                              </div>
+                            </div>
+                            <?php } else { ?>
+                            <div class="dl-response">
+                              <div class="col-sm-10" style="display: inline-flex;">
+                                <span class="arrow-left addButton" attrid="numberInline"></span>
+                                <span class="increament-box">
+                                  <input type="text" name="numberInline" id="numberInline" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" value="0" size="3" max="100" min="0">
+                                </span>
+                                <span class="arrow-right subButton" attrid="numberInline"></span>
+                              </div>
+                            </div>
+                            <?php } ?>
+
+
+                            <div class="col-sm-10" style="margin-top:10px;">
+                              <textarea name="notes" id="notes" class="form-control" value="" type="text" placeholder="Add Notes"></textarea>
+                            </div>
+                            </form>
+                            <br/>
+                            <div class="col-sm-10" style="margin-top:10px;">
+                              <div class="button-box" style="clear:both;">
+                                  <button type="button"  value="Save" onlick="" class="btn-primary btn save dl-button-save">Save</button>
+                              </div>
+                            </div>
+                            <div class="col-sm-10" style="margin-top:10px;">
+                              <div class="button-box" style="clear:both;">
+                                  <button type="button"  value="Previous" onlick="sum_values()" class="btn-primary btn previous"><i class="fa fa-angle-left" aria-hidden="true"></i> Prev Q</button>
+                                  <button type="button"  value="Next" onlick="sum_values()" class="btn-primary btn next">Next Q <i class="fa fa-angle-right" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                                  <?php } ?>
+              <div class="row" id="result" style="display: none;" >
+               <div class="thank-msg alert alert-success col-sm-12"   >
+              <h3><?php echo $this->translate('Thank You!! You have successfully finished this stage.'); ?></h3>
+               <div class="button-box">
+                <a href="<?= $this->url('disciples'); ?>" class="  btn-primary btn">Finish </a>
+                </div>
+                </div>
+                   </div>
+               <div class="row" id="stageresult" style="display: none;" >
+               <div class="thank-msg alert alert-danger col-sm-12"   >
+               <h3> Thank You!! You have not finished this stage.</h3>
+               <div class="button-box">
+                <a href="<?= $this->url('disciples'); ?>" class="  btn-primary btn">Finish </a>
+                </div>
+                </div>
+                   </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins dl-notes-history">
+            <div class="ibox-title">
+                <h5>Notes History</h5>
+            </div>
+            <div class="ibox-content">
+            <?php foreach($questions as $question ) { ?>
+              <table class="table table-hover notes dl-notes-table" style="display:none;">
+                <tbody>
+                  <?php foreach($question->answer as $answer) { ?>
+                  <tr>
+                    <td class="col-md-6">
+                      <?php echo $answer->notes;?>
+                      <span class="dl-note-info">
+                        <?php
+
+                        ?>
+                        <i class="fa fa-calendar-o" aria-hidden="true"></i> <?php echo substr($answer->created->format('r'),0,16);?> &nbsp;&nbsp;
+                        <i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo $answer->created->format('H:i a');?>
+                      </span>
+                    </td>
+                    <td class="col-md-6 dl-notes-response">
+                      <h4>Answer - <span class="dl-response-result"><?php echo $answer->answer;?></span></h4>
+                    </td>
+                  </tr>
+                  <?php } ?>
+                </tbody>
+              </table>
+            <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+// for making yes and no green and red on selection
+
+    $('.dl-radio').on('click', function() {
+      if($(this).is(':checked')) {
+        if($(this).hasClass('yes')) {
+            $('.dl-radio-label.no').css('color', 'inherit');
+            $('.dl-radio-label.yes').css('color', 'green');
+        } else {
+            $('.dl-radio-label.yes').css('color', 'inherit');
+            $('.dl-radio-label.no').css('color', 'red');
+        }
+      }
+    });
+
+    $(document).ready(function(){
+
+           $('.subButton').click( function() {
+             var id=$(this).attr('attrid');
+                var counter = $('#'+id).val();
+               counter++ ;
+               $('#'+id).val(counter);
+       });
+    $('.addButton').click( function() {
+             var id=$(this).attr('attrid');
+                var counter = $('#'+id).val();
+            if(counter>0){
+             counter-- ;
+            }
+               $('#'+id).val(counter);
+
+       });
+
+
+
+
+    });
+
+
+</script>

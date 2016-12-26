@@ -1,9 +1,6 @@
  <?php echo $this->headLink()->prependStylesheet($this->basePath('/css/build.css')); ?> 
  <?php echo $this->headLink()->prependStylesheet($this->basePath('js/plugins/multipleselect/bootstrap-multiselect.css')); ?> 
- 
  <script src="<?php echo $this->basePath('js/plugins/multipleselect/bootstrap-multiselect.js')?>"></script>
- 
-  
   <div class="row">
             <div class="col-md-3 col-sm-6">
                 <div class="widget style1 grey-border">
@@ -199,12 +196,40 @@
         <div class="row">
             <form class="form-inline" role="form">
  <div class="form-group col-sm-12">
+  <div class="row">
+        <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6">
    <label for="sel1">Select Countries </label>
    <select class="form-control" id="chartcountry" multiple="multiple" >
    <?php echo $stroption ;?>
    </select>
+ </div>
+        <div class="col-xs-12 col-sm-12 col-lg-2 col-md-2">
  
-  
+   <label for="sel2">Select Years </label>
+   <select class="form-control" id="chartcountryyear") >
+   <?php for($year=2015;$year<=date('Y');$year++){ ?>
+      <option <?php if($year==date('Y')){echo 'selected'; } ?>  value='<?php echo $year; ?>' ><?php echo $year; ?></option>
+   <?php } ?>
+   </select>
+ </div>
+  <div class="col-xs-12 col-sm-12 col-lg-4 col-md-4">
+   
+    <label for="sel3">Select Months </label>
+   <select class="form-control" id="chartcountrymonth" multiple="multiple" >
+    <option  value='1'>Janaury</option>
+    <option value='2'>February</option>
+    <option value='3'>March</option>
+    <option value='4'>April</option>
+    <option value='5'>May</option>
+    <option value='6'>June</option>
+    <option value='7'>July</option>
+    <option value='8'>August</option>
+    <option value='9'>September</option>
+    <option value='10'>October</option>
+    <option value='11'>November</option>
+    <option value='12'>December</option>
+   </select>
+</div></div>
 </div>
 
 </form>
@@ -244,7 +269,42 @@
  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 
  <script type="text/javascript">
+   function drawChart(){
+          
+          
+          var country = $('#chartcountry option:selected');  
+          var selected = [];
+          $(country).each(function(index, country){
+            selected.push($(this).val());
+           }); 
+               
+          var chartcountryyear=$('#chartcountryyear option:selected').val();
+          var countrymonth = $('#chartcountrymonth option:selected');  
+          var selectedmonth = [];
+          $(countrymonth).each(function(index, countrymonth){
+           selectedmonth.push($(this).val());
+           }); 
+          
+          alert(selected+"-- "+selectedmonth+"-- "+chartcountryyear);
+          
+          $.ajax({
+           type: 'POST', 
+           url:"<?php echo $this->url('tree', array('action'=>'ajaxchart'));?>",
+           data:{ids:selected,selectedmonth:selectedmonth,chartyear:chartcountryyear},
+           success:function(result)
+           {
+                    
+             $('#buildchart').html(result);
+                 
+          } 
+       
+       }); 
+    }
+ 
     $(document).ready(function() {
+    	
+    	 $('#chartcountrymonth').multiselect({      onChange: function(option, checked, select) {   drawChart();} });
+    	
         $('#bulidcountries').multiselect({
            
             onChange: function(option, checked, select) {
@@ -261,18 +321,12 @@
             }
         });
     
+           
+       $( "#chartcountryyear" ).change(function() {
+        drawChart();
+       });
         $('#chartcountry').multiselect({
            
-             onInitialized: function(select, container) {
-                   var country = $('#chartcountry option:selected');  
-             var selected = [];
-                   $(country).each(function(index, country){
-            selected.push($(this).val());
-          }); 
-                                   drawChart(selected);
-                },
-            
-            
             onChange: function(option, checked, select) {
             var country = $('#chartcountry option:selected');  
              var selected = [];
@@ -283,33 +337,15 @@
             
             
             }else{
-                
-            
-          $(country).each(function(index, country){
-            selected.push($(this).val());
-          });  
-             //  console.log(selected);    
+               
                          
-          drawChart(selected);
+          drawChart();
             
             }}
         });
         
-    
+      drawChart();
     });
     
-    function drawChart(selected){
-           $.ajax({
-           type: 'POST', 
-           url:"<?php echo $this->url('tree', array('action'=>'ajaxchart'));?>",
-           data:{ids:selected},
-           success:function(result)
-           {
-                    
-         $('#buildchart').html(result);
-                 
-          } 
-       
-       });
-    }
+  
 </script>

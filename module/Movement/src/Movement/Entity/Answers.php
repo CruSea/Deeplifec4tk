@@ -1,7 +1,6 @@
 <?php
 
 namespace Movement\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,8 +15,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @property int $user_id
  * @property int $question_id
  * @property int $country
- *  */
-class Answers
+*  */
+
+class Answers 
 {
     protected $inputFilter;
 
@@ -38,27 +38,31 @@ class Answers
      */
     protected $question_id;
 
-
-    /**
+  
+   /**
      * @ORM\Column(type="datetime")
      */
     protected $created;
 
-    /**
+  /**
      * @ORM\Column(type="string")
      */
     protected $answer;
 
-    /**
+  /**
      * @ORM\Column(type="integer")
      */
     protected $country;
-
+    
+   /**
+     * @ORM\Column(type="string")
+     */
+    protected $stage;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $stage;
+    protected $notes;
 
     /**
      * Magic getter to expose protected properties.
@@ -66,7 +70,7 @@ class Answers
      * @param string $property
      * @return mixed
      */
-    public function __get($property)
+    public function __get($property) 
     {
         return $this->$property;
     }
@@ -77,7 +81,7 @@ class Answers
      * @param string $property
      * @param mixed $value
      */
-    public function __set($property, $value)
+    public function __set($property, $value) 
     {
         $this->$property = $value;
     }
@@ -87,7 +91,7 @@ class Answers
      *
      * @return array
      */
-    public function getArrayCopy()
+    public function getArrayCopy() 
     {
         return get_object_vars($this);
     }
@@ -97,17 +101,19 @@ class Answers
      *
      * @param array $data
      */
-    public function populate($data = array())
+    public function populate($data = array()) 
     {
         $this->id = $data['id'];
         $this->category = $data['user_id'];
         $this->question_id = $data['question_id'];
         $this->country = $data['country'];
         $this->answer = $data['answer'];
+        $this->notes = $data['notes'];
         $this->stage = $data['stage'];
-
-
+      
+    
     }
 
-
+   
+   
 }

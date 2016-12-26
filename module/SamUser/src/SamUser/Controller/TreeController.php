@@ -9,8 +9,8 @@
 /**
  * Tree
  * This module will be used for user Tree
- * @package controller
- * @author Abhinav
+ *@package controller
+ *@author Abhinav
  */
 
 namespace SamUser\Controller;
@@ -350,12 +350,11 @@ class TreeController extends AbstractActionController
 
 
             $countriesid = $this->getRequest()->getPost('ids');
-
-            $countryChartData = $this->countryChartData($countriesid);
-
-
-            $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-            $queryBuilder->select('u.id,u.name')
+            $selectedmonth = $this->getRequest()->getPost('selectedmonth');
+             $chartyear = $this->getRequest()->getPost('chartyear'); 
+             $countryChartData = $this->countryChartData($countriesid,$selectedmonth,$chartyear);
+		       $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+               $queryBuilder->select('u.id,u.name')
                 ->from('SamUser\Entity\Country', 'u')
                 ->andWhere('u.id IN (:countryid)')
                 ->orderBy('u.name')
@@ -375,32 +374,40 @@ class TreeController extends AbstractActionController
 
     }
 
-    public function countryChartData($countryIds)
+    public function countryChartData($countryIds,$selectedmonth,$chartyear)
     {
         $countryData = array();
         $countryIds = array_slice($countryIds, 0, 3);
 
 
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select("u.country,YEAR(u.created) as ycreated,SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")->from('SamUser\Entity\Users', 'u')
-            ->andWhere('u.country IN (:country)')
-            ->groupBy('ycreated,u.country')
-            ->setParameter('country', $countryIds);
-
+        $queryBuilder->select("u.country,YEAR(u.created) as ycreated,MONTH(u.created) as mcreated,SUM(IFELSE(u.stage='win',1,0)) AS win,SUM(IFELSE(u.stage='build',1,0)) AS build,SUM(IFELSE(u.stage='send',1,0)) AS send")->from('SamUser\Entity\Users', 'u');
+            $queryBuilder->andWhere('u.country IN (:country)');
+            $queryBuilder->andWhere('YEAR(u.created) IN (:year)');
+            if(count($selectedmonth)){
+			
+            $queryBuilder->andWhere('MONTH(u.created) IN (:month)');
+            $queryBuilder->setParameter('month', $selectedmonth);
+            }
+            $queryBuilder->groupBy('ycreated,mcreated,u.country');
+            $queryBuilder->setParameter('country', $countryIds);
+            $queryBuilder->setParameter('year', $chartyear); 
+          
         $countryData = $queryBuilder->getQuery()->getScalarResult();
 
 
-        $chartData = array();
+        $chartData = array(); 
         foreach ($countryData as $val) {
-            $chartData[$val['ycreated']]['win'][$val['country']] = $val['win'];
-            $chartData[$val['ycreated']]['build'][$val['country']] = $val['build'];
-            $chartData[$val['ycreated']]['send'][$val['country']] = $val['send'];
+            $chartData[$val['ycreated']."-".$val['mcreated']]['win'][$val['country']] = $val['win'];
+            $chartData[$val['ycreated']."-".$val['mcreated']]['build'][$val['country']] = $val['build'];
+            $chartData[$val['ycreated']."-".$val['mcreated']]['send'][$val['country']] = $val['send'];
         }
 
 
+      
         foreach ($chartData as $key => $chart) {
             foreach ($chart as $key1 => $stage) {
-                $stage['year'] = (string)$key;
+                $stage['m'] = (string)$key;
 
                 if ($key1 == 'win') {
                     $win[] = $stage;

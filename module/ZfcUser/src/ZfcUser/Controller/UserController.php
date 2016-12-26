@@ -103,9 +103,15 @@ class UserController extends AbstractActionController
                 'flashMessages' => $flashMessenger,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
             );
+        } else {
+            $var = $request->getPost();
+            $phone = $request->getPost('phone');
+            $identity = $request->getPost('identity');
+            if($identity == '') {
+                $var['identity'] = $phone;
+            }
         }
-
-        $form->setData($request->getPost());
+        $form->setData($var);
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);

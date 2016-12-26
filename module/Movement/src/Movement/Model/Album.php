@@ -15,11 +15,11 @@ class Album implements InputFilterAwareInterface
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data['id'])) ? $data['id'] : null;
+        $this->id     = (isset($data['id'])) ? $data['id'] : null;
         $this->artist = (isset($data['artist'])) ? $data['artist'] : null;
-        $this->title = (isset($data['title'])) ? $data['title'] : null;
+        $this->title  = (isset($data['title'])) ? $data['title'] : null;
     }
-
+    
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");
@@ -29,49 +29,49 @@ class Album implements InputFilterAwareInterface
     {
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();
-            $factory = new InputFactory();
+            $factory     = new InputFactory();
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'id',
+                'name'     => 'id',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'Int'),
                 ),
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'artist',
+                'name'     => 'artist',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'min'      => 1,
+                            'max'      => 100,
                         ),
                     ),
                 ),
             )));
 
             $inputFilter->add($factory->createInput(array(
-                'name' => 'title',
+                'name'     => 'title',
                 'required' => true,
-                'filters' => array(
+                'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name'    => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'min'      => 1,
+                            'max'      => 100,
                         ),
                     ),
                 ),
@@ -82,7 +82,7 @@ class Album implements InputFilterAwareInterface
 
         return $this->inputFilter;
     }
-
+    
     public function getArrayCopy()
     {
         return get_object_vars($this);

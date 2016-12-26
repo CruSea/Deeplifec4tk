@@ -13,22 +13,22 @@ class MessagingForm extends Form
         $this->add(array(
             'name' => 'id',
             'attributes' => array(
-                'type' => 'hidden',
+                'type'  => 'hidden',
             ),
         ));
-
-        $this->add(array(
+   
+     $this->add(array(
             'name' => 'user_id',
             'attributes' => array(
-                'type' => 'hidden',
+                'type'  => 'hidden',
             ),
         ));
         $this->add(array(
             'name' => 'sender_id',
             'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control',
-                'id' => 'token',
+                'type'  => 'text',
+                 'class'    => 'form-control',
+                        'id' => 'token',
             ),
             'options' => array(
                 'label' => 'To',
@@ -37,38 +37,43 @@ class MessagingForm extends Form
         $this->add(array(
             'name' => 'subject',
             'attributes' => array(
-                'type' => 'text',
-                'class' => 'form-control',
-                'required' => 'required',
+                'type'  => 'text',
+                 'class'    => 'form-control',
+                   'required' => 'required',
             ),
             'options' => array(
                 'label' => 'Subject',
             ),
         ));
-        $this->add(array(
+          $this->add(array(
             'name' => 'description',
             'attributes' => array(
-                'type' => 'textarea',
-                'class' => 'form-control',
-                'required' => 'required',
-                'id' => 'description'
+                'type'  => 'textarea',
+                 'class'    => 'form-control',
+                   'required' => 'required',
+                   'id'=>'description'
             ),
             'options' => array(
                 'label' => 'Description',
             ),
         ));
 
-
+        
+        
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
-                'type' => 'submit',
+                'type'  => 'submit',
                 'value' => 'Send',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-primary pull-right',
+                 'class'    => 'btn btn-primary pull-right',
             ),
         ));
     }
+
+
+
+
 
 
 }

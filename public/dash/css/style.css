@@ -37,6 +37,11 @@ h5 {
   margin-top: 5px;
   font-weight: 600;
 }
+
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+  vertical-align: middle;
+}
+
 .nav > li > a {
   color: #fff;
   font-weight: 600;
@@ -1281,9 +1286,9 @@ button.dim:active:before {
 .fc-event a {
   padding: 4px 6px;
   background-color: #1ab394;
- 
+
   border-color: #1ab394;
-  border color 
+  border color
 }
 .fc-event-time,
 .fc-event-title {
@@ -1293,7 +1298,7 @@ button.dim:active:before {
 .ui-calendar .fc-event-time,
 .ui-calendar .fc-event-title {
   color: #fff;
-} 
+}
 /* Chat */
 .chat-activity-list .chat-element {
   border-bottom: 1px solid #e7eaec;
@@ -3345,6 +3350,7 @@ code {
   margin-bottom: 0;
   padding: 14px 15px 7px;
   min-height: 48px;
+  position: relative;
 }
 .ibox-content {
   background-color: #ffffff;
@@ -6427,10 +6433,10 @@ body.skin-3 {
 }
 
 
-/* 
+/*
 Author: Sunakshi (ITHands)
 Date: 20 April 2016
-Description: custom css 
+Description: custom css
  */
  :focus {
     outline: 0 !important;
@@ -6537,7 +6543,7 @@ ul.token-input-list {
 
 
 /* Button
- Overwrite css for button 
+ Overwrite css for button
  by Sunakshi ITHands
  21 April 2016
  */
@@ -6553,6 +6559,7 @@ ul.token-input-list {
 .btn-primary {
     background-color: #10b7d7;
 }
+
 .btn-secondary,.btn-secondary:hover {
   color: #fff;
 }
@@ -6759,6 +6766,7 @@ span.action {
     max-width: inherit;
   }
 .profile-pic {
+    display: inline-block;
     margin-bottom: 20px;
 }
 .form-photo {
@@ -6794,7 +6802,7 @@ input[type="file"],input[type="button" i] {
   cursor: pointer !important;
 }
 .custom-file-upload {
-   
+
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
@@ -6815,7 +6823,7 @@ input[type="file"],input[type="button" i] {
     display: inline-block;
     white-space: nowrap;
     font-size: 13px;
-  }  
+  }
 /* overwrite for select */
 .select2-drop-active,.select2-drop.select2-drop-above.select2-drop-actives {
     border: 0 !important;
@@ -6846,7 +6854,7 @@ input[type="file"],input[type="button" i] {
 }
 .select2-container .select2-choice {
     padding: 0 !important;
-  
+
 }
 div#DataTables_Table_0_filter input {
     background-color: #FFFFFF;
@@ -6895,17 +6903,17 @@ ul.multiselect-container.dropdown-menu {
 } */
 
 .arrow-right {
-  height: 0; 
+  height: 0;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
   border-left: 20px solid #10b7d7;
 }
 
 .arrow-left {
-  height: 0; 
+  height: 0;
   border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent; 
-  border-right: 20px solid #f8ac59; 
+  border-bottom: 12px solid transparent;
+  border-right: 20px solid #f8ac59;
 }
 .increament-box,.arrow-left,.arrow-right {
  width: auto;
@@ -7013,3 +7021,142 @@ ul.learning li:last-child {
 }
 }
 
+  /* custom styling */
+  .dl-folder-icon {
+    color: #00A3BB;
+    font-size: 18px;
+  }
+
+  table.dataTable tbody th, table.dataTable tbody td {
+    vertical-align: middle;
+  }
+
+  .dl-mandatory {
+    font-size: 18px;
+    color: red;
+    opacity: .6;
+  }
+
+  .dl-image-preview {
+    width: 100px !important;
+    height: 100px !important;
+    margin: 25px;
+    float: right;
+    border: 5px solid #ffffff;
+    box-shadow: 0 0 15px rgba(0,0,0,.3);
+  }
+
+  .form-photo .jcrop-active {
+    width: 120% !important;
+    height: 100% !important;
+    margin-top: -20px;
+  }
+
+  input,
+textarea.form-control {
+  background: #ffffff;
+  box-shadow: none;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+  min-height: 25px;
+}
+
+  .questions textarea.form-control {
+    background: #efefef;
+    box-shadow: none;
+    min-height: 100px;
+  }
+
+.increament-box input {
+  text-align: center;
+}
+
+  .dl-description {
+    font-weight: normal;
+    font-style: italic;
+    color: #909090;
+  }
+
+  .dl-back-ques {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    color: #505050;
+    background: #ffc325;
+  }
+
+    .dl-button-save {
+      background-color: #6CC159;
+      border-color: #6CC159;
+      color: #FFFFFF;
+    }
+
+    .dl-radio-label {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .dl-notes-history {
+      margin-bottom: 100px;
+    }
+
+      .dl-response {
+        margin-top: 0;
+        margin-bottom: 30px;
+        display: inline-block;
+        width: 100%;
+      }
+
+        .dl-response .arrow-left {
+          border-top: 22px solid transparent;
+          border-bottom: 22px solid transparent;
+          border-right: 30px solid #f8ac59;
+        }
+
+        .dl-response .arrow-right {
+          border-top: 22px solid transparent;
+          border-bottom: 22px solid transparent;
+          border-left: 30px solid #10b7d7;
+        }
+
+          .dl-response .increament-box input {
+            font-size: 30px;
+            min-height: 40px;
+          }
+
+      .dl-notes-response {
+        text-transform: uppercase;
+      }
+
+        .dl-note-info {
+          display: block;
+          color: #acacac;
+          text-transform: uppercase;
+        }
+          .dl-response-result {
+            color: #00A3BB;
+          }
+
+          .dl-folder-questions {
+            padding-top: 10px;
+          }
+
+      .dl-complete-bar {
+        padding: 3px 10px;
+        background: #50B540;
+        font-size: 12px;
+        color: #ffffff;
+        border-radius: 14px;
+      }
+
+      .dl-progress-bar {
+        padding: 3px 10px;
+        background: #F7494C;
+        font-size: 12px;
+        color: #ffffff;
+        border-radius: 14px;
+      }
+
+      .dl-table-question {
+        width: 84%;
+      }
