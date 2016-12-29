@@ -77,6 +77,11 @@ interface RepositoryInterface extends Repository
     public function GetNew_NewsFeeds(User $user);
     public function AddNew_NewsFeed_log(NewsFeed $news);
     public function Delete_All_NewsFeed_Log(User $user);
+
+    public function GetAll_LearningTools();
+    public function GetNew_LearningTools(User $user);
+    public function AddNew_LearningTools_log(Testimony $testimony);
+    public function Delete_All_LearningTools_Log(User $user);
     
     public function GetAll_Testimonies();
     public function Get_Testimonies(User $user);

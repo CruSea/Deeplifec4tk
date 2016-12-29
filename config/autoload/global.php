@@ -14,10 +14,10 @@
 return array(
     'db' => array(
         'driver' => 'Pdo',
-        'dsn' => 'mysql:dbname=deeplife;
+        'dsn' => 'mysql:dbname=DeepLifeNew;
         host=localhost',
-        'username' => 'root',
-        'password' => '',
+        'username' => 'bengeos',
+        'password' => 'passben',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
@@ -48,9 +48,9 @@ return array(
                 'params' => array(
                     'host' => '127.0.0.1',
                     'port' => '3306',
-                    'user' => 'root',
-                    'password' => '',
-                    'dbname' => 'deeplife',
+                    'user' => 'bengeos',
+                    'password' => 'passben',
+                    'dbname' => 'DeepLifeNew',
                     'driverOptions' => array(1002 => 'SET NAMES utf8')
                 ),
             ),

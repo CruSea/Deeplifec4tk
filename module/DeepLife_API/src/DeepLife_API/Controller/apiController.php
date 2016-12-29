@@ -29,7 +29,7 @@ class apiController extends AbstractRestfulController
         'IsValid_User', 'CreateUser', 'GetAll_Questions', 'GetAll_Answers', 'AddNew_Answers', 'Send_Log', 'Log_In', 'Sign_Up',
         'Update_Disciples', 'Update', 'Meta_Data', 'Send_Report', 'GetNew_NewsFeed', "Send_Testimony", "Upload_User_Pic", "Upload_Disciple_pic",
         'Update_Schedules','GetAll_Testimonies','GetNew_Testimonies','AddNew_Testimony','Delete_Testimony','AddNew_Testimony_Log','Delete_All_TestimonyLogs',
-        'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category',''
+        'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category','GetAll_LearningTools','GetNew_LearningTools'
     );
     protected $api_Param;
     protected $api_Service;
@@ -221,6 +221,7 @@ class apiController extends AbstractRestfulController
                                 $found['Questions'] = $smsService->Get_Question($this->api_user);
                                 $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
                                 $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
+                                $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
                                 $this->api_Response['Response'] = $found;
                             } else {
                                 $error['Parameter Error'] = 'Something went wrong try again!';
@@ -437,11 +438,13 @@ class apiController extends AbstractRestfulController
             $smsService->Delete_Schedule_Log($this->api_user);
             $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
             $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
+            $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
             $found['Schedules'] = $smsService->GetAll_Schedule($this->api_user);
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
             $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
             $found['Reports'] = $smsService->Get_Report($this->api_user);
+            $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
             /**
              * @var \DeepLife_API\Model\User $profile
              */
@@ -486,7 +489,8 @@ class apiController extends AbstractRestfulController
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
             $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
-            
+            $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
+
             //$found['Reports'] = $smsService->Get_Report($this->api_user);
 
             $this->api_Response['Response'] = $found;
@@ -675,6 +679,12 @@ class apiController extends AbstractRestfulController
         } elseif ($service == $this->api_Services[37]) {
             // GetAll_Category
             $this->api_Response['Response'] = array('Categories', $smsService->GetAll_Categories());
+        } elseif ($service == $this->api_Services[38]) {
+            // GetAll_LearningTools
+            $this->api_Response['Response'] = array('LearningTools', $smsService->GetAll_LearningTools());
+        } elseif ($service == $this->api_Services[38]) {
+            // GetNew_LearningTools
+            $this->api_Response['Response'] = array('LearningTools', $smsService->GetNew_LearningTools($this->api_user));
         }
     }
 

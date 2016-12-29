@@ -13,6 +13,7 @@ class Testimony
 {
     protected $id;
     protected $user_id;
+    protected $user_name;
     protected $country_id;
     protected $description;
     protected $status;
@@ -48,6 +49,22 @@ class Testimony
     public function setUserId($user_id)
     {
         $this->user_id = $user_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserName()
+    {
+        return $this->user_name;
+    }
+
+    /**
+     * @param mixed $user_name
+     */
+    public function setUserName($user_name)
+    {
+        $this->user_name = $user_name;
     }
 
     /**
@@ -120,6 +137,7 @@ class Testimony
         return array(
             'id' => $this->getId(),
             'user_id' => $this->getUserId(),
+            'user_name' => $this->getUserName(),
             'country' => $this->getCountryId(),
             'description' => $this->getDescription(),
             'status' => $this->getStatus(),

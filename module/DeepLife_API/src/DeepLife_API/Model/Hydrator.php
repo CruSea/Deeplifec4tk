@@ -123,6 +123,20 @@ class Hydrator
                     $Found[] = $New_Data;
                 }
                 return $Found;
+            } elseif ($DataType instanceof LearningTools) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new LearningTools();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setTitle(isset($data['title']) ? intval($data['title']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? intval($data['description']) : null);
+                    $New_Data->setIframcode(isset($data['iframcode']) ? ($data['iframcode']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setDefaultLearn(isset($data['default_learn']) ? $data['default_learn'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found[] = $New_Data;
+                }
+                return $Found;
             }
         }
         return null;
@@ -243,6 +257,7 @@ class Hydrator
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
                     $New_Data->setDescription(isset($data['description']) ? ($data['description']) : null);
                     $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
+                    $New_Data->setUserName(isset($data['user_name']) ? ($data['user_name']) : null);
                     $New_Data->setCountryId(isset($data['country']) ? $data['country'] : null);
                     $New_Data->setStatus(isset($data['status']) ? $data['status'] : null);
                     $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
@@ -258,6 +273,20 @@ class Hydrator
                     $New_Data->setName(isset($data['name']) ? ($data['name']) : null);
                     $New_Data->setStatus(isset($data['status']) ? ($data['status']) : null);
                     $New_Data->setParent(isset($data['parent']) ? $data['parent'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found[] = $New_Data->getArray();
+                }
+                return $Found;
+            } elseif ($DataType instanceof LearningTools) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new LearningTools();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setTitle(isset($data['title']) ? ($data['title']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? ($data['description']) : null);
+                    $New_Data->setIframcode(isset($data['iframcode']) ? ($data['iframcode']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setDefaultLearn(isset($data['default_learn']) ? $data['default_learn'] : null);
                     $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
                     $Found[] = $New_Data->getArray();
                 }
@@ -332,6 +361,20 @@ class Hydrator
                     $Found = $New_Data;
                 }
                 return $Found;
+            } elseif ($DataType instanceof LearningTools) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new LearningTools();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setTitle(isset($data['title']) ? intval($data['title']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? intval($data['description']) : null);
+                    $New_Data->setIframcode(isset($data['iframcode']) ? ($data['iframcode']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setDefaultLearn(isset($data['default_learn']) ? $data['default_learn'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found = $New_Data;
+                }
+                return $Found;
             }
         }
         return null;
@@ -370,6 +413,20 @@ class Hydrator
                     $New_Data->setStage(isset($data['stage']) ? ($data['stage']) : null);
                     $New_Data->setNotes(isset($data['notes']) ? ($data['notes']) : null);
                     $New_Data->setQuestionId(isset($data['question_id']) ? $data['question_id'] : null);
+                    $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
+                    $Found = $New_Data->getArray();
+                }
+                return $Found;
+            } elseif ($DataType instanceof LearningTools) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new LearningTools();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setTitle(isset($data['title']) ? intval($data['title']) : null);
+                    $New_Data->setDescription(isset($data['description']) ? intval($data['description']) : null);
+                    $New_Data->setIframcode(isset($data['iframcode']) ? ($data['iframcode']) : null);
+                    $New_Data->setCountry(isset($data['country']) ? ($data['country']) : null);
+                    $New_Data->setDefaultLearn(isset($data['default_learn']) ? $data['default_learn'] : null);
                     $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
                     $Found = $New_Data->getArray();
                 }
