@@ -198,7 +198,7 @@ class apiController extends AbstractRestfulController
                         $this->api_Response['Request_Error'] = $error;
                     }
                 } else {
-                    if ($smsService->authenticate2($new_user->getPhoneNo(), 'new_pass')) {
+                    if ($smsService->authenticate2($new_user->getPhoneNo(), 'new_pass') && $smsService->authenticate($new_user->getEmail(), 'new_pass') ) {
                         $this->api_user = $smsService->Get_User($new_user);
                         $this->api_user->setPassword($new_user->getPassword());
                         $state = $smsService->Delete_User($this->api_user);
