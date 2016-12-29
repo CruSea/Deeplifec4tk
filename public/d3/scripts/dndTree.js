@@ -430,7 +430,8 @@ function tree(error, treeData) {
             d.y = (d.depth * (maxLabelLength * 15)); //maxLabelLength * 15px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
-           d.y = (d.depth * 120); //120px per level.
+            d.x = (d.x * 3);
+            d.y = (d.depth * 120); //120px per level.
         });
 
         // Update the nodes…

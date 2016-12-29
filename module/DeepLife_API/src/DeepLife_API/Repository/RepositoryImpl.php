@@ -14,6 +14,7 @@ use DeepLife_API\Model\Category;
 use DeepLife_API\Model\Country;
 use DeepLife_API\Model\Disciple;
 use DeepLife_API\Model\Hydrator;
+use DeepLife_API\Model\LearningTools;
 use DeepLife_API\Model\NewsFeed;
 use DeepLife_API\Model\Questions;
 use DeepLife_API\Model\Report;
@@ -46,9 +47,14 @@ class RepositoryImpl implements RepositoryInterface
     {
         $row_sql = 'SELECT * FROM users WHERE users.phone_no = \'' . $user->getPhoneNo() . '\'';
         $statement = $this->adapter->query($row_sql);
-        $result = $statement->execute();
+        $result1 = $statement->execute();
+
+        $row_sql = 'SELECT * FROM users WHERE users.email = \'' . $user->getEmail() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result2 = $statement->execute();
+
         $posts = null;
-        if ($result->count() > 0) {
+        if ($result1->count() > 0 || $result2->count() >0) {
             return true;
         } else {
             return false;
@@ -660,6 +666,7 @@ class RepositoryImpl implements RepositoryInterface
             }
         }
         $hydrator = new Hydrator();
+
         return $hydrator->Extract($posts, new Country());
     }
 
@@ -705,7 +712,10 @@ class RepositoryImpl implements RepositoryInterface
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $posts[] = $result->current();
+                $data = $result->current();
+                $url = "http://192.168.8.107/DeepLife_Web/public";
+                $data['image'] = $url.''.$data['image'];
+                $posts[] = $data;
                 $result->next();
             }
         }
@@ -759,13 +769,18 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetAll_Testimonies()
     {
-        $row_sql = 'SELECT * FROM testimonial';
+        $row_sql = 'SELECT * FROM testimonial where testimonial.status = 1';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $posts[] = $result->current();
+                $data = $result->current();
+                $new_user = new User();
+                $new_user->setId($data['user_id']);
+                $testimony_user = $this->Get_UserByID($new_user);
+                $data['user_name'] = $testimony_user->getFirstName();
+                $posts[] = $data;
                 $result->next();
             }
         }
@@ -780,13 +795,18 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetNew_Testimonies(User $user)
     {
-        $row_sql = 'SELECT * FROM testimonial WHERE testimonial.country = ' . $user->getCountry() . ' AND testimonial.id NOT IN( SELECT testimonial_logs.testimonial_id FROM testimonial_logs WHERE testimonial_logs.user_Id = ' . $user->getId() . ')';
+        $row_sql = 'SELECT * FROM testimonial WHERE testimonial.country = ' . $user->getCountry() . ' AND testimonial.id NOT IN( SELECT testimonial_logs.testimonial_id FROM testimonial_logs WHERE testimonial_logs.user_Id = ' . $user->getId() . ')'.' AND testimonial.status = 1';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $posts[] = $result->current();
+                $data = $result->current();
+                $new_user = new User();
+                $new_user->setId($data['user_id']);
+                $testimony_user = $this->Get_UserByID($new_user);
+                $data['user_name'] = $testimony_user->getFirstName();
+                $posts[] = $data;
                 $result->next();
             }
         }
@@ -880,4 +900,50 @@ class RepositoryImpl implements RepositoryInterface
         $hydrator = new Hydrator();
         return $hydrator->Extract($posts, new Category());
     }
+
+    public function GetAll_LearningTools()
+    {
+        $row_sql = 'SELECT * FROM learningtools where learningtools.status = 1';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $data = $result->current();
+                $posts[] = $data;
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new LearningTools());
+    }
+
+    public function GetNew_LearningTools(User $user)
+    {
+        $row_sql = 'SELECT * FROM learningtools where learningtools.country = '.$user->getCountry();
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $data = $result->current();
+                $posts[] = $data;
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new LearningTools());
+    }
+
+    public function AddNew_LearningTools_log(Testimony $testimony)
+    {
+        // TODO: Implement AddNew_LearningTools_log() method.
+    }
+
+    public function Delete_All_LearningTools_Log(User $user)
+    {
+        // TODO: Implement Delete_All_LearningTools_Log() method.
+    }
+
+
 }
