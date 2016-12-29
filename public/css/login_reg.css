@@ -9286,46 +9286,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     animation-name: rollOut;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
-    height: 100%
-}
-body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
-}
 .footer {
-    position:absolute;
+    background: none repeat scroll 0 0 white;
+    border-top: 1px solid #e7eaec;
     bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 40px;
-    background-color: #ffffff;
+    left: 0;
+    padding: 10px 20px;
+    position: fixed;
+    right: 0;
 }
-
-html, body {
-    height:100%;
-    margin:0;
-    padding:0;
+.footer.fixed_full {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    background: white;
+    border-top: 1px solid #e7eaec;
 }
-
-body > .container {
-    padding: 60px 15px 0;
-    height: 100%
-
+.footer.fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    background: white;
+    border-top: 1px solid #e7eaec;
+    margin-left: 220px;
 }
-.container .text-muted {
-    margin: 20px 0;
+body.mini-navbar .footer.fixed,
+body.body-small.mini-navbar .footer.fixed {
+    margin: 0 0 0 70px;
 }
-
-.footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-    /*color: #ffffff;*/
+body.mini-navbar.canvas-menu .footer.fixed,
+body.canvas-menu .footer.fixed {
+    margin: 0 !important;
 }
-
-code {
-    font-size: 80%;
-    color: #f9c123;
+body.fixed-sidebar.body-small.mini-navbar .footer.fixed {
+    margin: 0 0 0 220px;
+}
+body.body-small .footer.fixed {
+    margin-left: 0px;
 }

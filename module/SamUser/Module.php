@@ -33,6 +33,25 @@ class Module
 
         public function onBootstrap( MVCEvent $e )
         {
+            $eventManager        = $e->getApplication()->getEventManager();
+            $moduleRouteListener = new ModuleRouteListener();
+            $moduleRouteListener->attach($eventManager);
+
+            $application = $e->getTarget();
+            $sm = $application->getServiceManager();
+            $auth = $sm->get('zfcuser_auth_service');
+            if (!$auth->hasIdentity()) {
+                $eventManager = $e->getApplication()->getEventManager();
+                $eventManager->attach(MvcEvent::EVENT_DISPATCH, function($e) {
+                    $vm = $e->getViewModel();
+                    $vm->setTemplate('layout/layout1');
+
+                });
+            }
+
+
+
+
             $eventManager = $e->getApplication()->getEventManager();
             $em           = $eventManager->getSharedManager();
             $em->attach(
