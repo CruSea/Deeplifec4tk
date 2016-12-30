@@ -650,4 +650,36 @@ class ServiceImpl implements Service
             return array();
         }
     }
+
+    public function GetAll_LearningTools()
+    {
+        try {
+            return $this->apiRepository->GetAll_LearningTools();
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function GetNew_LearningTools(User $user)
+    {
+        try {
+            return $this->apiRepository->GetNew_LearningTools($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function AddNew_LearningTools_log(Testimony $testimony)
+    {
+        // TODO: Implement AddNew_LearningTools_log() method.
+    }
+
+    public function Delete_All_LearningTools_Log(User $user)
+    {
+        // TODO: Implement Delete_All_LearningTools_Log() method.
+    }
+
+
 }

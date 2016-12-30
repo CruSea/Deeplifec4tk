@@ -95,4 +95,9 @@ interface Service
     public function Delete_All_TestimonyLog(User $user);
 
     public function GetAll_Categories();
+
+    public function GetAll_LearningTools();
+    public function GetNew_LearningTools(User $user);
+    public function AddNew_LearningTools_log(Testimony $testimony);
+    public function Delete_All_LearningTools_Log(User $user);
 }

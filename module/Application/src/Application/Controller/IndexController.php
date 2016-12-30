@@ -122,7 +122,7 @@ echo 0;
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
-     
+       $this->layout()->setTemplate('layout/layout1');
          $form = new RegisterForm();
         $countries=$this->getEntityManager()->getRepository('SamUser\Entity\Country')->findAll( );
         $ValueOptions=array();
