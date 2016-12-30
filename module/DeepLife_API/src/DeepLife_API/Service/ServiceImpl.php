@@ -681,5 +681,14 @@ class ServiceImpl implements Service
         // TODO: Implement Delete_All_LearningTools_Log() method.
     }
 
-
+    public function Get_DiscipleCount(User $user)
+    {
+        try {
+            return $this->apiRepository->Get_DiscipleCount($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+    
 }

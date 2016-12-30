@@ -431,6 +431,16 @@ class Hydrator
                     $Found = $New_Data->getArray();
                 }
                 return $Found;
+            } elseif ($DataType instanceof DiscipleTree) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new DiscipleTree();
+                    $New_Data->setID(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setUserID(isset($data['user_id']) ? intval($data['user_id']) : null);
+                    $New_Data->setDiscipleCount(isset($data['disciplescount']) ? intval($data['disciplescount']) : null);
+                    $Found = $New_Data->getArray();
+                }
+                return $Found;
             }
         }
     }
