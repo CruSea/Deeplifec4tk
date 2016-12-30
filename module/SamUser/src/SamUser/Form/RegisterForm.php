@@ -124,7 +124,8 @@ class RegisterForm extends Form
             'attributes' => array(
                 'value' => 'Submit',
                 'id' => 'submitbutton',
-                 'class'    => 'btn btn-block btn-primary pull-right',
+                 'class'    => 'btn btn-secondary block btn btn-info col-md-12 full-width ',
+//                'class' => 'btn btn-primary block btn btn-info col-md-12 full-width m-b pull-right'
                 
             ),
         ));

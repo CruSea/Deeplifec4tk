@@ -16,9 +16,9 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-    
-    
-      
+
+
+
         $applicaton = $e->getApplication()->getServiceManager();
         // Just a call to the translator, nothing special!
         $applicaton->get('translator');
@@ -27,9 +27,9 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-    
-    
-    
+
+
+
     }
 
     public function getConfig()
