@@ -29,7 +29,8 @@ class apiController extends AbstractRestfulController
         'IsValid_User', 'CreateUser', 'GetAll_Questions', 'GetAll_Answers', 'AddNew_Answers', 'Send_Log', 'Log_In', 'Sign_Up',
         'Update_Disciples', 'Update', 'Meta_Data', 'Send_Report', 'GetNew_NewsFeed', "Send_Testimony", "Upload_User_Pic", "Upload_Disciple_pic",
         'Update_Schedules','GetAll_Testimonies','GetNew_Testimonies','AddNew_Testimony','Delete_Testimony','AddNew_Testimony_Log','Delete_All_TestimonyLogs',
-        'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category','GetAll_LearningTools','GetNew_LearningTools'
+        'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category','GetAll_LearningTools','GetNew_LearningTools',
+        'DiscipleTree'
     );
     protected $api_Param;
     protected $api_Service;
@@ -222,6 +223,7 @@ class apiController extends AbstractRestfulController
                                 $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
                                 $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
                                 $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
+                                $found['DiscipleTree'] = $smsService->Get_DiscipleCount($this->api_user);
                                 $this->api_Response['Response'] = $found;
                             } else {
                                 $error['Parameter Error'] = 'Something went wrong try again!';
@@ -445,6 +447,7 @@ class apiController extends AbstractRestfulController
             $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
             $found['Reports'] = $smsService->Get_Report($this->api_user);
             $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
+            $found['DiscipleTree'] = $smsService->Get_DiscipleCount($this->api_user);
             /**
              * @var \DeepLife_API\Model\User $profile
              */
@@ -490,6 +493,7 @@ class apiController extends AbstractRestfulController
             $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
             $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
             $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
+            $found['DiscipleTree'] = $smsService->Get_DiscipleCount($this->api_user);
 
             //$found['Reports'] = $smsService->Get_Report($this->api_user);
 
@@ -685,6 +689,9 @@ class apiController extends AbstractRestfulController
         } elseif ($service == $this->api_Services[38]) {
             // GetNew_LearningTools
             $this->api_Response['Response'] = array('LearningTools', $smsService->GetNew_LearningTools($this->api_user));
+        }elseif ($service == $this->api_Services[39]) {
+            // DiscipleTree
+            $this->api_Response['Response'] = array('DiscipleTree', $smsService->Get_DiscipleCount($this->api_user));
         }
     }
 

@@ -93,4 +93,6 @@ interface RepositoryInterface extends Repository
     public function Delete_All_TestimonyLog(User $user);
 
     public function GetAll_Categories();
+
+    public function Get_DiscipleCount(User $user);
 }
