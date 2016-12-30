@@ -14,10 +14,10 @@
 return array(
     'db' => array(
         'driver' => 'Pdo',
-        'dsn' => 'mysql:dbname=seacccor_deeplifef;
+        'dsn' => 'mysql:dbname=seacccor_deeplifeproduction;
         host=localhost',
-        'username' => 'seacccor_staging',
-        'password' => 'Deeplife@2015',
+        'username' => 'seacccor_pdeep',
+        'password' => 'Jasmen@.com1',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
@@ -50,9 +50,9 @@ return array(
                 'params' => array(
                     'host'     => '127.0.0.1',
                     'port'     => '3306',
-                    'user'     => 'seacccor_staging',
-                    'password' => 'Deeplife@2015',
-                    'dbname'   => 'seacccor_deeplifef',
+                    'user'     => 'seacccor_pdeep',
+                    'password' => 'Jasmen@.com1',
+                    'dbname'   => 'seacccor_deeplifeproduction',
                     'driverOptions' => array(1002 => 'SET NAMES utf8')
                 ),
             ),
