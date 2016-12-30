@@ -25,21 +25,21 @@
         <div class="col-md-6">
             <!--            <h2 class="font-bold middle-box">Welcome to IN+</h2>-->
             <img class="middle-box col-md-12"  src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
-            <p>
-                Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.
-            </p>
+<!--            <p>-->
+<!--                Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.-->
+<!--            </p>-->
 
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-            </p>
+            <p class="middle-box">
+                Login and get involved in the real action of helping your desciples
+                by connecting to the them with in the system and monitor your progress very easily.</p> <strong>STAY BLESSED STAY CONNECTED . Get  LOGGED IN !</strong>
 
-            <p>
-                When an unknown printer took a galley of type and scrambled it to make a type specimen book.
-            </p>
-
-            <p>
-                <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>
-            </p>
+<!--            <p>-->
+<!--                When an unknown printer took a galley of type and scrambled it to make a type specimen book.-->
+<!--            </p>-->
+<!---->
+<!--            <p>-->
+<!--                <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>-->
+<!--            </p>-->
 
         </div>
         <div class="col-md-6">
@@ -80,7 +80,7 @@
                         <button type="submit" class="btn btn-primary block btn btn-info  full-width m-b">Login</button>
 
                             <?php if ($this->enableRegistration) : ?>
-                                <a style="color: #f9c123" data-toggle="modal" data-target="#myajaxforgot" >Forgot password!</a><h6 style="color: white">Not registered ? </h6>
+                                <a style="color: #f9c123" href="<?php echo $this->url('forgot') ?>">Forgot password!</a><h6 style="color: white">Not registered ? </h6>
                                 <a style="color: #f9c123" href="<?php echo $this->url('signup') ?>">Sign up!</a>
                             <?php endif; ?>
 

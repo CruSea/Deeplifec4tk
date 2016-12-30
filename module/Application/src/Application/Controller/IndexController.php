@@ -346,15 +346,7 @@ public function resetpasswordAction(){
                          return $this->redirect()->toRoute('home');
           
           }    
-       
-       
-       
-            
-       
-       
-       
-       
-       
+
        
             }
 
