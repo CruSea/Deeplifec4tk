@@ -901,7 +901,7 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetAll_LearningTools()
     {
-        $row_sql = 'SELECT * FROM learningtools where learningtools.status = 1';
+        $row_sql = 'SELECT * FROM learningtools';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;

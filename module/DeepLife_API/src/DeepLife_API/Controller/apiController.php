@@ -685,11 +685,11 @@ class apiController extends AbstractRestfulController
             $this->api_Response['Response'] = array('Categories', $smsService->GetAll_Categories());
         } elseif ($service == $this->api_Services[38]) {
             // GetAll_LearningTools
-            $this->api_Response['Response'] = array('LearningTools', $smsService->GetAll_LearningTools());
-        } elseif ($service == $this->api_Services[38]) {
+            $this->api_Response['Response'] = array('LearningTools', $smsService->GetAll_LearningTools($this->api_user));
+        } elseif ($service == $this->api_Services[39]) {
             // GetNew_LearningTools
             $this->api_Response['Response'] = array('LearningTools', $smsService->GetNew_LearningTools($this->api_user));
-        }elseif ($service == $this->api_Services[39]) {
+        }elseif ($service == $this->api_Services[40]) {
             // DiscipleTree
             $this->api_Response['Response'] = array('DiscipleTree', $smsService->Get_DiscipleCount($this->api_user));
         }
