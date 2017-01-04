@@ -108,6 +108,7 @@ return array(
 
                 // Below is the default index action used by the ZendSkeletonApplication
                 array('route' => 'home', 'roles' => array('guest', 'user')),
+                array('route' => '/', 'roles' => array('guest', 'user')),
                 array('route' => 'news', 'roles' => array('guest', 'user')),
                 array('route' => 'application', 'roles' => array('guest', 'user')),
                 array('route' => 'application/default', 'roles' => array('guest', 'user')), // Change language
