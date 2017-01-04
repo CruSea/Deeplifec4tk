@@ -133,7 +133,7 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-        $this->redirect()->toRoute('zfcuser',array('action' => 'login'));
+        $this->redirect()->toRoute('zfcuser',array('action' => '../'));
        
     }
 
