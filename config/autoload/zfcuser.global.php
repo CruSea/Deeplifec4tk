@@ -163,7 +163,7 @@ $settings = [
      * Default value: 'zfcuser/login'
      * Accepted values: A valid route name within your application
      */
-    'logout_redirect_route' => '../../',
+    'logout_redirect_route' => '../../../',
 
     /**
      * Password Security
