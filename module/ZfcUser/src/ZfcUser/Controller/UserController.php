@@ -17,6 +17,7 @@ class UserController extends AbstractActionController
     const ROUTE_REGISTER     = 'zfcuser/register';
     const ROUTE_CHANGEEMAIL  = 'zfcuser/changeemail';
     const CONTROLLER_NAME    = 'zfcuser';
+    const logout             = '../';
 
     /**
      * @var UserService
@@ -133,7 +134,7 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-        $this->redirect()->toRoute('zfcuser',array('action' => '../'));
+        $this->redirect()->toRoute('zfcuser',array('action' => 'logout'));
        
     }
 
