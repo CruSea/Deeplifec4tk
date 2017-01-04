@@ -918,7 +918,7 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetNew_LearningTools(User $user)
     {
-        $row_sql = 'SELECT * FROM learningtools where learningtools.country = '.$user->getCountry();
+        $row_sql = 'SELECT * FROM learningtools where learningtools.country = \''.$user->getCountry().'\''.' OR learningtools.default_learn = 1';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
