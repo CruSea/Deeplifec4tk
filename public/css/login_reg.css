@@ -9286,36 +9286,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     animation-name: rollOut;
 }
 
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+.body {
+    min-height: calc(100% - 2rem);
+    width: 100%;
+}
 .footer {
     background: none repeat scroll 0 0 white;
     border-top: 1px solid #e7eaec;
     bottom: 0;
     left: 0;
     padding: 10px 20px;
-    position: fixed;
+    position:fixed;
     right: 0;
 }
-.footer.fixed_full {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    padding: 10px 20px;
-    background: white;
-    border-top: 1px solid #e7eaec;
-}
-.footer.fixed {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    padding: 10px 20px;
-    background: white;
-    border-top: 1px solid #e7eaec;
-    margin-left: 220px;
-}
+
+
 body.mini-navbar .footer.fixed,
 body.body-small.mini-navbar .footer.fixed {
     margin: 0 0 0 70px;

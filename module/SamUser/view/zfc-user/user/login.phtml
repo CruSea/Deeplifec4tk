@@ -9,7 +9,7 @@
     <title>Deeplife| Login</title>
 
     <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-        ->prependStylesheet($this->basePath('css/style.css'))
+//        ->prependStylesheet($this->basePath('css/style.css'))
         ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
         ->prependStylesheet($this->basePath('css/animate.min.css'))
 //        ->prependStylesheet($this->basePath('css/style.min.css'))
@@ -19,23 +19,26 @@
 
 </head>
 <body class="white-bg">
-<div class="loginColumns animated fadeInUp">
-    <div class="row">
 
-        <div class="col-md-6">
+    <div class="row ">
+      <div class="loginColumns animated fadeInUp" >
+        <div class="col-md-6 ">
             <!--            <h2 class="font-bold middle-box">Welcome to IN+</h2>-->
-            <img class="middle-box col-md-12"  src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>">
+           <div >
+            <a href="../../" >
+            <img class="middle-box col-md-12"  src="<?php echo $this->basePath('img/Splashlogo_hdpi.png')?>"  >
+        </div>
 <!--            <p>-->
 <!--                Perfectly designed and precisely prepared admin theme with over 50 pages with extra new web app views.-->
 <!--            </p>-->
-
-            <p class="middle-box">
+<!--           <div >-->
+            <p class="middle-box" style="color: #ffffff">
                 Login and get involved in the real action of helping your desciples
-                by connecting to them with in the system and monitor your progress very easily.</p> <strong>STAY BLESSED STAY CONNECTED . Get  LOGGED IN !</strong>
-
-<!--            <p>-->
-<!--                When an unknown printer took a galley of type and scrambled it to make a type specimen book.-->
-<!--            </p>-->
+                by connecting to them with in the system and monitor your progress very easily.
+               </p>
+                        <p style="color: #ffffff">
+                            <strong>STAY BLESSED STAY CONNECTED . Get  LOGGED IN !</strong>
+                        </p>
 <!---->
 <!--            <p>-->
 <!--                <small>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</small>-->
@@ -43,7 +46,7 @@
 
         </div>
         <div class="col-md-6">
-            <div  class="- middle-box animated fadeInUp ">
+            <div  class="- middle-box  ">
 
                 <div class=" col-sm-12 " style="vertical-align: 500px;">
 
@@ -92,8 +95,8 @@
             </div>
         </div>
         <hr/>
+      </div>
 
-    </div>
 
 
 </body>
@@ -102,7 +105,7 @@
         <strong style="color: #000000"><?php echo $this->translate('WIN'); ?></strong> <strong><?php echo $this->translate('BUILD'); ?></strong> <strong><?php echo $this->translate('SEND'); ?></strong> <?php echo $this->translate('TODAY'); ?>.
     </div>
     <div>
-        <strong style="color: #000000"><?php echo $this->translate('Copyright'); ?></strong> <strong style="color: rgba(0, 0, 0, 0.58)"><?php echo $this->translate('Deep Life discipleship System &copy; 2014-2015'); ?></strong>
+        <strong style="color: #000000"><?php echo $this->translate('Copyright'); ?></strong> <strong style="color: rgba(0, 0, 0, 0.58)"><?php echo $this->translate('DeepLife discipleship System &copy; 2017'); ?></strong>
     </div>
 </div>
 </html>
