@@ -26,6 +26,9 @@ interface RepositoryInterface extends Repository
     public function Add_User_Role($user_id, $role_id);
     public function Delete_User(User $user);
     public function Update_User(User $user);
+    public function Update_UserInfo(User $user);
+    public function Update_Disciple(User $user);
+    public function Update_DiscipleInfo(User $user);
     public function Update_User1(User $user);
     public function Update_User_Pic(User $user);
     public function isThere_User(User $user);

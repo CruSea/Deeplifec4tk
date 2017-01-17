@@ -30,7 +30,7 @@ class apiController extends AbstractRestfulController
         'Update_Disciples', 'Update', 'Meta_Data', 'Send_Report', 'GetNew_NewsFeed', "Send_Testimony", "Upload_User_Pic", "Upload_Disciple_pic",
         'Update_Schedules','GetAll_Testimonies','GetNew_Testimonies','AddNew_Testimony','Delete_Testimony','AddNew_Testimony_Log','Delete_All_TestimonyLogs',
         'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category','GetAll_LearningTools','GetNew_LearningTools',
-        'DiscipleTree'
+        'DiscipleTree','Update_Profile'
     );
     protected $api_Param;
     protected $api_Service;
@@ -52,7 +52,6 @@ class apiController extends AbstractRestfulController
         $smsService = $this->getServiceLocator()->get('DeepLife_API\Service\Service');
         $userName = $data['User_Name'];
         $userPass = $data['User_Pass'];
-
         if ($smsService->authenticate($userName,$userPass)) {
             $user = new User();
             $user->setEmail($data['User_Name']);
@@ -120,12 +119,7 @@ class apiController extends AbstractRestfulController
                 if ($this->isValidParam($data['Param'], $data['Service'])) {
                     if ($data['Service'] == 'Sign_Up') {
                         $this->Sign_Up_User($data['Param']);
-                    } else {
-                        if ($this->Authenticate($data)) {
-                            $this->ProcessRequest($data['Service'], $data['Param']);
-                        }
-                    }
-                    if ($data['Service'] == 'Meta_Data') {
+                    } else if ($data['Service'] == 'Meta_Data') {
                         /**
                          * @var \DeepLife_API\Service\Service $smsService
                          */
@@ -136,7 +130,15 @@ class apiController extends AbstractRestfulController
                         $newUser->setCountry($data['Country']);
                         $found['Questions'] = $smsService->Get_Question($newUser);
                         $this->api_Response['Response'] = $found;
+                    } else {
+                        if ($this->Authenticate($data)) {
+                            $this->ProcessRequest($data['Service'], $data['Param']);
+                        }else{
+                            $this->api_Response['Response'] = "Authentication has failed";
+                        }
                     }
+                }else{
+                    $this->api_Response['Response'] = "Invalid Param";
                 }
             }
         }
@@ -478,7 +480,7 @@ class apiController extends AbstractRestfulController
                  */
                 $_new_user = $smsService->Get_User($new_user);
                 $new_user->setId($_new_user->getId());
-                $state = $smsService->Update_User1($new_user);
+                $state = $smsService->Update_Disciple($new_user);
                 if ($state) {
                     $disciple_res['Log_ID'] = $data['id'];
                     $res['Log_Response'][] = $disciple_res;
@@ -695,6 +697,24 @@ class apiController extends AbstractRestfulController
         }elseif ($service == $this->api_Services[40]) {
             // DiscipleTree
             $this->api_Response['Response'] = array('DiscipleTree', $smsService->Get_DiscipleCount($this->api_user));
+        }elseif ($service == $this->api_Services[41]) {
+            // Update_Profile
+            $res['Log_Response'] = array();
+            foreach ($this->api_Param as $data) {
+                $hydrator = new Hydrator();
+                $new_user = $hydrator->GetUser($data);
+                /**
+                 * @var \DeepLife_API\Model\User $_new_user
+                 */
+                $_new_user = $smsService->Get_User($this->api_user);
+                $new_user->setId($_new_user->getId());
+                $state = $smsService->Update_UserInfo($new_user);
+                if ($state) {
+                    $disciple_res['Log_ID'] = $data['id'];
+                    $res['Log_Response'][] = $disciple_res;
+                }
+            }
+            $this->api_Response['Response'] = $res;
         }
     }
 

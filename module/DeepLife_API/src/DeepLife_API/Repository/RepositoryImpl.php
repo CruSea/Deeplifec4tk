@@ -124,6 +124,44 @@ class RepositoryImpl implements RepositoryInterface
         }
     }
 
+    public function Update_UserInfo(User $user)
+    {
+        $row_sql = 'UPDATE users SET users.email = \'' . $user->getEmail().'\',users.displayName =\''.$user->getDisplayName() .'\', users.firstName =\''.$user->getFirstName() .'\', users.country = \''.$user->getCountry() .'\', users.phone_no = \''.$user->getPhoneNo() .'\', users.gender =\''.$user->getGender() . '\' WHERE users.id = \'' . $user->getId() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function Update_Disciple(User $user)
+    {
+        $row_sql = 'UPDATE users SET users.displayName = \''.$user->getDisplayName() .'\', users.stage =\''.$user->getStage() .'\', users.gender =\''.$user->getGender() . '\' WHERE users.id = \'' . $user->getId() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function Update_DiscipleInfo(User $user)
+    {
+        $row_sql = 'UPDATE users SET users.email = \'' . $user->getEmail().'\',users.displayName =\''.$user->getDisplayName() .'\', users.firstName =\''.$user->getFirstName() .'\', users.country = \''.$user->getCountry() .'\', users.phone_no = \''.$user->getPhoneNo() .'\', users.stage =\''.$user->getStage() .'\', users.gender =\''.$user->getGender() . '\' WHERE users.id = \'' . $user->getId() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function Update_User_Pic(User $user)
     {
         $row_sql = 'UPDATE users SET users.picture = \'' . $user->getPicture() . '\' WHERE users.id = \'' . $user->getId() . '\'';

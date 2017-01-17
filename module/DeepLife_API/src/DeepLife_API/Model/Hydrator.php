@@ -457,6 +457,18 @@ class Hydrator
         $New_Data->setPhoneNo(isset($data['Phone']) ? $data['Phone'] : null);
         return $New_Data;
     }
+    public function GetUser($data)
+    {
+        $New_Data = new User();
+        $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+        $New_Data->setEmail(isset($data['Email']) ? ($data['Email']) : null);
+        $New_Data->setDisplayName(isset($data['FullName']) ? $data['FullName'] : null);
+        $New_Data->setFirstName(isset($data['FullName']) ? $data['FullName'] : null);
+        $New_Data->setCountry(isset($data['Country']) ? $data['Country'] : null);
+        $New_Data->setGender(isset($data['Gender']) ? $data['Gender'] : null);
+        $New_Data->setPhoneNo(isset($data['Phone']) ? $data['Phone'] : null);
+        return $New_Data;
+    }
 
     public function GetSchedule($data)
     {

@@ -148,6 +148,16 @@ class ServiceImpl implements Service
         }
     }
 
+    public function Update_UserInfo(User $user)
+    {
+        try {
+            return $this->apiRepository->Update_UserInfo($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
     public function Delete_User(User $user)
     {
         try {
@@ -162,6 +172,26 @@ class ServiceImpl implements Service
     {
         try {
             return $this->apiRepository->Update_User($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function Update_Disciple(User $user)
+    {
+        try {
+            return $this->apiRepository->Update_Disciple($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function Update_DiscipleInfo(User $user)
+    {
+        try {
+            return $this->apiRepository->Update_DiscipleInfo($user);
         } catch (\Exception $e) {
             $this->LogError($e);
             return null;
