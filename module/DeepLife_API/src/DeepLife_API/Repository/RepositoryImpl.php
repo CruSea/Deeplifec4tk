@@ -831,8 +831,9 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetNew_Testimonies(User $user)
     {
-        $row_sql = 'SELECT * FROM testimonial WHERE testimonial.country = ' . $user->getCountry() . ' AND testimonial.id NOT IN( SELECT testimonial_logs.testimonial_id FROM testimonial_logs WHERE testimonial_logs.user_Id = ' . $user->getId() . ')'.' AND testimonial.status = 1';
+        $row_sql = 'SELECT * FROM testimonial WHERE testimonial.country = ' . $user->getCountry() . ' AND testimonial.id NOT IN( SELECT testimonial_logs.testimonial_id FROM testimonial_logs WHERE testimonial_logs.user_id = ' . $user->getId() . ')'.' AND testimonial.status = 1';
         $statement = $this->adapter->query($row_sql);
+        print_r($row_sql);
         $result = $statement->execute();
         $posts = null;
         if ($result->count() > 0) {
