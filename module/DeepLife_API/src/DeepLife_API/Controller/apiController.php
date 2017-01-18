@@ -595,19 +595,17 @@ class apiController extends AbstractRestfulController
             $state = null;
             foreach ($this->api_Param as $data) {
                 $sch = new Testimony();
-                $sch->setDescription($data['Description']);
+                $sch->setDescription($data['title']."\n".$data['detail']);
                 $sch->setCountryId($this->api_user->getCountry());
                 $sch->setUserId($this->api_user->getId());
                 $sch->setStatus(0);
+
                 $state = $smsService->AddNew_Testimony($sch);
                 if ($state) {
                     /**
                      * @var \DeepLife_API\Model\Testimony $_new_testimony
                      */
-                    $_new_testimony = $smsService->Get_Testimony($sch);
-                    $_new_testimony->setUserId($this->api_user->getId());
-                    $smsService->AddNew_Testimony($_new_testimony);
-                    $disciple_res['Log_ID'] = $data['ID'];
+                    $disciple_res['Log_ID'] = $data['id'];
                     $res['Log_Response'][] = $disciple_res;
                 }
 
@@ -745,11 +743,13 @@ class apiController extends AbstractRestfulController
 
     public function isValidParam($param, $type)
     {
+
         $is_valid = false;
-        $param = json_decode($param, true);
-        if (is_array($param)) {
+        $Param = json_decode($param, true);
+        if (is_array($Param)) {
+
             if ($type == $this->api_Services[2]) {
-                foreach ($param as $items) {
+                foreach ($Param as $items) {
                     if ((isset($items['Full_Name']) || isset($items['FullName'])) && isset($items['Country']) && isset($items['Phone']) && isset($items['Email'])) {
                         $is_valid = true;
                     } else {
@@ -760,7 +760,7 @@ class apiController extends AbstractRestfulController
                     }
                 }
             } elseif ($type == $this->api_Services[3]) {
-                foreach ($param as $items) {
+                foreach ($Param as $items) {
                     if (isset($items['disciple_id'])) {
                         $is_valid = true;
                     } else {
@@ -771,7 +771,7 @@ class apiController extends AbstractRestfulController
                     }
                 }
             } elseif ($type == $this->api_Services[7]) {
-                foreach ($param as $items) {
+                foreach ($Param as $items) {
                     if (isset($items['Alarm_Repeat']) && isset($items['Alarm_Time']) && isset($items['Disciple_Phone']) && isset($items['Disciple_Phone'])) {
                         $is_valid = true;
                     } else {
@@ -782,7 +782,7 @@ class apiController extends AbstractRestfulController
                     }
                 }
             } elseif ($type == $this->api_Services[8]) {
-                foreach ($param as $items) {
+                foreach ($Param as $items) {
                     if (isset($items['schedule_id'])) {
                         $is_valid = true;
                     } else {
@@ -793,7 +793,7 @@ class apiController extends AbstractRestfulController
                     }
                 }
             } elseif ($type == $this->api_Services[14]) {
-                foreach ($param as $items) {
+                foreach ($Param as $items) {
                     if (isset($items['Answer']) && isset($items['DisciplePhone']) && isset($items['QuestionID']) && isset($items['BuildStage'])) {
                         $is_valid = true;
                     } else {
@@ -803,14 +803,25 @@ class apiController extends AbstractRestfulController
                         break;
                     }
                 }
+            }elseif ($type == $this->api_Services[29]) {
+                foreach ($Param as $items) {
+                    if (isset($items['detail']) && isset($items['id']) && isset($items['title'])) {
+                        $is_valid = true;
+                    } else {
+                        $error['Parameter Error'] = 'Invalid Add Testimony Param !';
+                        $this->api_Response['Request_Error'] = $error;
+                        $is_valid = false;
+                        break;
+                    }
+                }
             }
-            $is_valid = true;
         } else {
             $error['Parameter Error'] = 'The parameter should be an array';
             $this->api_Response['Request_Error'] = $error;
         }
+
         if ($is_valid) {
-            $this->api_Param = $param;
+            $this->api_Param = $Param;
         }
         return $is_valid;
     }
