@@ -598,7 +598,7 @@ class apiController extends AbstractRestfulController
                 $sch->setDescription($data['title']."\n".$data['detail']);
                 $sch->setCountryId($this->api_user->getCountry());
                 $sch->setUserId($this->api_user->getId());
-                $sch->setStatus(0);
+                $sch->setStatus(1);
 
                 $state = $smsService->AddNew_Testimony($sch);
                 if ($state) {
