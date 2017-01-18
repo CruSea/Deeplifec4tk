@@ -743,11 +743,9 @@ class apiController extends AbstractRestfulController
 
     public function isValidParam($param, $type)
     {
-
         $is_valid = false;
         $Param = json_decode($param, true);
         if (is_array($Param)) {
-
             if ($type == $this->api_Services[2]) {
                 foreach ($Param as $items) {
                     if ((isset($items['Full_Name']) || isset($items['FullName'])) && isset($items['Country']) && isset($items['Phone']) && isset($items['Email'])) {
@@ -815,13 +813,13 @@ class apiController extends AbstractRestfulController
                     }
                 }
             }
+            if ($is_valid) {
+                $this->api_Param = $Param;
+            }
+            $is_valid = true;
         } else {
             $error['Parameter Error'] = 'The parameter should be an array';
             $this->api_Response['Request_Error'] = $error;
-        }
-
-        if ($is_valid) {
-            $this->api_Param = $Param;
         }
         return $is_valid;
     }
