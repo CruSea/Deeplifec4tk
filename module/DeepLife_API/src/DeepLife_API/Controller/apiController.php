@@ -223,7 +223,7 @@ class apiController extends AbstractRestfulController
                                     $found['Disciples'] = $smsService->GetNew_Disciples($this->api_user);
                                     $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
                                     $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
-//                                    $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
+                                    $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
                                     $found['Categories'] = $smsService->GetAll_Categories();
                                     $found['Questions'] = $smsService->Get_Question($this->api_user);
                                     $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
@@ -499,7 +499,7 @@ class apiController extends AbstractRestfulController
             $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
             $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
             $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
-            $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
+//            $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
             $found['Categories'] = $smsService->GetAll_Categories();
             $found['Questions'] = $smsService->Get_Question($this->api_user);
             $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
