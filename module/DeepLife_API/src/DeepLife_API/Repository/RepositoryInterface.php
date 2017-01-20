@@ -32,6 +32,8 @@ interface RepositoryInterface extends Repository
     public function Update_User1(User $user);
     public function Update_User_Pic(User $user);
     public function isThere_User(User $user);
+    public function isThere_User_By_Email(User $user);
+    public function isThere_User_By_Phone(User $user);
 
     public function Get_User(User $user);
     public function Get_User_Profile(User $user);

@@ -53,13 +53,35 @@ class RepositoryImpl implements RepositoryInterface
         $statement = $this->adapter->query($row_sql);
         $result2 = $statement->execute();
 
-        $posts = null;
         if ($result1->count() > 0 || $result2->count() >0) {
             return true;
         } else {
             return false;
         }
     }
+    public function isThere_User_By_Phone(User $user)
+    {
+        $row_sql = 'SELECT * FROM users WHERE users.phone_no = \'' . $user->getPhoneNo() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result1 = $statement->execute();
+        if ($result1->count() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function isThere_User_By_Email(User $user)
+    {
+        $row_sql = 'SELECT * FROM users WHERE users.email = \'' . $user->getEmail() . '\'';
+        $statement = $this->adapter->query($row_sql);
+        $result2 = $statement->execute();
+        if ($result2->count() >0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 
     public function Encrypt($password)
     {

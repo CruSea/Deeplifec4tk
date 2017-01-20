@@ -204,48 +204,48 @@ class apiController extends AbstractRestfulController
                         $this->api_Response['Request_Error'] = $error;
                     }
                 } else {
-                    if ($smsService->authenticate2($new_user->getPhoneNo(), 'new_pass')) {
-                        if($smsService->authenticate($new_user->getEmail(), 'new_pass') ){
-                            $this->api_user = $smsService->Get_User($new_user);
-                            $this->api_user->setPassword($new_user->getPassword());
-                            $state = $smsService->Delete_User($this->api_user);
+                    if ($smsService->authenticate2($new_user->getPhoneNo(), 'new_pass') || $smsService->authenticate($new_user->getEmail(), 'new_pass')) {
+                        $this->api_user = $smsService->Get_User($new_user);
+                        $this->api_user->setPassword($new_user->getPassword());
+                        $state = $smsService->Delete_User($this->api_user);
+                        if ($state) {
+                            $state = $smsService->AddNew_User($this->api_user);
                             if ($state) {
-                                $state = $smsService->AddNew_User($this->api_user);
-                                if ($state) {
-                                    /**
-                                     * @var \DeepLife_API\Model\User $added_user
-                                     */
-                                    $added_user = $smsService->Get_User($this->api_user);
-                                    if ($added_user != null) {
-                                        $smsService->Add_User_Role($added_user->getId(), 2);
-                                    }
-                                    $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
-                                    $found['Disciples'] = $smsService->GetNew_Disciples($this->api_user);
-                                    $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
-                                    $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
-                                    $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
-                                    $found['Categories'] = $smsService->GetAll_Categories();
-                                    $found['Questions'] = $smsService->Get_Question($this->api_user);
-                                    $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
-                                    $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
-                                    $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
-                                    $found['DiscipleTree'] = $smsService->Get_DiscipleCount($this->api_user);
-                                    $this->api_Response['Response'] = $found;
-                                } else {
-                                    $error['Parameter Error'] = 'Something went wrong try again!';
-                                    $this->api_Response['Request_Error'] = $error;
+                                /**
+                                 * @var \DeepLife_API\Model\User $added_user
+                                 */
+                                $added_user = $smsService->Get_User($this->api_user);
+                                if ($added_user != null) {
+                                    $smsService->Add_User_Role($added_user->getId(), 2);
                                 }
+                                $found['Disciples'] = $smsService->GetAll_Disciples($this->api_user);
+                                $found['Disciples'] = $smsService->GetNew_Disciples($this->api_user);
+                                $found['Schedules'] = $smsService->GetNew_Schedule($this->api_user);
+                                $found['NewsFeeds'] = $smsService->GetNew_NewsFeeds($this->api_user);
+                                $found['Testimonies'] = $smsService->GetNew_Testimonies($this->api_user);
+                                $found['Categories'] = $smsService->GetAll_Categories();
+                                $found['Questions'] = $smsService->Get_Question($this->api_user);
+                                $found['Answers'] = $smsService->GetAll_Disciple_Answers($this->api_user);
+                                $found['Profile'] = $smsService->Get_User_Profile($this->api_user);
+                                $found['LearningTools'] = $smsService->GetNew_LearningTools($this->api_user);
+                                $found['DiscipleTree'] = $smsService->Get_DiscipleCount($this->api_user);
+                                $this->api_Response['Response'] = $found;
                             } else {
-                                $error['Parameter Error'] = 'Your Account is already taken! Use different account';
+                                $error['Parameter Error'] = 'Something went wrong try again!';
                                 $this->api_Response['Request_Error'] = $error;
                             }
-                        }else{
-                            $error['Parameter Error'] = 'The Email Address is already taken';
+                        } else {
+                            $error['Parameter Error'] = 'Your Account is already taken! Use different account';
                             $this->api_Response['Request_Error'] = $error;
                         }
-                    } else {
-                        $error['Parameter Error'] = 'The Phone Number is Already taken';
-                        $this->api_Response['Request_Error'] = $error;
+                    }else{
+                        if($smsService->isThere_User_By_Phone($new_user)){
+                            $error['Parameter Error'] = 'The phone number is already taken! please use another phone number';
+                            $this->api_Response['Request_Error'] = $error;
+                        }elseif ($smsService->isThere_User_By_Email($new_user)){
+                            $error['Parameter Error'] = 'The email address is already taken! please use another email address';
+                            $this->api_Response['Request_Error'] = $error;
+                        }
                     }
                 }
             } else {

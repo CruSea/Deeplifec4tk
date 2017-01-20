@@ -70,6 +70,26 @@ class ServiceImpl implements Service
         }
     }
 
+    public function isThere_User_By_Email(User $user)
+    {
+        try {
+            return $this->apiRepository->isThere_User_By_Email($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return true;
+        }
+    }
+
+    public function isThere_User_By_Phone(User $user)
+    {
+        try {
+            return $this->apiRepository->isThere_User_By_Phone($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return true;
+        }
+    }
+
     public function getAuthenticationService()
     {
         $AuthAdapter = $this->apiRepository->getAuthenticationAdapter();
