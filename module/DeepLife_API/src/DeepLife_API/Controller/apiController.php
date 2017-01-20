@@ -30,7 +30,7 @@ class apiController extends AbstractRestfulController
         'Update_Disciples', 'Update', 'Meta_Data', 'Send_Report', 'GetNew_NewsFeed', "Send_Testimony", "Upload_User_Pic", "Upload_Disciple_pic",
         'Update_Schedules','GetAll_Testimonies','GetNew_Testimonies','AddNew_Testimony','Delete_Testimony','AddNew_Testimony_Log','Delete_All_TestimonyLogs',
         'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category','GetAll_LearningTools','GetNew_LearningTools',
-        'DiscipleTree','Update_Profile'
+        'DiscipleTree','Update_Profile','Remove_Disciple'
     );
     protected $api_Param;
     protected $api_Service;
@@ -424,8 +424,20 @@ class apiController extends AbstractRestfulController
                     if ($_new_user != null) {
                         $_new_user->setMentorId("NULL");
                         $state = $smsService->Update_User($_new_user);
-                        $disciple_res['Log_ID'] = $data['ID'];
-                        $res['Log_Response'][] = $disciple_res;
+                        if($state){
+                            $disciple_res['Log_ID'] = $data['ID'];
+                            $res['Log_Response'][] = $disciple_res;
+                        }else{
+                            $user1->setPhoneNo("");
+                            $user1->setEmail("Value");
+                            $_new_user = $smsService->Get_User($user1);
+                            if ($_new_user != null) {
+                                $_new_user->setMentorId("NULL");
+                                $state = $smsService->Update_User($_new_user);
+                            }
+                            $disciple_res['Log_ID'] = $data['ID'];
+                            $res['Log_Response'][] = $disciple_res;
+                        }
                     }
                 } else if ($data['Type'] == "Remove_Schedule") {
                     $schedule = new Schedule();
@@ -572,7 +584,6 @@ class apiController extends AbstractRestfulController
                 /**
                  * @var \DeepLife_API\Model\Schedule $_new_sch
                  */
-
                 $_new_sch = $smsService->Get_Schedule_By_AlarmName($new_Sch);
                 $_new_sch->setName($_new_sch->getName());
                 $_new_sch->setTime($new_Sch->getTime());
@@ -714,12 +725,40 @@ class apiController extends AbstractRestfulController
                 $_new_user = $smsService->Get_User($this->api_user);
                 $new_user->setId($_new_user->getId());
                 $state = $smsService->Update_UserInfo($new_user);
-                if ($state) {
-                    $disciple_res['Log_ID'] = $data['id'];
-                    $res['Log_Response'][] = $disciple_res;
-                }
+                $disciple_res['Log_ID'] = $data['ID'];
+                $res['Log_Response'][] = $disciple_res;
             }
             $this->api_Response['Response'] = $res;
+        }elseif ($service == $this->api_Services[42]) {
+            // Remove_Disciple
+            $res['Log_Response'] = array();
+            foreach ($this->api_Param as $data) {
+                $user1 = new User();
+                $user1->setPhoneNo($data['Disciple_Phone']);
+                /**
+                 * @var \DeepLife_API\Model\User $_new_user
+                 */
+                $_new_user = $smsService->Get_User($user1);
+                if ($_new_user != null) {
+                    $_new_user->setMentorId("NULL");
+                    $state = $smsService->Update_User($_new_user);
+                    if($state){
+                        $disciple_res['Log_ID'] = $data['ID'];
+                        $res['Log_Response'][] = $disciple_res;
+                    }else{
+                        $user1->setPhoneNo("");
+                        $user1->setEmail($data['Disciple_Email']);
+                        $_new_user = $smsService->Get_User($user1);
+                        if($_new_user != null){
+                            $_new_user->setMentorId("NULL");
+                            $state = $smsService->Update_User($_new_user);
+                            $disciple_res['Log_ID'] = $data['ID'];
+                            $res['Log_Response'][] = $disciple_res;
+                        }
+                    }
+
+                }
+            }
         }
     }
 
@@ -809,6 +848,28 @@ class apiController extends AbstractRestfulController
                         $is_valid = true;
                     } else {
                         $error['Parameter Error'] = 'Invalid Add Testimony Param !';
+                        $this->api_Response['Request_Error'] = $error;
+                        $is_valid = false;
+                        break;
+                    }
+                }
+            }elseif ($type == $this->api_Services[41]) {
+                foreach ($Param as $items) {
+                    if (isset($items['Email']) && isset($items['FullName']) && isset($items['Country']) && isset($items['Stage']) && isset($items['Gender']) && isset($items['Phone']) && isset($items['ID'])) {
+                        $is_valid = true;
+                    } else {
+                        $error['Parameter Error'] = 'Invalid Update User Profile Param!';
+                        $this->api_Response['Request_Error'] = $error;
+                        $is_valid = false;
+                        break;
+                    }
+                }
+            }elseif ($type == $this->api_Services[42]) {
+                foreach ($Param as $items) {
+                    if (isset($items['Disciple_Phone']) && isset($items['Disciple_Email']) && isset($items['id'])) {
+                        $is_valid = true;
+                    } else {
+                        $error['Parameter Error'] = 'Invalid Remove Disciple Param!';
                         $this->api_Response['Request_Error'] = $error;
                         $is_valid = false;
                         break;
