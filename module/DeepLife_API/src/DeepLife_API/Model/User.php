@@ -17,6 +17,7 @@ class User
     protected $password;
     protected $firstName;
     protected $country;
+    protected $countryName;
     protected $phone_no;
     protected $mentor_id;
     protected $picture;
@@ -104,6 +105,22 @@ class User
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCountryName()
+    {
+        return $this->countryName;
+    }
+
+    /**
+     * @param mixed $countryName
+     */
+    public function setCountryName($countryName)
+    {
+        $this->countryName = $countryName;
     }
 
     /**
@@ -259,6 +276,7 @@ class User
             'password' => $this->getPassword(),
             'firstName' => $this->getFirstName(),
             'country' => $this->getCountry(),
+            'countryName' => $this->getCountryName(),
             'phone_no' => $this->getPhoneNo(),
             'mentor_id' => $this->getMentorId(),
             'stage' => $this->getStage(),

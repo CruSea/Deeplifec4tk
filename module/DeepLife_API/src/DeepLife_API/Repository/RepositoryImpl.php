@@ -251,7 +251,9 @@ class RepositoryImpl implements RepositoryInterface
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $posts[] = $result->current();
+                $data = $result->current();
+                $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                $posts[] = $data;
                 $result->next();
             }
         } else {
@@ -260,7 +262,9 @@ class RepositoryImpl implements RepositoryInterface
             $result = $statement->execute();
             if ($result->count() > 0) {
                 while ($result->valid()) {
-                    $posts[] = $result->current();
+                    $data = $result->current();
+                    $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                    $posts[] = $data;
                     $result->next();
                 }
             }
@@ -729,6 +733,22 @@ class RepositoryImpl implements RepositoryInterface
         $hydrator = new Hydrator();
 
         return $hydrator->Extract($posts, new Country());
+    }
+
+    public function Get_Country($id)
+    {
+        $row_sql = 'SELECT * FROM country WHERE country.id = '.$id;
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Get_Data($posts, new Country());
     }
 
     public function AddNew_UserReport(UserReport $userReport)

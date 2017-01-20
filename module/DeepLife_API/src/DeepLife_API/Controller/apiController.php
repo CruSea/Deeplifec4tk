@@ -475,9 +475,6 @@ class apiController extends AbstractRestfulController
             /**
              * @var \DeepLife_API\Model\User $profile
              */
-            $profile = $smsService->Get_User($this->api_user);
-            $found['Profile'] = $profile->getArray();
-
             $this->api_Response['Response'] = $found;
         } elseif ($service == $this->api_Services[17]) {
             /// Sign up

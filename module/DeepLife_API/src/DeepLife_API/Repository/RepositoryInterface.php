@@ -75,6 +75,7 @@ interface RepositoryInterface extends Repository
     public function Get_Report(User $user);
 
     public function GetAll_Country();
+    public function Get_Country($id);
 
     public function AddNew_UserReport(UserReport $userReport);
 

@@ -375,6 +375,17 @@ class Hydrator
                     $Found = $New_Data;
                 }
                 return $Found;
+            } elseif ($DataType instanceof Country) {
+                $Found = null;
+                foreach ($Post as $data) {
+                    $New_Data = new Country();
+                    $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setIso3(isset($data['iso3']) ? ($data['iso3']) : null);
+                    $New_Data->setName(isset($data['name']) ? $data['name'] : null);
+                    $New_Data->setCode(isset($data['phonecode']) ? $data['phonecode'] : null);
+                    $Found = $New_Data;
+                }
+                return $Found;
             }
         }
         return null;
@@ -391,6 +402,7 @@ class Hydrator
                     $New_Data->setDisplayName(isset($data['displayName']) ? $data['displayName'] : null);
                     $New_Data->setFirstName(isset($data['firstName']) ? $data['firstName'] : null);
                     $New_Data->setCountry(isset($data['country']) ? $data['country'] : null);
+                    $New_Data->setCountryName(isset($data['countryName']) ? $data['countryName'] : null);
                     $New_Data->setPhoneNo(isset($data['phone_no']) ? $data['phone_no'] : null);
                     $New_Data->setMentorId(isset($data['mentor_id']) ? $data['mentor_id'] : null);
                     $New_Data->setPicture(isset($data['picture']) ? $data['picture'] : null);
