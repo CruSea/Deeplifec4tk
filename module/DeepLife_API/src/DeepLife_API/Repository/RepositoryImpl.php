@@ -151,7 +151,6 @@ class RepositoryImpl implements RepositoryInterface
         $row_sql = 'UPDATE users SET users.email = \'' . $user->getEmail().'\',users.displayName =\''.$user->getDisplayName() .'\', users.firstName =\''.$user->getFirstName() .'\', users.country = \''.$user->getCountry() .'\', users.phone_no = \''.$user->getPhoneNo() .'\', users.gender =\''.$user->getGender() . '\' WHERE users.id = \'' . $user->getId() . '\'';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
-        print_r($row_sql);
         $posts = null;
         if ($result->count() > 0) {
             return true;
