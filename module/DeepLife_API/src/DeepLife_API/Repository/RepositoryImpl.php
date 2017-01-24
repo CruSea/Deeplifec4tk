@@ -578,7 +578,9 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Get_Question(User $user)
     {
-        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry();
+        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry().' OR questions.default_question = 1';
+        print_r($row_sql);
+        exit();
         $statement = $this->adapter->query($row_sql);
 
         $result = $statement->execute();
