@@ -858,7 +858,7 @@ class apiController extends AbstractRestfulController
                 }
             }elseif ($type == $this->api_Services[41]) {
                 foreach ($Param as $items) {
-                    if (isset($items['Email']) && isset($items['FullName']) && isset($items['Country']) && isset($items['Stage']) && isset($items['Gender']) && isset($items['Phone']) && isset($items['ID'])) {
+                    if (isset($items['Email']) && isset($items['FullName']) && isset($items['Country'])  && isset($items['Gender']) && isset($items['Phone']) && isset($items['ID'])) {
                         $is_valid = true;
                     } else {
                         $error['Parameter Error'] = 'Invalid Update User Profile Param!';
