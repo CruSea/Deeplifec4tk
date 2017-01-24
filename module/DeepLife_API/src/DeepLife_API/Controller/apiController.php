@@ -863,7 +863,7 @@ class apiController extends AbstractRestfulController
                 }
             }elseif ($type == $this->api_Services[42]) {
                 foreach ($Param as $items) {
-                    if (isset($items['Disciple_Phone']) && isset($items['Disciple_Email']) && isset($items['id'])) {
+                    if (isset($items['Disciple_Phone']) && isset($items['Disciple_Email']) && isset($items['ID'])) {
                         $is_valid = true;
                     } else {
                         $error['Parameter Error'] = 'Invalid Remove Disciple Param!';
