@@ -751,11 +751,17 @@ class apiController extends AbstractRestfulController
                             $state = $smsService->Update_User($_new_user);
                             $disciple_res['Log_ID'] = $data['ID'];
                             $res['Log_Response'][] = $disciple_res;
+                        }else{
+                            $disciple_res['Log_ID'] = $data['ID'];
+                            $res['Log_Response'][] = $disciple_res;
                         }
                     }
-
+                }else{
+                    $disciple_res['Log_ID'] = $data['ID'];
+                    $res['Log_Response'][] = $disciple_res;
                 }
             }
+            $this->api_Response['Response'] = $res;
         }
     }
 

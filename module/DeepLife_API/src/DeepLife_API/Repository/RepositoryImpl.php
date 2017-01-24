@@ -314,7 +314,9 @@ class RepositoryImpl implements RepositoryInterface
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $posts[] = $result->current();
+                $data= $result->current();
+                $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                $posts[] = $data;
                 $result->next();
             }
         }
@@ -347,7 +349,9 @@ class RepositoryImpl implements RepositoryInterface
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $posts[] = $result->current();
+                $data= $result->current();
+                $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                $posts[] = $data;
                 $result->next();
             }
         }

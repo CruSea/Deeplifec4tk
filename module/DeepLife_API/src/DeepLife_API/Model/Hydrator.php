@@ -155,6 +155,7 @@ class Hydrator
                     $New_Data->setPassword(isset($data['password']) ? $data['password'] : null);
                     $New_Data->setFirstName(isset($data['firstName']) ? $data['firstName'] : null);
                     $New_Data->setCountry(isset($data['country']) ? $data['country'] : null);
+                    $New_Data->setCountryName(isset($data['countryName']) ? $data['countryName'] : null);
                     $New_Data->setPhoneNo(isset($data['phone_no']) ? $data['phone_no'] : null);
                     $New_Data->setMentorId(isset($data['mentor_id']) ? $data['mentor_id'] : null);
                     $New_Data->setPicture(isset($data['picture']) ? $data['picture'] : null);
