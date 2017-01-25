@@ -286,6 +286,15 @@ class apiController extends AbstractRestfulController
             $res['Log_Response'] = array();
             foreach ($this->api_Param as $data) {
                 $hydrator = new Hydrator();
+                if(isset($data['Phone_Code'])){
+                    /**
+                     * @var \DeepLife_API\Model\Country $country
+                     */
+                    $country = $smsService->Get_Country_By_PhoneCode($data['Phone_Code']);
+                    if($country != null && $country->getId() != null){
+                        $data['Country'] = $country->getId();
+                    }
+                }
                 $new_user = $hydrator->GetDisciple($data);
                 $new_user->setId($this->api_user->getId());
                 $new_user->setMentorId($this->api_user->getId());
