@@ -550,6 +550,26 @@ class ServiceImpl implements Service
         }
     }
 
+    public function Get_Country($id)
+    {
+        try {
+            return $this->apiRepository->Get_Country($id);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
+    public function Get_Country_By_PhoneCode($phone_code)
+    {
+        try {
+            return $this->apiRepository->Get_Country_By_PhoneCode($phone_code);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return array();
+        }
+    }
+
     public function AddNew_UserReport(UserReport $userReport)
     {
         try {

@@ -754,6 +754,23 @@ class RepositoryImpl implements RepositoryInterface
         return $hydrator->Get_Data($posts, new Country());
     }
 
+    public function Get_Country_By_PhoneCode($phone_code)
+    {
+        $row_sql = 'SELECT * FROM country WHERE country.phonecode = '.$phone_code;
+        $statement = $this->adapter->query($row_sql);
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Get_Data($posts, new Country());
+    }
+
+
     public function AddNew_UserReport(UserReport $userReport)
     {
         /**
