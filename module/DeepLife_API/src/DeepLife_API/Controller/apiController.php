@@ -30,7 +30,7 @@ class apiController extends AbstractRestfulController
         'Update_Disciples', 'Update', 'Meta_Data', 'Send_Report', 'GetNew_NewsFeed', "Send_Testimony", "Upload_User_Pic", "Upload_Disciple_pic",
         'Update_Schedules','GetAll_Testimonies','GetNew_Testimonies','AddNew_Testimony','Delete_Testimony','AddNew_Testimony_Log','Delete_All_TestimonyLogs',
         'GetAll_NewsFeeds','GetNew_NewsFeeds','AddNew_NewsFeed_Log','Delete_All_NewsFeed_Logs','GetAll_Category','GetAll_LearningTools','GetNew_LearningTools',
-        'DiscipleTree','Update_Profile','Remove_Disciple'
+        'DiscipleTree','Update_Profile','Remove_Disciple',''
     );
     protected $api_Param;
     protected $api_Service;
@@ -175,7 +175,17 @@ class apiController extends AbstractRestfulController
             if (isset($param['User_Name']) && isset($param['User_Country']) && isset($param['User_Phone']) && isset($param['User_Email']) && isset($param['User_Gender']) && isset($param['User_Pass'])) {
                 $new_user = new User();
                 $new_user->setFirstName($param['User_Name']);
-                $new_user->setCountry($param['User_Country']);
+                if(isset($param['Phone_Code'])){
+                    /**
+                     * @var \DeepLife_API\Model\Country $id
+                     */
+                    $id = $smsService->Get_Country_By_PhoneCode($param['Phone_Code']);
+                    if($id){
+                        $new_user->setCountry($id->getId());
+                    }
+                }else{
+                    $new_user->setCountry($param['User_Country']);
+                }
                 $new_user->setPhoneNo($param['User_Phone']);
                 $new_user->setEmail($param['User_Email']);
                 $new_user->setPassword($param['User_Pass']);
@@ -713,6 +723,15 @@ class apiController extends AbstractRestfulController
             $res['Log_Response'] = array();
             foreach ($this->api_Param as $data) {
                 $hydrator = new Hydrator();
+                if(isset($data['Phone_Code'])){
+                    /**
+                     * @var \DeepLife_API\Model\Country $country
+                     */
+                    $country = $smsService->Get_Country_By_PhoneCode($data['Phone_Code']);
+                    if($country != null && $country->getId() != null){
+                        $data['Country'] = $country->getId();
+                    }
+                }
                 $new_user = $hydrator->GetUser($data);
                 /**
                  * @var \DeepLife_API\Model\User $_new_user
