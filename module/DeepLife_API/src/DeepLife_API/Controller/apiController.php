@@ -497,10 +497,8 @@ class apiController extends AbstractRestfulController
                 $_new_user = $smsService->Get_User($new_user);
                 $new_user->setId($_new_user->getId());
                 $state = $smsService->Update_Disciple($new_user);
-                if ($state) {
-                    $disciple_res['Log_ID'] = $data['id'];
-                    $res['Log_Response'][] = $disciple_res;
-                }
+                $disciple_res['Log_ID'] = $data['ID'];
+                $res['Log_Response'][] = $disciple_res;
             }
             $this->api_Response['Response'] = $res;
         } elseif ($service == $this->api_Services[19]) {
@@ -845,7 +843,18 @@ class apiController extends AbstractRestfulController
                         break;
                     }
                 }
-            }elseif ($type == $this->api_Services[29]) {
+            } elseif ($type == $this->api_Services[18]) {
+                foreach ($Param as $items) {
+                    if (isset($items['FullName']) && isset($items['Stage']) && isset($items['Gender']) && (isset($items['Email']) || isset($items['Phone']))) {
+                        $is_valid = true;
+                    } else {
+                        $error['Parameter Error'] = 'Invalid Update Disciple Profile Param';
+                        $this->api_Response['Request_Error'] = $error;
+                        $is_valid = false;
+                        break;
+                    }
+                }
+            } elseif ($type == $this->api_Services[29]) {
                 foreach ($Param as $items) {
                     if (isset($items['detail']) && isset($items['id']) && isset($items['title'])) {
                         $is_valid = true;
@@ -856,7 +865,7 @@ class apiController extends AbstractRestfulController
                         break;
                     }
                 }
-            }elseif ($type == $this->api_Services[41]) {
+            } elseif ($type == $this->api_Services[41]) {
                 foreach ($Param as $items) {
                     if (isset($items['Email']) && isset($items['FullName']) && isset($items['Country'])  && isset($items['Gender']) && isset($items['Phone']) && isset($items['ID'])) {
                         $is_valid = true;
@@ -867,7 +876,7 @@ class apiController extends AbstractRestfulController
                         break;
                     }
                 }
-            }elseif ($type == $this->api_Services[42]) {
+            } elseif ($type == $this->api_Services[42]) {
                 foreach ($Param as $items) {
                     if (isset($items['Disciple_Phone']) && isset($items['Disciple_Email']) && isset($items['ID'])) {
                         $is_valid = true;
