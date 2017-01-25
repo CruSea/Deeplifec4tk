@@ -252,6 +252,7 @@ class RepositoryImpl implements RepositoryInterface
             while ($result->valid()) {
                 $data = $result->current();
                 $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                $data['phoneCode'] = $this->Get_Country($data['country'])->getCode();
                 $posts[] = $data;
                 $result->next();
             }
@@ -263,6 +264,7 @@ class RepositoryImpl implements RepositoryInterface
                 while ($result->valid()) {
                     $data = $result->current();
                     $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                    $data['phoneCode'] = $this->Get_Country($data['country'])->getCode();
                     $posts[] = $data;
                     $result->next();
                 }
@@ -315,6 +317,7 @@ class RepositoryImpl implements RepositoryInterface
             while ($result->valid()) {
                 $data= $result->current();
                 $data['countryName'] = $this->Get_Country($data['country'])->getName();
+                $data['phoneCode'] = $this->Get_Country($data['country'])->getCode();
                 $posts[] = $data;
                 $result->next();
             }

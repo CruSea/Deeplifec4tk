@@ -19,6 +19,7 @@ class User
     protected $country;
     protected $countryName;
     protected $phone_no;
+    protected $phoneCode;
     protected $mentor_id;
     protected $picture;
     protected $gender;
@@ -158,6 +159,22 @@ class User
     /**
      * @return mixed
      */
+    public function getPhoneCode()
+    {
+        return $this->phoneCode;
+    }
+
+    /**
+     * @param mixed $phoneCode
+     */
+    public function setPhoneCode($phoneCode)
+    {
+        $this->phoneCode = $phoneCode;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getMentorId()
     {
         return $this->mentor_id;
@@ -278,6 +295,7 @@ class User
             'country' => $this->getCountry(),
             'countryName' => $this->getCountryName(),
             'phone_no' => $this->getPhoneNo(),
+            'phoneCode' => $this->getPhoneCode(),
             'mentor_id' => $this->getMentorId(),
             'stage' => $this->getStage(),
             'role_id' => $this->getRoleId(),
