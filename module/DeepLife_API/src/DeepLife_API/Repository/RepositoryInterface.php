@@ -76,6 +76,7 @@ interface RepositoryInterface extends Repository
 
     public function GetAll_Country();
     public function Get_Country($id);
+    public function Get_Country_By_PhoneCode($phone_code);
 
     public function AddNew_UserReport(UserReport $userReport);
 
