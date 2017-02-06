@@ -71,6 +71,7 @@ abstract class Resp extends BasicEnum {
     const REQUEST_ERROR = 'Request_Error';
     const LOG_RESPONSE = 'Log_Response';
     const LOG_ID = 'Log_ID';
+    const UPLOAD_RESPONSE = 'Upload_Response';
 }
 
 abstract class RespErr extends BasicEnum {
@@ -78,6 +79,18 @@ abstract class RespErr extends BasicEnum {
     const SERVICE_REQUEST = 'Service_Request';
     const REQUEST_FORMAT = 'Request_Format';
     const AUTHENTICATION = 'Authentication';
+}
+
+abstract class RespErrServiceRequest extends BasicEnum {
+    const UNKNOWN = 'Unknown';
+}
+
+abstract class RespErrRequestFormat extends BasicEnum {
+    const INVALID = 'Invalid';
+}
+
+abstract class RespErrAuthentication extends BasicEnum {
+    const INVALID_USER = 'Invalid User';
 }
 
 abstract class ApiMeta extends BasicEnum {
@@ -148,6 +161,7 @@ abstract class Svc extends BasicEnum {
 
 abstract class ApiGeneric extends BasicEnum {
     const ID = 'id';
+    CONST NULL = 'NULL';
 }
 
 abstract class ApiUser extends BasicEnum {
@@ -180,6 +194,7 @@ abstract class ApiDiscipleLog extends BasicEnum
 }
 
 abstract class ApiSchedule extends BasicEnum {
+    const USER_ID = 'user_id';
     const TITLE = 'title';
     const DESCRIPTION = 'description';
     const ALARM_REPEAT = 'alarm_repeat';
@@ -201,6 +216,11 @@ abstract class ApiAnswer extends BasicEnum {
 abstract class ApiTestimony extends BasicEnum {
     const DETAIL = 'detail';
     const TITLE = 'title';
+    const DESCRIPTION = 'description';
+}
+
+abstract class ApiTestimonyLog extends BasicEnum {
+    const TESTIMONY_ID = 'testimony_id';
 }
 
 abstract class ApiProfile extends BasicEnum {
@@ -209,6 +229,7 @@ abstract class ApiProfile extends BasicEnum {
     const COUNTRY = 'country';
     const GENDER = 'gender';
     const PHONE = 'phone';
+    const PHONE_CODE = 'phone_code';
 }
 
 abstract class ApiLog extends BasicEnum {
@@ -221,6 +242,26 @@ abstract class ApiLogType extends BasicEnum {
     const REMOVE_DISCIPLE = 'remove_disciple';
     const REMOVE_SCHEDULE = 'remove_schedule';
     const NEWSFEEDS = 'newsfeeds';
+}
+
+abstract class ApiSendLog extends BasicEnum {
+    const VALUE = 'value';
+}
+
+abstract class ApiSendReport extends BasicEnum {
+    const REPORT_ID = 'Report_ID';
+    const VALUE = 'value';
+}
+
+abstract class ApiUploadUserPic extends BasicEnum {
+    const IMAGE = 'image';
+    const STATUS = 'status';
+    const FILENAME = 'filename';
+    const FILE_NAME = 'file_name';
+}
+
+abstract class ApiNewsFeedLog extends BasicEnum {
+    const NEWSFEED_ID = 'newsfeed_id';
 }
 
 
@@ -272,7 +313,7 @@ class apiController extends AbstractRestfulController
                 return true;
             }
         }
-        $error[RespErr::AUTHENTICATION] = 'Invalid User';
+        $error[RespErr::AUTHENTICATION] = RespErrAuthentication::INVALID_USER;
         $this->api_Response[Resp::REQUEST_ERROR] = $error;
         return false;
     }
@@ -281,8 +322,8 @@ class apiController extends AbstractRestfulController
     {
         // todo: fix this.!!! with enums. briggsm: Is this func used???!!!
         $status = array();
-        $status['Status'] = 0;
-        $status['FileName'] = '';
+        $status[ApiUploadUserPic::STATUS] = 0;
+        $status[ApiUploadUserPic::FILENAME] = '';
         $name = $id . $this->randomString();
         $upload_dest = "public/img/profile/" . $name . ".jpeg";
         $Image = str_replace(' ', '+', $Image);
@@ -291,8 +332,8 @@ class apiController extends AbstractRestfulController
         $file = fopen($upload_dest, 'wb');
         fwrite($file, $binary);
         fclose($file);
-        $status['Status'] = 1;
-        $status['FileName'] = $name . ".jpeg";
+        $status[ApiUploadUserPic::STATUS] = 1;
+        $status[ApiUploadUserPic::FILENAME] = $name . ".jpeg";
         return $status;
     }
 
@@ -541,9 +582,9 @@ class apiController extends AbstractRestfulController
                 $state[] = $smsService->AddNew_Schedule($sch);
             }
         } elseif ($service === Svc::GETALL_SCHEDULES) {
-            $this->api_Response[Resp::RESPONSE] = array('Schedules', $smsService->GetAll_Schedule($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::SCHEDULES, $smsService->GetAll_Schedule($this->api_User));
         } elseif ($service === Svc::GETNEW_SCHEDULES) {
-            $this->api_Response[Resp::RESPONSE] = array('Schedules', $smsService->GetNew_Schedule($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::SCHEDULES, $smsService->GetNew_Schedule($this->api_User));
         } elseif ($service === Svc::ADDNEW_SCHEDULES) {
             $res[Resp::LOG_RESPONSE] = array();
             $state = null;
@@ -589,9 +630,10 @@ class apiController extends AbstractRestfulController
             }
             $this->api_Response[Resp::RESPONSE] = $state;
         } elseif ($service === Svc::GETALL_QUESTIONS) {
-            $this->api_Response[Resp::RESPONSE] = array('Questions', $smsService->GetAll_Question());
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::QUESTIONS, $smsService->GetAll_Question());
         } elseif ($service === Svc::GETALL_ANSWERS) {
-            $this->api_Response[Resp::RESPONSE] = $smsService->GetAll_Answers($this->api_User);
+            //$this->api_Response[Resp::RESPONSE] = $smsService->GetAll_Answers($this->api_User);
+            $this->api_Response[Resp::RESPONSE] = $smsService->GetAll_Disciple_Answers($this->api_User);
         } elseif ($service === Svc::ADDNEW_ANSWERS) {
             $res[Resp::LOG_RESPONSE] = array();
             foreach ($this->api_Param as $object) {
@@ -631,7 +673,7 @@ class apiController extends AbstractRestfulController
                 if ($logType === ApiLogType::SCHEDULE) {
                     $new_schedule = new Schedule();
                     $new_schedule->setUserId($this->api_User->getId());
-                    $new_schedule->setId($object['Value']);
+                    $new_schedule->setId($object[ApiSendLog::VALUE]);
                     $state = $smsService->AddNew_Schedule_log($new_schedule);
                     if ($state) {
                         $schedule_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -640,7 +682,7 @@ class apiController extends AbstractRestfulController
                 } else if ($logType === ApiLogType::DISCIPLE) {
                     $new_disciple = new Disciple();
                     $new_disciple->setUserID($this->api_User->getId());
-                    $new_disciple->setDiscipleID($object['Value']);
+                    $new_disciple->setDiscipleID($object[ApiSendLog::VALUE]);
                     $state = $smsService->AddNew_Disciple_log($new_disciple);
                     if ($state) {
                         $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -648,23 +690,24 @@ class apiController extends AbstractRestfulController
                     }
                 } else if ($logType === ApiLogType::REMOVE_DISCIPLE) {
                     $user1 = new User();
-                    $user1->setPhoneNo($object['Value']);
+                    $user1->setPhoneNo($object[ApiSendLog::VALUE]);
                     /**
                      * @var \DeepLife_API\Model\User $_new_user
                      */
                     $_new_user = $smsService->Get_User($user1);
                     if ($_new_user != null) {
-                        $_new_user->setMentorId("NULL");
+                        $_new_user->setMentorId(ApiGeneric::NULL);
                         $state = $smsService->Update_User($_new_user);
                         if($state){
                             $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
                             $res[Resp::LOG_RESPONSE][] = $disciple_res;
                         }else{
                             $user1->setPhoneNo("");
-                            $user1->setEmail("Value");
+                            //$user1->setEmail("Value");  // briggsm: Why the string "Value"? Is $object["Value"] meant?
+                            $user1->setEmail($object[ApiSendLog::VALUE]);
                             $_new_user = $smsService->Get_User($user1);
                             if ($_new_user != null) {
-                                $_new_user->setMentorId("NULL");
+                                $_new_user->setMentorId(ApiGeneric::NULL);
                                 $state = $smsService->Update_User($_new_user);
                             }
                             $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -673,7 +716,7 @@ class apiController extends AbstractRestfulController
                     }
                 } else if ($logType === ApiLogType::REMOVE_SCHEDULE) {
                     $schedule = new Schedule();
-                    $schedule->setTime($object['Value']);
+                    $schedule->setTime($object[ApiSendLog::VALUE]);
                     $schedule->setUserId($this->api_User->getId());
                     $state = $smsService->Delete_Schedule($schedule);
                     $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -681,7 +724,7 @@ class apiController extends AbstractRestfulController
                 } else if ($logType === ApiLogType::NEWSFEEDS) {
                     $new_newsfeed = new NewsFeed();
                     $new_newsfeed->setUserId($this->api_User->getId());
-                    $new_newsfeed->setId($object['Value']);
+                    $new_newsfeed->setId($object[ApiSendLog::VALUE]);
                     $state = $smsService->AddNew_NewsFeed_log($new_newsfeed);
                     if ($state) {
                         $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -753,8 +796,8 @@ class apiController extends AbstractRestfulController
                 $object = array_change_key_case($object, CASE_LOWER);
                 $new_user_report = new UserReport();
                 $new_user_report->setUserId($this->api_User->getId());
-                $new_user_report->setReportId($object['Report_ID']);
-                $new_user_report->setValue($object['Value']);
+                $new_user_report->setReportId($object[ApiSendReport::REPORT_ID]);
+                $new_user_report->setValue($object[ApiSendReport::VALUE]);
                 $state = $smsService->AddNew_UserReport($new_user_report);
                 if ($state) {
                     $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -763,16 +806,16 @@ class apiController extends AbstractRestfulController
             }
             $this->api_Response[Resp::RESPONSE] = $res;
         } elseif ($service === Svc::GETNEW_NEWSFEED) {
-            $this->api_Response[Resp::RESPONSE] = array('NewsFeeds', $smsService->GetNew_NewsFeeds($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::NEWSFEEDS, $smsService->GetNew_NewsFeeds($this->api_User));
         } elseif ($service === Svc::SEND_TESTIMONY) {
             $res[Resp::LOG_RESPONSE] = array();
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new Testimony();
                 $sch->setUserId($this->api_User->getId());
-                $sch->setTitle($object['title']);
+                $sch->setTitle($object[ApiTestimony::TITLE]);
                 $sch->setCountryId($this->api_User->getCountry());
-                $sch->setDetail($object['detail']);
+                $sch->setDetail($object[ApiTestimony::DETAIL]);
                 $state = $smsService->AddTestimony($sch);
                 if ($state) {
                     $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -784,17 +827,17 @@ class apiController extends AbstractRestfulController
             $file = fopen("data.txt", 'wb');
             fwrite($file, $param);
             fclose($file);
-            $res['Upload_Response'] = array();
+            $res[Resp::UPLOAD_RESPONSE] = array();
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
-                $status = $this->UploadFile($object['Image'], $this->api_User->getId());
-                if ($status['Status'] == 1) {
+                $status = $this->UploadFile($object[ApiUploadUserPic::IMAGE], $this->api_User->getId());
+                if ($status[ApiUploadUserPic::STATUS] == 1) {
                     $new_user = $this->api_User;
-                    $new_user->setPicture($status['FileName']);
+                    $new_user->setPicture($status[ApiUploadUserPic::FILENAME]);
                     $state = $smsService->Update_User_Pic($new_user);
-                    $upload_status['id'] = $object[ApiGeneric::ID];
-                    $upload_status['File_Name'] = $status['FileName'];
-                    $res['Upload_Response'][] = $upload_status;
+                    $upload_status[ApiGeneric::ID] = $object[ApiGeneric::ID];
+                    $upload_status[ApiUploadUserPic::FILE_NAME] = $status[ApiUploadUserPic::FILENAME];
+                    $res[Resp::UPLOAD_RESPONSE][] = $upload_status;
                 }
             }
             $this->api_Response[Resp::RESPONSE] = $res;
@@ -820,16 +863,16 @@ class apiController extends AbstractRestfulController
             }
             $this->api_Response[Resp::RESPONSE] = $res;
         } elseif ($service === Svc::GETALL_TESTIMONIES) {
-            $this->api_Response[Resp::RESPONSE] = array('Testimonies', $smsService->GetAll_Testimonies());
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::TESTIMONIES, $smsService->GetAll_Testimonies());
         } elseif ($service === Svc::GETNEW_TESTIMONIES) {
-            $this->api_Response[Resp::RESPONSE] = array('Testimonies', $smsService->GetNew_Testimonies($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::TESTIMONIES, $smsService->GetNew_Testimonies($this->api_User));
         } elseif ($service === Svc::ADDNEW_TESTIMONY) {
             $res[Resp::LOG_RESPONSE] = array();
             $state = null;
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new Testimony();
-                $sch->setDescription($object['title']."\n".$object['detail']);
+                $sch->setDescription($object[ApiTestimony::TITLE]."\n".$object[ApiTestimony::DETAIL]);
                 $sch->setCountryId($this->api_User->getCountry());
                 $sch->setUserId($this->api_User->getId());
                 $sch->setStatus(1);
@@ -852,7 +895,7 @@ class apiController extends AbstractRestfulController
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new Testimony();
-                $sch->setDescription($object['Description']);
+                $sch->setDescription($object[ApiTestimony::DESCRIPTION]);
                 $sch->setCountryId($this->api_User->getCountry());
                 $sch->setUserId($this->api_User->getId());
                 $state = $smsService->Delete_Testimony($sch);
@@ -872,7 +915,7 @@ class apiController extends AbstractRestfulController
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new Testimony();
                 $sch->setUserId($this->api_User->getId());
-                $sch->setId($object['Testimony_ID']);
+                $sch->setId($object[ApiTestimonyLog::TESTIMONY_ID]);
                 $state = $smsService->AddNew_TestimonyLog($sch);
                 if ($state) {
                     $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -892,16 +935,16 @@ class apiController extends AbstractRestfulController
             }
             $this->api_Response[Resp::RESPONSE] = $res;
         } elseif ($service === Svc::GETALL_NEWSFEEDS) {
-            $this->api_Response[Resp::RESPONSE] = array('NewsFeeds', $smsService->GetAll_NewsFeeds());
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::NEWSFEEDS, $smsService->GetAll_NewsFeeds());
         } elseif ($service === Svc::GETNEW_NEWSFEEDS) {
-            $this->api_Response[Resp::RESPONSE] = array('NewsFeeds', $smsService->GetNew_NewsFeeds($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::NEWSFEEDS, $smsService->GetNew_NewsFeeds($this->api_User));
         } elseif ($service === Svc::ADDNEW_NEWSFEED_LOG) {
             $res[Resp::LOG_RESPONSE] = array();
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new NewsFeed();
                 $sch->setUserId($this->api_User->getId());
-                $sch->setId($object['NewsFeed_ID']);
+                $sch->setId($object[ApiNewsFeedLog::NEWSFEED_ID]);
                 $state = $smsService->AddNew_NewsFeed_log($sch);
                 if ($state) {
                     $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
@@ -921,25 +964,25 @@ class apiController extends AbstractRestfulController
             }
             $this->api_Response[Resp::RESPONSE] = $res;
         } elseif ($service === Svc::GETALL_CATEGORY) {
-            $this->api_Response[Resp::RESPONSE] = array('Categories', $smsService->GetAll_Categories());
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::CATEGORIES, $smsService->GetAll_Categories());
         } elseif ($service === Svc::GETALL_LEARNINGTOOLS) {
-            $this->api_Response[Resp::RESPONSE] = array('LearningTools', $smsService->GetAll_LearningTools($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::LEARNINGTOOLS, $smsService->GetAll_LearningTools($this->api_User));
         } elseif ($service === Svc::GETNEW_LEARNINGTOOLS) {
-            $this->api_Response[Resp::RESPONSE] = array('LearningTools', $smsService->GetNew_LearningTools($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::LEARNINGTOOLS, $smsService->GetNew_LearningTools($this->api_User));
         }elseif ($service === Svc::DISCIPLETREE) {
-            $this->api_Response[Resp::RESPONSE] = array('DiscipleTree', $smsService->Get_DiscipleCount($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::DISCIPLETREE, $smsService->Get_DiscipleCount($this->api_User));
         }elseif ($service === Svc::UPDATE_PROFILE) {
             $res[Resp::LOG_RESPONSE] = array();
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $hydrator = new Hydrator();
-                if(isset($object['Phone_Code'])){
+                if(isset($object[ApiDisciple::PHONE_CODE])){
                     /**
                      * @var \DeepLife_API\Model\Country $country
                      */
-                    $country = $smsService->Get_Country_By_PhoneCode($object['Phone_Code']);
+                    $country = $smsService->Get_Country_By_PhoneCode($object[ApiProfile::PHONE_CODE]);
                     if($country != null && $country->getId() != null){
-                        $object['Country'] = $country->getId();
+                        $object[ApiProfile::COUNTRY] = $country->getId();
                     }
                 }
                 $new_user = $hydrator->GetUser($object);
@@ -958,23 +1001,23 @@ class apiController extends AbstractRestfulController
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $user1 = new User();
-                $user1->setPhoneNo($object['Disciple_Phone']);
+                $user1->setPhoneNo($object[ApiDisciple::DISCIPLE_PHONE]);
                 /**
                  * @var \DeepLife_API\Model\User $_new_user
                  */
                 $_new_user = $smsService->Get_User($user1);
                 if ($_new_user != null) {
-                    $_new_user->setMentorId("NULL");
+                    $_new_user->setMentorId(ApiGeneric::NULL);
                     $state = $smsService->Update_User($_new_user);
                     if($state){
                         $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
                         $res[Resp::LOG_RESPONSE][] = $disciple_res;
                     }else{
                         $user1->setPhoneNo("");
-                        $user1->setEmail($object['Disciple_Email']);
+                        $user1->setEmail($object[ApiDisciple::DISCIPLE_EMAIL]);
                         $_new_user = $smsService->Get_User($user1);
                         if($_new_user != null){
-                            $_new_user->setMentorId("NULL");
+                            $_new_user->setMentorId(ApiGeneric::NULL);
                             $state = $smsService->Update_User($_new_user);
                             $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
                             $res[Resp::LOG_RESPONSE][] = $disciple_res;
@@ -1004,11 +1047,11 @@ class apiController extends AbstractRestfulController
                 $this->api_Service = $reqService;
                 return true;
             } else {
-                $error[RespErr::SERVICE_REQUEST] = 'Unknown';
+                $error[RespErr::SERVICE_REQUEST] = RespErrServiceRequest::UNKNOWN;
                 $this->api_Response[Resp::REQUEST_ERROR] = $error;
             }
         } else {
-            $error[RespErr::REQUEST_FORMAT] = 'Invalid';
+            $error[RespErr::REQUEST_FORMAT] = RespErrRequestFormat::INVALID;
             $this->api_Response[Resp::REQUEST_ERROR] = $error;
         }
         return false;

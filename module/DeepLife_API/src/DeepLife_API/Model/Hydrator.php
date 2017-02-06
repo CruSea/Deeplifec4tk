@@ -7,6 +7,10 @@
  */
 
 namespace DeepLife_API\Model;
+use DeepLife_API\Controller\ApiDisciple;
+use DeepLife_API\Controller\ApiGeneric;
+use DeepLife_API\Controller\ApiSchedule;
+
 class Hydrator
 {
     public function Hydrate($Post, $DataType)
@@ -463,29 +467,30 @@ class Hydrator
     public function GetDisciple($data)
     {
         $New_Data = new User();
-        $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
-        $New_Data->setEmail(isset($data['Email']) ? ($data['Email']) : null);
-        $New_Data->setDisplayName(isset($data['FullName']) ? $data['FullName'] : null);
-        $New_Data->setFirstName(isset($data['FullName']) ? $data['FullName'] : null);
-        $New_Data->setCountry(isset($data['Country']) ? $data['Country'] : null);
-        $New_Data->setGender(isset($data['Gender']) ? $data['Gender'] : null);
-        $New_Data->setStage(isset($data['Stage']) ? $data['Stage'] : null);
-        $New_Data->setPhoneNo(isset($data['Phone']) ? $data['Phone'] : null);
+        $New_Data->setId(isset($data[ApiGeneric::ID]) ? intval($data[ApiGeneric::ID]) : null);
+        $New_Data->setEmail(isset($data[ApiDisciple::EMAIL]) ? ($data[ApiDisciple::EMAIL]) : null);
+        $New_Data->setDisplayName(isset($data[ApiDisciple::FULLNAME]) ? $data[ApiDisciple::FULLNAME] : null);
+        $New_Data->setFirstName(isset($data[ApiDisciple::FULLNAME]) ? $data[ApiDisciple::FULLNAME] : null);
+        $New_Data->setCountry(isset($data[ApiDisciple::COUNTRY]) ? $data[ApiDisciple::COUNTRY] : null);
+        $New_Data->setGender(isset($data[ApiDisciple::GENDER]) ? $data[ApiDisciple::GENDER] : null);
+        $New_Data->setStage(isset($data[ApiDisciple::STAGE]) ? $data[ApiDisciple::STAGE] : null);
+        $New_Data->setPhoneNo(isset($data[ApiDisciple::PHONE]) ? $data[ApiDisciple::PHONE] : null);
         return $New_Data;
     }
     public function GetUser($data)
     {
         $New_Data = new User();
-        $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
-        $New_Data->setEmail(isset($data['Email']) ? ($data['Email']) : null);
-        $New_Data->setDisplayName(isset($data['FullName']) ? $data['FullName'] : null);
-        $New_Data->setFirstName(isset($data['FullName']) ? $data['FullName'] : null);
-        $New_Data->setCountry(isset($data['Country']) ? $data['Country'] : null);
-        $New_Data->setGender(isset($data['Gender']) ? $data['Gender'] : null);
-        $New_Data->setPhoneNo(isset($data['Phone']) ? $data['Phone'] : null);
+        $New_Data->setId(isset($data[ApiGeneric::ID]) ? intval($data[ApiGeneric::ID]) : null);
+        $New_Data->setEmail(isset($data[ApiDisciple::EMAIL]) ? ($data[ApiDisciple::EMAIL]) : null);
+        $New_Data->setDisplayName(isset($data[ApiDisciple::FULLNAME]) ? $data[ApiDisciple::FULLNAME] : null);
+        $New_Data->setFirstName(isset($data[ApiDisciple::FULLNAME]) ? $data[ApiDisciple::FULLNAME] : null);
+        $New_Data->setCountry(isset($data[ApiDisciple::COUNTRY]) ? $data[ApiDisciple::COUNTRY] : null);
+        $New_Data->setGender(isset($data[ApiDisciple::GENDER]) ? $data[ApiDisciple::GENDER] : null);
+        $New_Data->setPhoneNo(isset($data[ApiDisciple::PHONE]) ? $data[ApiDisciple::PHONE] : null);
         return $New_Data;
     }
-
+    // briggsm: below looks old to me so commenting out...
+    /*
     public function GetSchedule($data)
     {
         $New_Data = new Schedule();
@@ -498,16 +503,17 @@ class Hydrator
         $New_Data->setCreated(isset($data['created']) ? $data['created'] : null);
         return $New_Data;
     }
+    */
 
     public function GetSchedule_($data)
     {
         $New_Data = new Schedule();
-        $New_Data->setId(isset($data['id']) ? $data['id'] : null);
-        $New_Data->setUserId(isset($data['user_id']) ? ($data['user_id']) : null);
-        $New_Data->setName(isset($data['Title']) ? $data['Title'] : null);
-        $New_Data->setTime(isset($data['Alarm_Time']) ? $data['Alarm_Time'] : null);
-        $New_Data->setType(isset($data['Alarm_Repeat']) ? $data['Alarm_Repeat'] : null);
-        $New_Data->setDescription(isset($data['Description']) ? $data['Description'] : null);
+        $New_Data->setId(isset($data[ApiGeneric::ID]) ? $data[ApiGeneric::ID] : null);
+        $New_Data->setUserId(isset($data[ApiSchedule::USER_ID]) ? ($data[ApiSchedule::USER_ID]) : null);
+        $New_Data->setName(isset($data[ApiSchedule::TITLE]) ? $data[ApiSchedule::TITLE] : null);
+        $New_Data->setTime(isset($data[ApiSchedule::ALARM_TIME]) ? $data[ApiSchedule::ALARM_TIME] : null);
+        $New_Data->setType(isset($data[ApiSchedule::ALARM_REPEAT]) ? $data[ApiSchedule::ALARM_REPEAT] : null);
+        $New_Data->setDescription(isset($data[ApiSchedule::DESCRIPTION]) ? $data[ApiSchedule::DESCRIPTION] : null);
         return $New_Data;
     }
 }
