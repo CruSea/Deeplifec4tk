@@ -382,11 +382,13 @@ class apiController extends AbstractRestfulController
                         if ($this->Authenticate($data)) {
                             $this->ProcessRequest($reqService, $reqParam);
                         }else{
-                            $this->api_Response[Resp::RESPONSE] = "Authentication has failed";
+                            $found[RespErr::AUTHENTICATION] = "Authentication has failed";
+                            $this->api_Response[Resp::RESPONSE] = $found;
                         }
                     }
                 }else{
-                    $this->api_Response[Resp::RESPONSE] = "Invalid Param";
+                    $found[RespErr::PARAMETER_ERROR] = "Invalid Param";
+                    $this->api_Response[Resp::RESPONSE] = $found;
                 }
             }
 //        }
