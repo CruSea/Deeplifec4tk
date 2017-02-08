@@ -1177,6 +1177,9 @@ class apiController extends AbstractRestfulController
                         break;
                     }
                 }
+            } elseif ($service === Svc::SEND_LOG) {
+                // briggsm: Adding this because sometimes a "Send_Log" is sent to us, and we need api_Param to be set, but it's not getting set. So I'm creating this here for that purpose.
+                $is_valid = true;
             }
             if ($is_valid) {
                 $this->api_Param = $objects;
