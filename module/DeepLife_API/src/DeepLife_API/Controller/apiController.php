@@ -762,16 +762,19 @@ class apiController extends AbstractRestfulController
         }*/ elseif ($service === Svc::UPDATE_DISCIPLES) {
             $res[Resp::LOG_RESPONSE] = array();
             foreach ($this->api_Param as $object) {
+                $object = array_change_key_case($object, CASE_LOWER);
                 $hydrator = new Hydrator();
                 $new_user = $hydrator->GetDisciple($object);
                 /**
                  * @var \DeepLife_API\Model\User $_new_user
                  */
                 $_new_user = $smsService->Get_User($new_user);
-                $new_user->setId($_new_user->getId());
-                $state = $smsService->Update_Disciple($new_user);
-                $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
-                $res[Resp::LOG_RESPONSE][] = $disciple_res;
+                if ($_new_user != null) {
+                    $new_user->setId($_new_user->getId());
+                    $state = $smsService->Update_Disciple($new_user);
+                    $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
+                    $res[Resp::LOG_RESPONSE][] = $disciple_res;
+                }
             }
             $this->api_Response[Resp::RESPONSE] = $res;
         } elseif ($service === Svc::UPDATE) {
