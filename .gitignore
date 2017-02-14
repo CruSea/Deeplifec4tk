@@ -10,3 +10,4 @@ nbproject
 vendor
 composer.phar
 config/autoload/global.php
+Error Logs.txt
