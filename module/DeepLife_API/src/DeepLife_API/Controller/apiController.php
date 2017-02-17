@@ -1185,18 +1185,6 @@ class apiController extends AbstractRestfulController
             } elseif ($service === Svc::SEND_LOG) {
                 // briggsm: Adding this because sometimes a "Send_Log" is sent to us, and we need api_Param to be set, but it's not getting set. So I'm creating this here for that purpose.
                 $is_valid = true;
-            } elseif ($service === Svc::LOG_IN) {
-                foreach ($objects as $object) {
-                    $object = array_change_key_case($object, CASE_LOWER);
-                    if (isset($object[ApiUser::PHONE_CODE])) {
-                        $is_valid = true;
-                    } else {
-                        $error[RespErr::PARAMETER_ERROR] = 'Invalid Disciple id for logging';
-                        $this->api_Response[Resp::REQUEST_ERROR] = $error;
-                        $is_valid = false;
-                        break;
-                    }
-                }
             }
             if ($is_valid) {
                 $this->api_Param = $objects;
