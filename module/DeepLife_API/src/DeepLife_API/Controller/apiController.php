@@ -62,6 +62,7 @@ abstract class Req extends BasicEnum {
     const USER_NAME = 'user_name';
     const USER_PASS = 'user_pass';
     const COUNTRY = 'country';
+    const PHONE_CODE = 'phone_code';
     const SERVICE = 'service';
     const PARAM = 'param';
 }
@@ -292,23 +293,28 @@ class apiController extends AbstractRestfulController
         $smsService = $this->getServiceLocator()->get('DeepLife_API\Service\Service');
         $reqUserName = $data[Req::USER_NAME];
         $reqUserPass = $data[Req::USER_PASS];
-        $reqCountry = $data[Req::COUNTRY];
+        if(isset($data[Req::PHONE_CODE])){
+            /**
+             * @var \DeepLife_API\Model\Country $PhoneCode
+             */
+            $PhoneCode = $smsService->Get_Country_By_PhoneCode($data[Req::PHONE_CODE]);
+            $reqCountry = $PhoneCode->getId();
+        }else{
+            $reqCountry = $data[Req::COUNTRY];
+        }
 
         if ($smsService->authenticate($reqUserName,$reqUserPass)) {
             $user = new User();
             $user->setEmail($reqUserName);
             $this->api_User = $smsService->Get_User($user);
-//            if ($this->api_user->getCountry() === $reqCountry) {
-//                return true;
-//            }
-            if ($this->api_User != null) {
+            if ($this->api_user->getCountry() == $reqCountry) {
                 return true;
             }
         }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
             $user = new User();
             $user->setPhoneNo($reqUserName);
             $this->api_User = $smsService->Get_User($user);
-            if ($this->api_User->getCountry() === $reqCountry) {
+            if ($this->api_User->getCountry() == $reqCountry) {
                 return true;
             }
         }
@@ -363,7 +369,6 @@ class apiController extends AbstractRestfulController
                 $reqService = strtolower($data[Req::SERVICE]);
                 $reqParam = $data[Req::PARAM];
                 $reqCountry = $data[Req::COUNTRY];
-
                 if ($this->isValidParam($reqParam, $reqService)) {
                     if ($reqService === Svc::SIGN_UP) {
                         $this->Sign_Up_User($reqParam);
@@ -1041,11 +1046,8 @@ class apiController extends AbstractRestfulController
     public function isValidRequest($data)
     {
         $this->api_Response[Resp::REQUEST_ERROR] = array();
-        if (isset($data[Req::USER_NAME]) && isset($data[Req::USER_PASS]) && isset($data[Req::COUNTRY])
-            && isset($data[Req::SERVICE]) && isset($data[Req::PARAM])
-        ) {
+        if (isset($data[Req::USER_NAME]) && isset($data[Req::USER_PASS]) && (isset($data[Req::COUNTRY]) || isset($data[Req::PHONE_CODE])) && isset($data[Req::SERVICE]) && isset($data[Req::PARAM])) {
             $reqService = strtolower($data[Req::SERVICE]);
-
             if (Svc::isValidValue($reqService)) {
                 $this->api_Service = $reqService;
                 return true;
@@ -1183,6 +1185,18 @@ class apiController extends AbstractRestfulController
             } elseif ($service === Svc::SEND_LOG) {
                 // briggsm: Adding this because sometimes a "Send_Log" is sent to us, and we need api_Param to be set, but it's not getting set. So I'm creating this here for that purpose.
                 $is_valid = true;
+            } elseif ($service === Svc::LOG_IN) {
+                foreach ($objects as $object) {
+                    $object = array_change_key_case($object, CASE_LOWER);
+                    if (isset($object[ApiUser::PHONE_CODE])) {
+                        $is_valid = true;
+                    } else {
+                        $error[RespErr::PARAMETER_ERROR] = 'Invalid Disciple id for logging';
+                        $this->api_Response[Resp::REQUEST_ERROR] = $error;
+                        $is_valid = false;
+                        break;
+                    }
+                }
             }
             if ($is_valid) {
                 $this->api_Param = $objects;
