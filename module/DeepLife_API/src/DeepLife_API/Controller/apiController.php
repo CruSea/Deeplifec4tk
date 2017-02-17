@@ -426,7 +426,7 @@ class apiController extends AbstractRestfulController
             $object = array_change_key_case($object, CASE_LOWER);
 
             //if (isset($object['User_Name']) && isset($object['User_Country']) && isset($object['User_Phone']) && isset($object['User_Email']) && isset($object['User_Gender']) && isset($object['User_Pass'])) {
-            if (isset($object[ApiUser::USER_NAME]) && isset($object[ApiUser::USER_COUNTRY]) && isset($object[ApiUser::USER_PHONE]) && isset($object[ApiUser::USER_EMAIL]) && isset($object[ApiUser::USER_GENDER]) && isset($object[ApiUser::USER_PASS])) {
+            if (isset($object[ApiUser::USER_NAME]) && (isset($object[ApiUser::USER_COUNTRY]) || isset($object[ApiUser::PHONE_CODE])) && isset($object[ApiUser::USER_PHONE]) && isset($object[ApiUser::USER_EMAIL]) && isset($object[ApiUser::USER_GENDER]) && isset($object[ApiUser::USER_PASS])) {
                 $new_user = new User();
                 $new_user->setFirstName($object[ApiUser::USER_NAME]);
                 if(isset($object[ApiUser::PHONE_CODE])){
