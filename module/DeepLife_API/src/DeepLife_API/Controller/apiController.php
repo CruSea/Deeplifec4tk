@@ -306,7 +306,7 @@ class apiController extends AbstractRestfulController
             $user = new User();
             $user->setEmail($reqUserName);
             $this->api_User = $smsService->Get_User($user);
-            if ($this->api_User->getCountry() == $reqCountry) {
+            if ($this->api_User->getCountry()) {
                 return true;
             }
         }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
