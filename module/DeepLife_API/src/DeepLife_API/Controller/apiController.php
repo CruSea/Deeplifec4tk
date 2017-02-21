@@ -1069,7 +1069,7 @@ class apiController extends AbstractRestfulController
                 foreach ($objects as $object) {
                     $object = array_change_key_case($object, CASE_LOWER);
                     //if ((isset($object['Full_Name']) || isset($object['FullName'])) && isset($object['Country']) && isset($object['Phone']) && isset($object['Email'])) {
-                    if ((isset($object[ApiDisciple::FULL_NAME]) || isset($object[ApiDisciple::FULLNAME])) && isset($object[ApiDisciple::COUNTRY]) && isset($object[ApiDisciple::PHONE]) && isset($object[ApiDisciple::EMAIL])) {
+                    if ((isset($object[ApiDisciple::FULL_NAME]) || isset($object[ApiDisciple::FULLNAME])) && (isset($object[ApiDisciple::COUNTRY]) || isset($object[ApiDisciple::PHONE_CODE])) && isset($object[ApiDisciple::PHONE]) && isset($object[ApiDisciple::EMAIL])) {
                         $is_valid = true;
                     } else {
                         $error[RespErr::PARAMETER_ERROR] = 'Invalid add new Disciple parameter given';
