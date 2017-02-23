@@ -427,10 +427,10 @@ function tree(error, treeData) {
 
         // Set widths between levels based on maxLabelLength.
         nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 15)); //maxLabelLength * 15px
+            d.y = (d.depth * (maxLabelLength * 1)); //maxLabelLength * 15px
             // alternatively to keep a fixed scale one can set a fixed depth per level
             // Normalize for fixed-depth by commenting out below line
-            d.x = (d.x * 3);
+            d.x = (d.x * 1.2);
             d.y = (d.depth * 120); //120px per level.
         });
 
