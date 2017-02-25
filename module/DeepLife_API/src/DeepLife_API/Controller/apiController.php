@@ -750,6 +750,8 @@ class apiController extends AbstractRestfulController
             $found[ApiEntity::REPORTS] = $smsService->Get_Report($this->api_User);
             $found[ApiEntity::LEARNINGTOOLS] = $smsService->GetNew_LearningTools($this->api_User);
             $found[ApiEntity::DISCIPLETREE] = $smsService->Get_DiscipleCount($this->api_User);
+            $found[ApiMeta::COUNTRY] = $smsService->GetAll_Country();
+            $found[ApiMeta::CATEGORIES] = $smsService->GetAll_Categories();
             /**
              * @var \DeepLife_API\Model\User $profile
              */
