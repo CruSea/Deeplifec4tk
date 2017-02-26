@@ -298,7 +298,9 @@ class apiController extends AbstractRestfulController
             /**
              * @var \DeepLife_API\Model\Country $PhoneCode
              */
+            print_r("Check: Get_Country_By_PhoneCode",$data[Req::PHONE_CODE]);
             $PhoneCode = $smsService->Get_Country_By_PhoneCode($data[Req::PHONE_CODE]);
+            print_r("Found PhoneCode: ",$PhoneCode);
             if($PhoneCode != null){
                 $reqCountry = $PhoneCode->getId();
             }else{
@@ -309,14 +311,20 @@ class apiController extends AbstractRestfulController
         }
         if(isset($reqUserName) && isset($reqUserPass) && isset($reqCountry)){
             if ($smsService->authenticate($reqUserName,$reqUserPass)) {
+                print_r("authenticate with email address");
                 $user = new User();
                 $user->setEmail($reqUserName);
+                print_r("Get User");
                 $this->api_User = $smsService->Get_User($user);
+                print_r("Get User done");
                 return true;
             }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
+                print_r("authenticate with Phone address",$reqUserName);
                 $user = new User();
                 $user->setPhoneNo($reqUserName);
+                print_r("Get User");
                 $this->api_User = $smsService->Get_User($user);
+                print_r("Get User done");
                 if ($this->api_User->getCountry() == $reqCountry) {
                     return true;
                 }
