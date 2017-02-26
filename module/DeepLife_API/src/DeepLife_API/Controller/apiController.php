@@ -91,7 +91,8 @@ abstract class RespErrRequestFormat extends BasicEnum {
 }
 
 abstract class RespErrAuthentication extends BasicEnum {
-    const INVALID_USER = 'Invalid User';
+    const INVALID_USER = 'Invalid user! The provided user account information is not valid';
+    const INVALID_DATA = 'Authentication has failed! please try again with a correct information';
 }
 
 abstract class ApiMeta extends BasicEnum {
@@ -298,29 +299,32 @@ class apiController extends AbstractRestfulController
              * @var \DeepLife_API\Model\Country $PhoneCode
              */
             $PhoneCode = $smsService->Get_Country_By_PhoneCode($data[Req::PHONE_CODE]);
-            $reqCountry = $PhoneCode->getId();
+            if(isset($PhoneCode)){
+                $reqCountry = $PhoneCode->getId();
+            }
         }else{
             $reqCountry = $data[Req::COUNTRY];
-            print_r($reqCountry);
-            print "Country";
-            print_r($data);
         }
-        if ($smsService->authenticate($reqUserName,$reqUserPass)) {
-            $user = new User();
-            $user->setEmail($reqUserName);
-            $this->api_User = $smsService->Get_User($user);
-            if ($this->api_User->getCountry()) {
-                return true;
+        if(isset($reqUserName) && isset($reqUserPass) && isset($reqCountry)){
+            if ($smsService->authenticate($reqUserName,$reqUserPass)) {
+                $user = new User();
+                $user->setEmail($reqUserName);
+                $this->api_User = $smsService->Get_User($user);
+                if ($this->api_User->getCountry()) {
+                    return true;
+                }
+            }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
+                $user = new User();
+                $user->setPhoneNo($reqUserName);
+                $this->api_User = $smsService->Get_User($user);
+                if ($this->api_User->getCountry() == $reqCountry) {
+                    return true;
+                }
             }
-        }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
-            $user = new User();
-            $user->setPhoneNo($reqUserName);
-            $this->api_User = $smsService->Get_User($user);
-            if ($this->api_User->getCountry() == $reqCountry) {
-                return true;
-            }
+            $error[RespErr::AUTHENTICATION] = RespErrAuthentication::INVALID_USER;
+            $this->api_Response[Resp::REQUEST_ERROR] = $error;
         }
-        $error[RespErr::AUTHENTICATION] = RespErrAuthentication::INVALID_USER;
+        $error[RespErr::AUTHENTICATION] = RespErrAuthentication::INVALID_DATA;
         $this->api_Response[Resp::REQUEST_ERROR] = $error;
         return false;
     }
