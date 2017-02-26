@@ -294,6 +294,7 @@ class apiController extends AbstractRestfulController
         $smsService = $this->getServiceLocator()->get('DeepLife_API\Service\Service');
         $reqUserName = $data[Req::USER_NAME];
         $reqUserPass = $data[Req::USER_PASS];
+        print_r($data);
         if(isset($data[Req::PHONE_CODE])){
             /**
              * @var \DeepLife_API\Model\Country $PhoneCode
