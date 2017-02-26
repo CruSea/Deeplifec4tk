@@ -310,21 +310,22 @@ class apiController extends AbstractRestfulController
         }else{
             $reqCountry = $data[Req::COUNTRY];
         }
-        print_r("Check is set");
         if(isset($reqUserName) && isset($reqUserPass) && isset($reqCountry)){
             if ($smsService->authenticate($reqUserName,$reqUserPass)) {
                 print_r("authenticate with email address");
                 $user = new User();
                 $user->setEmail($reqUserName);
+                print_r("Get User");
                 $this->api_User = $smsService->Get_User($user);
-                if ($this->api_User->getCountry()) {
-                    return true;
-                }
+                print_r("Get User done");
+                return true;
             }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
                 print_r("authenticate with Phone address");
                 $user = new User();
                 $user->setPhoneNo($reqUserName);
+                print_r("Get User");
                 $this->api_User = $smsService->Get_User($user);
+                print_r("Get User done");
                 if ($this->api_User->getCountry() == $reqCountry) {
                     return true;
                 }
