@@ -301,6 +301,9 @@ class apiController extends AbstractRestfulController
             $reqCountry = $PhoneCode->getId();
         }else{
             $reqCountry = $data[Req::COUNTRY];
+            print_r($reqCountry);
+            print "Country";
+            print_r($data);
         }
         if ($smsService->authenticate($reqUserName,$reqUserPass)) {
             $user = new User();
