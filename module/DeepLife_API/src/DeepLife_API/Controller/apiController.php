@@ -315,7 +315,7 @@ class apiController extends AbstractRestfulController
                 $user = new User();
                 $user->setEmail($reqUserName);
                 print_r("Get User");
-                $this->api_User = $smsService->Get_User($user);
+                $this->api_User = $smsService->Get_By_Email($user);
                 print_r("Get User done");
                 print_r($this->api_User);
                 return true;
@@ -324,7 +324,7 @@ class apiController extends AbstractRestfulController
                 $user = new User();
                 $user->setPhoneNo($reqUserName);
                 print_r("Get User");
-                $this->api_User = $smsService->Get_User($user);
+                $this->api_User = $smsService->Get_By_Phone($user);
                 print_r("Get User done");
                 print_r($this->api_User);
                 if ($this->api_User->getCountry() == $reqCountry) {

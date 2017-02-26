@@ -158,6 +158,27 @@ class ServiceImpl implements Service
         }
     }
 
+    public function Get_By_Email(User $user)
+    {
+        try {
+            return $this->apiRepository->Get_By_Email($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+    public function Get_By_Phone(User $user)
+    {
+        try {
+            return $this->apiRepository->Get_By_Phone($user);
+        } catch (\Exception $e) {
+            $this->LogError($e);
+            return null;
+        }
+    }
+
+
     public function Get_User_Profile(User $user)
     {
         try {

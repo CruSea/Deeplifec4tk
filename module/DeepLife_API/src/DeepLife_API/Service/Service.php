@@ -36,6 +36,8 @@ interface Service
     public function isThere_User_By_Phone(User $user);
 
     public function Get_User(User $user);
+    public function Get_By_Email(User $user);
+    public function Get_By_Phone(User $user);
     public function Get_Users(User $user);
     public function Get_User_Profile(User $user);
     public function GetAll_Disciples(User $user);
