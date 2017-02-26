@@ -299,8 +299,10 @@ class apiController extends AbstractRestfulController
              * @var \DeepLife_API\Model\Country $PhoneCode
              */
             $PhoneCode = $smsService->Get_Country_By_PhoneCode($data[Req::PHONE_CODE]);
-            if(isset($PhoneCode)){
+            if($PhoneCode != null){
                 $reqCountry = $PhoneCode->getId();
+            }else{
+                $reqCountry = $data[Req::PHONE_CODE];
             }
         }else{
             $reqCountry = $data[Req::COUNTRY];
