@@ -320,7 +320,7 @@ class apiController extends AbstractRestfulController
                 print_r("Get User done");
                 return true;
             }else if($smsService->authenticate2($reqUserName,$reqUserPass)){
-                print_r("authenticate with Phone address");
+                print_r("authenticate with Phone address",$reqUserName);
                 $user = new User();
                 $user->setPhoneNo($reqUserName);
                 print_r("Get User");
