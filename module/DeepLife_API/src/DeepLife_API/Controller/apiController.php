@@ -464,7 +464,7 @@ class apiController extends AbstractRestfulController
                         $found[ApiEntity::DISCIPLES] = $smsService->GetAll_Disciples($this->api_User);
                         $found[ApiEntity::SCHEDULES] = $smsService->GetAll_Schedule($this->api_User);
                         $found[ApiEntity::NEWSFEEDS] = $smsService->GetNew_NewsFeeds($this->api_User);
-                        $found[ApiEntity::QUESTIONS] = $smsService->GetAll_Question();
+                        $found[ApiEntity::QUESTIONS] = $smsService->Get_Question($this->api_User);
                         $found[ApiEntity::REPORTS] = $smsService->GetAll_Report();
                         $this->api_Response[Resp::RESPONSE] = $found;
                         /**
@@ -829,9 +829,9 @@ class apiController extends AbstractRestfulController
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new Testimony();
                 $sch->setUserId($this->api_User->getId());
-                $sch->setTitle($object[ApiTestimony::TITLE]);
+                $sch->setDescription($object[ApiTestimony::TITLE]);
                 $sch->setCountryId($this->api_User->getCountry());
-                $sch->setDetail($object[ApiTestimony::DETAIL]);
+                $sch->setDescription($object[ApiTestimony::DETAIL]);
                 $state = $smsService->AddTestimony($sch);
                 if ($state) {
                     $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];

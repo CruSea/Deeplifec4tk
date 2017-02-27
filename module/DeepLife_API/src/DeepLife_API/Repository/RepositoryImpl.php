@@ -617,7 +617,16 @@ class RepositoryImpl implements RepositoryInterface
 
     public function Get_Question(User $user)
     {
-        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry().' OR questions.default_question = 1';
+        $found = $this->Get_Question_By_Country($user);
+        if($found != null){
+            return $found;
+        }else{
+            return $this->Get_Default_Question();
+        }
+    }
+    public function Get_Default_Question()
+    {
+        $row_sql = 'SELECT * FROM questions WHERE questions.default_question = 1';
         $statement = $this->adapter->query($row_sql);
 
         $result = $statement->execute();
@@ -631,7 +640,22 @@ class RepositoryImpl implements RepositoryInterface
         $hydrator = new Hydrator();
         return $hydrator->Extract($posts, new Questions());
     }
+    public function Get_Question_By_Country(User $user)
+    {
+        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry();
+        $statement = $this->adapter->query($row_sql);
 
+        $result = $statement->execute();
+        $posts = null;
+        if ($result->count() > 0) {
+            while ($result->valid()) {
+                $posts[] = $result->current();
+                $result->next();
+            }
+        }
+        $hydrator = new Hydrator();
+        return $hydrator->Extract($posts, new Questions());
+    }
 
     public function AddNew_Answer(Answers $answers)
     {
