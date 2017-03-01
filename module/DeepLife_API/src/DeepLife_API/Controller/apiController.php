@@ -440,6 +440,7 @@ class apiController extends AbstractRestfulController
             if (isset($object[ApiUser::USER_NAME]) && (isset($object[ApiUser::USER_COUNTRY]) || isset($object[ApiUser::PHONE_CODE])) && isset($object[ApiUser::USER_PHONE]) && isset($object[ApiUser::USER_EMAIL]) && isset($object[ApiUser::USER_GENDER]) && isset($object[ApiUser::USER_PASS])) {
                 $new_user = new User();
                 $new_user->setFirstName($object[ApiUser::USER_NAME]);
+                $new_user->setDisplayName($object[ApiUser::USER_NAME]);
                 if(isset($object[ApiUser::PHONE_CODE])){
                     /**
                      * @var \DeepLife_API\Model\Country $id
