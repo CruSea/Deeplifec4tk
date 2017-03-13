@@ -127,26 +127,26 @@ return array(
                 array('route' => 'contacts/default', 'roles' => array('user')),
 
                 // Dashboard module
-                array('route' => 'dashboard', 'roles' => array('guest', 'user')),
-                array('route' => 'dashboard/default', 'roles' => array('guest', 'user')),
+                array('route' => 'dashboard', 'roles' => array('user')),
+                array('route' => 'dashboard/default', 'roles' => array('user')),
 
 
                 // resource module
-                array('route' => 'resource', 'roles' => array('guest', 'user')),
-                array('route' => 'resource/default', 'roles' => array('guest', 'user')),
+                array('route' => 'resource', 'roles' => array('user')),
+                array('route' => 'resource/default', 'roles' => array('user')),
 
                 // tree module
-                array('route' => 'tree', 'roles' => array('guest', 'user')),
-                array('route' => 'tree/default', 'roles' => array('guest', 'user')),
+                array('route' => 'tree', 'roles' => array('user')),
+                array('route' => 'tree/default', 'roles' => array('user')),
 
                 //news module
-                array('route' => 'news', 'roles' => array('guest', 'user')),
-                array('route' => 'news/paged', 'roles' => array('guest', 'user')),
-                array('route' => 'news/posts/:categorySlug/:postSlug', 'roles' => array('guest', 'user')),
-                array('route' => 'edit', 'roles' => array('guest', 'user')),
-                array('route' => 'delete', 'roles' => array('guest', 'user')),
-                array('route' => 'display-post', 'roles' => array('guest', 'user')),
-                array('route' => 'news/default', 'roles' => array('guest', 'user')),
+                array('route' => 'news', 'roles' => array('user')),
+                array('route' => 'news/paged', 'roles' => array('user')),
+                array('route' => 'news/posts/:categorySlug/:postSlug', 'roles' => array('user')),
+                array('route' => 'edit', 'roles' => array('user')),
+                array('route' => 'delete', 'roles' => array('user')),
+                array('route' => 'display-post', 'roles' => array('user')),
+                array('route' => 'news/default', 'roles' => array('user')),
 
 
 
