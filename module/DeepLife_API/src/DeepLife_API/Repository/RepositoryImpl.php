@@ -867,20 +867,26 @@ class RepositoryImpl implements RepositoryInterface
 
     public function GetNew_NewsFeeds(User $user)
     {
-        $row_sql = 'SELECT * FROM news WHERE news.country = ' . $user->getCountry() . ' AND news.id NOT IN( SELECT news_feeds_log.news_feed_id FROM news_feeds_log WHERE news_feeds_log.user_Id = ' . $user->getId() . ')';
+        $row_sql = 'SELECT * FROM news WHERE news.country = ' . $user->getCountry();
         $statement = $this->adapter->query($row_sql);
+
         $result = $statement->execute();
         $posts = null;
         if ($result->count() > 0) {
             while ($result->valid()) {
-                $data = $result->current();
-                $posts[] = $data;
+                $posts[] = $result->current();
                 $result->next();
             }
         }
         $hydrator = new Hydrator();
         return $hydrator->Extract($posts, new NewsFeed());
     }
+
+    public function Get_News_By_Country(User $user)
+    {
+
+    }
+
 
     public function AddNew_NewsFeed_log(NewsFeed $news)
     {

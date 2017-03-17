@@ -983,7 +983,7 @@ class apiController extends AbstractRestfulController
         } elseif ($service === Svc::GETALL_CATEGORY) {
             $this->api_Response[Resp::RESPONSE] = array(ApiEntity::CATEGORIES, $smsService->GetAll_Categories());
         } elseif ($service === Svc::GETALL_LEARNINGTOOLS) {
-            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::LEARNINGTOOLS, $smsService->GetAll_LearningTools($this->api_User));
+            $this->api_Response[Resp::RESPONSE] = array(ApiEntity::LEARNINGTOOLS, $smsService->GetNew_LearningTools($this->api_User));
         } elseif ($service === Svc::GETNEW_LEARNINGTOOLS) {
             $this->api_Response[Resp::RESPONSE] = array(ApiEntity::LEARNINGTOOLS, $smsService->GetNew_LearningTools($this->api_User));
         }elseif ($service === Svc::DISCIPLETREE) {
