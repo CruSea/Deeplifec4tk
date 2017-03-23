@@ -25,6 +25,7 @@ return array(
         'Learningtools',
         'Schedules',
         'DeepLife_API',
+        'SlmGoogleAnalytics',
         'LandingPage',
     ),
 

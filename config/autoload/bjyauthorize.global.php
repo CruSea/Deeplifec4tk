@@ -131,13 +131,13 @@ return array(
                 array('route' => 'dashboard/default', 'roles' => array('user')),
 
 
-                // resource module
-                array('route' => 'resource', 'roles' => array('user')),
-                array('route' => 'resource/default', 'roles' => array('user')),
-
                 // tree module
                 array('route' => 'tree', 'roles' => array('user')),
                 array('route' => 'tree/default', 'roles' => array('user')),
+
+                // Learn module
+                array('route' => '/learn[/:action][/:id]', 'roles' => array('user')),
+                array('route' => '/learn', 'roles' => array('user')),
 
                 //news module
                 array('route' => 'news', 'roles' => array('user')),

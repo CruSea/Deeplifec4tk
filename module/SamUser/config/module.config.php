@@ -46,105 +46,7 @@ return array(
                 ),
             ),
             
-                         
-            'resource' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/resource',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'SamUser\Controller',
-                        'controller'    => 'Resource',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'download1' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/download1',
-                            'defaults' => array(
-                                'controller' => 'resource',
-                                'action'     => 'download1',
-                            ),
-                        ),
-                    ),
-                    'download2' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/download2',
-                            'defaults' => array(
-                                'controller' => 'resource',
-                                'action'     => 'download2',
-                            ),
-                        ),
-                    ),
-                    'download3' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/download3',
-                            'defaults' => array(
-                                'controller' => 'resource',
-                                'action'     => 'download3',
-                            ),
-                        ),
-                    ),
-                    'download4' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/download4',
-                            'defaults' => array(
-                                'controller' => 'resource',
-                                'action'     => 'download4',
-                            ),
-                        ),
-                    ),
-                    'download5' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/download5',
-                            'defaults' => array(
-                                'controller' => 'resource',
-                                'action'     => 'download5',
-                            ),
-                        ),
-                    ),
-                    'download6' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/download6',
-                            'defaults' => array(
-                                'controller' => 'resource',
-                                'action'     => 'download6',
-                            ),
-                        ),
-                    ),
-                    'listdisciple' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/listdisciple   ',
-                            'defaults' => array(
-                                'controller' => 'dashboard',
-                                'action'     => 'listdisciple',
-                            ),
-                        ),
-                    ),
-                   
 
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:action[/:id]]',
-                            'constraints' => array(
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ),
          
            'tree' => array(
                 'type'    => 'segment',
@@ -177,35 +79,7 @@ return array(
             ),
             
             
-         
-         /*
-            'tree' => array(
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/tree',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'SamUser\Controller',
-                        'controller'    => 'Tree',
-                        'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
 
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:action[/:id]]',
-                            'constraints' => array(
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id'     => '[0-9]+',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ), */
             
             
             
