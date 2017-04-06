@@ -233,6 +233,7 @@ class Hydrator
                 foreach ($Post as $data) {
                     $New_Data = new Country();
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setIso(isset($data['iso']) ? ($data['iso']) : null);
                     $New_Data->setIso3(isset($data['iso3']) ? ($data['iso3']) : null);
                     $New_Data->setName(isset($data['name']) ? $data['name'] : null);
                     $New_Data->setCode(isset($data['phonecode']) ? $data['phonecode'] : null);
@@ -387,6 +388,7 @@ class Hydrator
                 foreach ($Post as $data) {
                     $New_Data = new Country();
                     $New_Data->setId(isset($data['id']) ? intval($data['id']) : null);
+                    $New_Data->setIso(isset($data['iso']) ? ($data['iso']) : null);
                     $New_Data->setIso3(isset($data['iso3']) ? ($data['iso3']) : null);
                     $New_Data->setName(isset($data['name']) ? $data['name'] : null);
                     $New_Data->setCode(isset($data['phonecode']) ? $data['phonecode'] : null);

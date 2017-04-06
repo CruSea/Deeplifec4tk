@@ -12,6 +12,7 @@ namespace DeepLife_API\Model;
 class Country
 {
     protected $id;
+    protected $iso;
     protected $iso3;
     protected $name;
     protected $code;
@@ -51,6 +52,22 @@ class Country
     /**
      * @return mixed
      */
+    public function getIso()
+    {
+        return $this->iso;
+    }
+
+    /**
+     * @param mixed $iso
+     */
+    public function setIso($iso)
+    {
+        $this->iso = $iso;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getIso3()
     {
         return $this->iso3;
@@ -84,6 +101,7 @@ class Country
     {
         return array(
             'id' => $this->getId(),
+            'iso' => $this->getIso(),
             'iso3' => $this->getIso3(),
             'name' => $this->getName(),
             'code' => $this->getCode(),

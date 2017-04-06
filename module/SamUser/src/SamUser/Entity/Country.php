@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity
  * @ORM\Table(name="country")
+ * @property string $iso
   * @property string $iso3
  *   @property string $name
  *    @property string $phonecode
@@ -35,7 +36,12 @@ class Country
      * @ORM\Column(type="string")
      */
     protected $phonecode;
-  
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $iso;
+
    /**
      * @ORM\Column(type="string")
      */
