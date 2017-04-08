@@ -87,7 +87,7 @@ abstract class RespErrServiceRequest extends BasicEnum {
 }
 
 abstract class RespErrRequestFormat extends BasicEnum {
-    const INVALID = 'Invalid';
+    const INVALID = 'Invalid Request Made';
 }
 
 abstract class RespErrAuthentication extends BasicEnum {
@@ -218,6 +218,7 @@ abstract class ApiAnswer extends BasicEnum {
 abstract class ApiTestimony extends BasicEnum {
     const DETAIL = 'detail';
     const TITLE = 'title';
+    const CONTENT = 'content';
     const DESCRIPTION = 'description';
 }
 
@@ -362,6 +363,7 @@ class apiController extends AbstractRestfulController
     public function create($data)
     {
         $data = array_change_key_case($data, CASE_LOWER);
+
 
 //        if (isset($data['Service']) && ($data['Service'] === ApiService::CREATEUSER) && (isset($data['UserEmail']) || isset($data['UserPhone'])) && isset($data['UserPass'])) {
 //            //Sign Up New User
@@ -889,11 +891,14 @@ class apiController extends AbstractRestfulController
             foreach ($this->api_Param as $object) {
                 $object = array_change_key_case($object, CASE_LOWER);
                 $sch = new Testimony();
-                $sch->setDescription($object[ApiTestimony::TITLE]."\n".$object[ApiTestimony::DETAIL]);
+                if(isset($object[ApiTestimony::CONTENT])){
+                    $sch->setDescription($object[ApiTestimony::CONTENT]);
+                }else{
+                    $sch->setDescription($object[ApiTestimony::TITLE]."\n".$object[ApiTestimony::DETAIL]);
+                }
                 $sch->setCountryId($this->api_User->getCountry());
                 $sch->setUserId($this->api_User->getId());
-                $sch->setStatus(1);
-
+                $sch->setStatus(0);
                 $state = $smsService->AddNew_Testimony($sch);
                 if ($state) {
                     /**
@@ -1156,7 +1161,7 @@ class apiController extends AbstractRestfulController
                 foreach ($objects as $object) {
                     $object = array_change_key_case($object, CASE_LOWER);
                     //if (isset($object['detail']) && isset($object[ApiGeneric::ID]) && isset($object['title'])) {
-                    if (isset($object[ApiTestimony::DETAIL]) && isset($object[ApiGeneric::ID]) && isset($object[ApiTestimony::TITLE])) {
+                    if ((isset($object[ApiTestimony::DETAIL]) || isset($object[ApiTestimony::CONTENT])) && isset($object[ApiGeneric::ID]) && (isset($object[ApiTestimony::TITLE]) || isset($object[ApiTestimony::CONTENT]))) {
                         $is_valid = true;
                     } else {
                         $error[RespErr::PARAMETER_ERROR] = 'Invalid Add Testimony Param !';
