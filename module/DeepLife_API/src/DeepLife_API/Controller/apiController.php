@@ -71,6 +71,7 @@ abstract class Resp extends BasicEnum {
     const RESPONSE = 'Response';
     const REQUEST_ERROR = 'Request_Error';
     const LOG_RESPONSE = 'Log_Response';
+    const PROFILE_UPDATE = 'profile_update';
     const LOG_ID = 'Log_ID';
     const UPLOAD_RESPONSE = 'Upload_Response';
 }
@@ -1016,6 +1017,9 @@ class apiController extends AbstractRestfulController
                 $state = $smsService->Update_UserInfo($new_user);
                 $disciple_res[Resp::LOG_ID] = $object[ApiGeneric::ID];
                 $res[Resp::LOG_RESPONSE][] = $disciple_res;
+                if($state){
+                    $res[Resp::PROFILE_UPDATE] = $smsService->Get_User_Profile($this->api_User);
+                }
             }
             $this->api_Response[Resp::RESPONSE] = $res;
         }elseif ($service === Svc::REMOVE_DISCIPLE) {
