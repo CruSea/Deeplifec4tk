@@ -658,6 +658,7 @@ class apiController extends AbstractRestfulController
                 $new_user->setPhoneNo($object[ApiAnswer::DISCIPLEPHONE]);
                 /**
                  * @var \DeepLife_API\Model\User $disciple
+                 *
                  */
                 $disciple = $smsService->Get_User($new_user);
                 $sch->setUserId($disciple->getId());
