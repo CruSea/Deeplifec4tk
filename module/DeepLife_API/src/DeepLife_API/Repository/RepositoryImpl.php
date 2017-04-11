@@ -621,14 +621,13 @@ class RepositoryImpl implements RepositoryInterface
         if($found != null){
             return $found;
         }else{
-            return $this->Get_Default_Question();
+            return $this->Get_Default_Question($user);
         }
     }
     public function Get_Default_Question(User $user)
     {
-        $row_sql = 'SELECT * FROM questions WHERE questions.default_question = 1 AND questions.country = '.$user->getCountry();
+        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry().' AND questions.default_question = 1';
         $statement = $this->adapter->query($row_sql);
-
         $result = $statement->execute();
         $posts = null;
         if ($result->count() > 0) {
