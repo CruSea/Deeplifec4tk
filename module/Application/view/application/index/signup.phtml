@@ -21,42 +21,66 @@
 
 <body class="white-bg">
 
-<section  class="middle-box " >
-    <a href="../../">
-    <div class=" wow"  >
-        <img class="col-sm-10 text-center" src="<?php echo $this->basePath('img/Splashlogo_xhdpi.png')?>"
-    </div>
-    </a>
-</section>
-<section >
-<div class=" middle-box text-center loginscreen animated fadeInDown">
-        <div class=" col-md-12 ">
-        <h2 style="color: white ">Sign Up</h2>
 
-        <?php echo $this->form()->openTag($form) ?>
-        <div class="">
-            <?php foreach ($form as $element): ?>
+<section>
+    <link href="http://select2.github.io/select2/select2-3.5.3/select2.css" rel="stylesheet"/>
+    <div class="container services">
 
-                <div class="text-align:center  row form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
-                    <label style="text-align:right;color: white;" class=" col-sm-6 control-label"><?php echo $element->getLabel() ?></label>
-                    <div class="col-sm-12" >
-                        <?php echo $this->formElement ( $element );
-                        if ($this->formElementErrors ( $element ))
-                        ?>
-                        <span class="help-inline  "><?php echo $this->formElementErrors($element) ?></span>
-                    </div>
+        <div class="col-sm-6 col-sm-offset-3 " >
+        <a href="../../">
+            <div class=" wow"  >
+                <img class="col-sm-10 text-center" src="<?php echo $this->basePath('img/Splashlogo_xhdpi.png')?>"
+            </div>
+        </a>
+        </div>
+        <div class="col-sm-10 ">
+
+                    <h2 style="text-align: center;color: #FFFFFF">Sign Up</h2>
+                <?php echo $this->form()->openTag($form) ?>
+                <div style="text-align: center">
+                    <?php foreach ($form as $element): ?>
+
+                        <div style="color: #FFFFFF"   class="row form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+                            <label class=" col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
+                            <div style="color: #FFFFFF" class="col-sm-10">
+                                <?php echo $this->formElement ( $element );
+                                if ($this->formElementErrors ( $element ))
+                                ?>
+                                <span class="help-inline "><?php echo $this->formElementErrors($element) ?></span>
+                            </div>
+                        </div>
+
+                    <?php endforeach ?>
+                    <?php if ($this->redirect): ?>
+                        <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+                    <?php endif ?>
+                    <?php echo $this->form()->closeTag() ?>
+                    <a style="color: #FFFFFF">Already have an account?</a>
+                    <a  href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>" style="color: #f9c123">Login</a>
                 </div>
-            <?php endforeach ?>
-            <?php if ($this->redirect): ?>
-                <input type="hidden" name="redirect"  value="<?php echo $this->escapeHtml($this->redirect) ?>" />
-            <?php endif ?>
-            <?php echo $this->form()->closeTag() ?>
-            <h6 style="color: white">Already Have an account ? </h6>
-            <a style="color: #f9c123" href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Login</a>
+
         </div>
 
     </div>
-</div>
+
+    <script src="http://select2.github.io/select2/select2-3.5.3/select2.js"></script>
+    <script>
+        $(document).ready(function() {
+
+            $("#country").select2();
+
+
+            $('#country').change(function() {
+
+                $('#phone_no').val($('option:selected', this).attr('data-key'));
+
+            });
+            if($('#phone_no').val() == '') {
+                $('#phone_no').val($('option:selected', this).attr('data-key'));
+            }
+
+        });
+    </script>
 
 </section>
 </body>
@@ -69,17 +93,7 @@
         <strong><?php echo $this->translate('Copyright'); ?></strong> <?php echo $this->translate('DeepLife discipleship System &copy; 2017'); ?>
     </div>
 </div>
-<?php echo $this->inlineScript()
-//    ->prependFile($this->basePath('js/pace.min.js'))
-    ->prependFile($this->basePath('js/bootstrap.min.js'))
-//    ->prependFile($this->basePath('js/classie.js'))
-    ->prependFile($this->basePath('js/jquery-2.1.1.js'))
-    ->prependFile($this->basePath('js/plugins/iCheck/icheck.min.js'))
-//    ->prependFile($this->basePath('js/cbpAnimatedHeader.js'))
-//    ->prependFile($this->basePath('js/wow.min.js'));
-//->prependFile($this->basePath('js/inspinia.js'));
 
-?>
 <script>
     $(document).ready(function(){
         $('.i-checks').iCheck({
