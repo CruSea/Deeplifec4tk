@@ -2,7 +2,7 @@
 
 <?php echo $this->doctype();  ?>
 <html lang="en">
-<?php echo $this->render('element-sea/headtitle'); ?>
+<?php echo $this->render('element-generic/headtitle'); ?>
 <body class="." id="page-top">
 <?php echo $this->render('element-generic/headnav'); ?>
 
@@ -23,7 +23,7 @@
                         In Helping You</h1>
                     <p>While You doing the mission work</p>
                     <p>
-                        <a class="btn btn-lg btn-primary" href="#" role="button">Login</a>
+                        <a class="btn btn-lg btn-primary" href="<?php echo $this->url('zfcuser/login') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>" role="button">Login</a>
 
                     </p>
                 </div>
@@ -138,12 +138,12 @@
 
                         <h1 style="color: #ffffff;">Download Our Mobile App</h1>
                         <p style="color: #ffffff;">We have native applications for both android and IOS.</p>
-                        <a href="https://www.google.com.et/" target="_blank">
-                        <div  class="col-md-3 wow fadeInUp" >
+                        <a href="https://play.google.com/store/apps/details?id=deeplife.gcme.com.deeplife&hl=en" target="_blank">
+                        <div  class="col-md-6 wow fadeInUp" >
                             <img src="img/googleplay.png" class="img-responsive">
                         </div>
                             <a href="https://www.apple.com/" target="_blank">
-                        <div class="col-md-3 wow fadeIn" >
+                        <div class="col-md-6 wow fadeIn" >
                             <img src="img/Appstore.png" class="img-responsive big-icon">
                             <a href="#"></a>
                         </div>
@@ -255,7 +255,7 @@
                 <div class="col-lg-12 text-center">
                     <div class="navy-line"></div>
                     <h1>App Pricing</h1>
-                    <p>Our App is Free and it will be free Always </p>
+                    <p>Our App is Free and it will Always Be! </p>
                 </div>
             </div>
             <div class="row">
@@ -293,7 +293,7 @@
                             <strong>Support All platform</strong>
                         </li>
                         <li>
-                            <a class="btn btn-primary btn-xs" href="#">Signup</a>
+                            <a class="btn btn-primary btn-xs" href="<?php echo $this->url('signup') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Signup</a>
                         </li>
                     </ul>
                 </div>
