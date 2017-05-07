@@ -1,96 +1,99 @@
 <link rel="stylesheet" href="<?php echo $this->basePath('js/plugins/jcrop/Jcrop.css') ?>" type="text/css">
 <?php echo $this->headScript()->prependFile($this->basePath('js/plugins/jcrop/Jcrop.js')) ;?>
 <div class="row">
-<div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <h5><?php echo $this->escapeHtml(ucwords($title)); ?> <small></small></h5>
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5><?php echo $this->escapeHtml(ucwords($title)); ?> <small></small></h5>
 
-                        </div>
-                        <div class="ibox-content">
-                            <?php
-$form->setAttribute('method', 'post');
-$form->setAttribute('class', 'form-horizontal');
-$form->setAttribute('action', $this->url('disciples', array('action' => 'add')));
-$form->prepare();
-echo $this->form()->openTag($form); ?>
-<?php foreach ( $form as $element ) :
-
-if($element->getLabel()=='Picture'){ ?>
-    
-    <div class="row" id="profile_hide" >
-        <div class="col-sm-8 col-xs-12">
-            <div class="profile-pic">
-
-                <div class="form-photo">
-                    <?php $avatar='/avatar/noavatar.jpg';
-                   
-                    ?>
-
-                    <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="100" height="100" alt="" />
-                    <img id="image-preview1" class="dl-image-preview" style="display: none;" />
-
-                </div>
             </div>
+            <div class="ibox-content">
+                <?php
+                $form->setAttribute('method', 'post');
+                $form->setAttribute('class', 'form-horizontal');
+                $form->setAttribute('action', $this->url('disciples', array('action' => 'add')));
+                $form->prepare();
+                echo $this->form()->openTag($form); ?>
+                <?php foreach ( $form as $element ) :
 
-        </div>
-    </div>
+                    if($element->getLabel()=='Picture'){ ?>
 
-    <div    class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
-        <label class=" col-sm-2 col-md-2 control-label"><?php echo $element->getLabel() ?></label>
-        <div class="col-sm-4 col-md-4">
-            <?php echo $this->formElement ( $element );
-            if ($this->formElementErrors ( $element ))
-            ?>
-            <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
-        </div>
-        <input type="hidden" name="x" id="cropx" value="0" />
-        <input type="hidden" name="y" id="cropy" value="0" />
-        <input type="hidden" name="w" id="cropw" value="0" />
-        <input type="hidden" name="h" id="croph" value="0" />
-    </div>
+                        <div class="row" id="profile_hide" >
+                            <div class="col-sm-8 col-xs-12">
+                                <div class="profile-pic">
 
+                                    <div class="form-photo">
+                                        <?php $avatar='/avatar/noavatar.jpg';
+                                        if(strlen($image)){
+                                            $avatar=$image;
+                                        }
 
+                                        ?>
 
-<?php }else {?>
+                                        <img id="image-preview" src="<?php echo $this->basePath($avatar)?>" width="100" height="100" alt="" />
+                                        <img id="image-preview1" class="dl-image-preview" style="display: none;" />
 
-<div  class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+                                    </div>
+                                </div>
 
-        <label class=" col-sm-2 col-md-2 control-label"><?php echo $this->translate($element->getLabel()) ?></label>
-        <div class="col-sm-6 col-md-4">
-                <?php echo $this->formElement ( $element );
-                    if ($this->formElementErrors ( $element ))
-                ?>
-    <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
-        </div>
-    </div>
-
-
-<?php }
-endforeach;
-
-
-echo $this->form()->closeTag();
-?>
-
-
-
-
-
-
-
-
-
+                            </div>
                         </div>
-                    </div>
-                </div>
+
+                        <div    class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+                            <label class=" col-sm-2 col-md-2 control-label"><?php echo $element->getLabel() ?></label>
+                            <div class="col-sm-4 col-md-4">
+                                <?php echo $this->formElement ( $element );
+                                if ($this->formElementErrors ( $element ))
+                                ?>
+                                <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
+                            </div>
+                            <input type="hidden" name="x" id="cropx" value="0" />
+                            <input type="hidden" name="y" id="cropy" value="0" />
+                            <input type="hidden" name="w" id="cropw" value="0" />
+                            <input type="hidden" name="h" id="croph" value="0" />
+                        </div>
+
+
+
+                    <?php }else {?>
+
+                        <div  class="form-group <?php if($this->formElementErrors($element)) echo "has-error" ?>">
+
+                            <label class=" col-sm-2 col-md-2 control-label"><?php echo $this->translate($element->getLabel()) ?></label>
+                            <div class="col-sm-6 col-md-4">
+                                <?php echo $this->formElement ( $element );
+                                if ($this->formElementErrors ( $element ))
+                                ?>
+                                <span class="help-inline  error "><?php echo $this->formElementErrors($element) ?></span>
+                            </div>
+                        </div>
+
+
+                    <?php }
+                endforeach;
+
+
+                echo $this->form()->closeTag();
+                ?>
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
 </div>
 <style>
-span.help-inline ul li {
-  color: red;
-  list-style: none;
+    span.help-inline ul li {
+        color: red;
+        list-style: none;
 
-}
+    }
 </style>
 <script type="text/javascript">
     $('#image-preview1').Jcrop({  boxHeight:300, onSelect: updateCoords });
@@ -119,15 +122,18 @@ span.help-inline ul li {
         }
     }
     $("#inputFile").change(function() {
-      
+
         readURL(this);
 
     });
 
-          $('#country').on('change', function() {
-     $("#countrycode").val($(this).val());
-});
+    $('#country').on('change', function() {
+        $("#countrycode").val($(this).val());
+        $('#phone_no').val($("#countrycode option:selected").text());
+    });
 
+    $(document).ready(function() {
+        $('#country').change();
+    });
 
-
-        </script>
+</script>
