@@ -626,7 +626,7 @@ class RepositoryImpl implements RepositoryInterface
     }
     public function Get_Default_Question(User $user)
     {
-        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry().' AND questions.default_question = 1';
+        $row_sql = 'SELECT * FROM questions WHERE questions.default_question = 1';
         $statement = $this->adapter->query($row_sql);
         $result = $statement->execute();
         $posts = null;
@@ -641,7 +641,7 @@ class RepositoryImpl implements RepositoryInterface
     }
     public function Get_Question_By_Country(User $user)
     {
-        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry().' AND questions.default_question = 0';
+        $row_sql = 'SELECT * FROM questions WHERE questions.country = ' . $user->getCountry().' AND questions.default_question != 1';
         $statement = $this->adapter->query($row_sql);
 
         $result = $statement->execute();
